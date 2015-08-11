@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectCostEstimator.ViewModel
 {
-    class NewProjectViewModel
+    class NewProjectViewModel : ViewModelBase
     {
     }
 }

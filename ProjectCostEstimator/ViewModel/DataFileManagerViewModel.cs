@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ProjectCostEstimator.ViewModel
 {
-    class ExistingProjectViewModel : ViewModelBase
+    class DataFileManagerViewModel : ViewModelBase
     {
+        public DataFileManagerViewModel()
+        {
+
+        }
 
     }
 }

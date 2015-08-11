@@ -14,6 +14,7 @@ namespace ProjectCostEstimator.Views
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
             Closing += (s, e) => ViewModelLocator.Cleanup();
         }
     }

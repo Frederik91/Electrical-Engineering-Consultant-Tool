@@ -27,6 +27,10 @@ namespace ProjectCostEstimator.ViewModel
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
+        /// 
+
+        // Vet ikke hva dette brukes til eller hva det gjør, men programmet compiler ikke med det.
+
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
@@ -44,6 +48,8 @@ namespace ProjectCostEstimator.ViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
         }
+
+        //
 
         public MainViewModel Main
         {

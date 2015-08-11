@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectCostEstimator.ViewModel
 {
-    class ExistingProjectViewModel : ViewModelBase
+    class StartScreenViewModel : ViewModelBase
     {
-
     }
 }

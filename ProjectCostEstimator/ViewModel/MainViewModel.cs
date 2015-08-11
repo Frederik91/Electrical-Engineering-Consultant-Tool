@@ -1,4 +1,6 @@
 using GalaSoft.MvvmLight;
+using ProjectCostEstimator.Commands;
+using System.Windows.Input;
 
 namespace ProjectCostEstimator.ViewModel
 {
@@ -16,19 +18,50 @@ namespace ProjectCostEstimator.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+        private ViewModelBase _currentViewModel;
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            NewProjectCommand = new DelegateCommand(o => OpenNewProjectView());
+            ExistingProjectCommand = new DelegateCommand(o => OpenExistingProjectView());
+            StartScreenCommand = new DelegateCommand(o => OpenStartScreenView());
+            DataFileManagerCommand = new DelegateCommand(o => OpenDataFileManagerView());
+            OpenStartScreenView();
         }
+
+        public void OpenNewProjectView()
+        {
+            CurrentViewModel = new NewProjectViewModel();
+        }
+
+        public void OpenExistingProjectView()
+        {
+            CurrentViewModel = new ExistingProjectViewModel();
+        }
+
+        public void OpenStartScreenView()
+        {
+            CurrentViewModel = new StartScreenViewModel();
+        }
+
+
+        public void OpenDataFileManagerView()
+        {
+            CurrentViewModel = new DataFileManagerViewModel();
+        }
+
+        public ViewModelBase CurrentViewModel
+        {
+            get { return _currentViewModel; }
+            set
+            {
+                _currentViewModel = value;
+                this.OnPropertyChanged("CurrentViewModel");
+            }
+        }
+
+        public ICommand NewProjectCommand { get; private set; }
+        public ICommand ExistingProjectCommand { get; private set; }
+        public ICommand StartScreenCommand { get; private set; }
+        public ICommand DataFileManagerCommand { get; private set; }
     }
 }
