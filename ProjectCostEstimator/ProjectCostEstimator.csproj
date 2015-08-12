@@ -81,6 +81,7 @@
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="ViewModel\DataFileManagerViewModel.cs" />
     <Compile Include="ViewModel\ExistingProjectViewModel.cs" />
+    <Compile Include="Model\ImportXML.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\NewProjectViewModel.cs" />
     <Compile Include="ViewModel\StartScreenViewModel.cs" />
@@ -149,6 +150,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
