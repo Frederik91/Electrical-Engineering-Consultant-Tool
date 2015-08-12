@@ -72,6 +72,9 @@
 			       Text="Import Gprog-file to new XML project file"
 			       VerticalAlignment="Top"
 			       Width="Auto"/>
+
+                    <Button Height="300" Width="500" Content="Test programmet her" FontSize="50" Command="{Binding TestSigmundSkript}"/>
+
                 </Grid>
             </TabItem>
             <TabItem Header="Edit">

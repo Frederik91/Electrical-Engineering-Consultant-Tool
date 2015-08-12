@@ -1,4 +1,4 @@
-﻿using ProjectCostEstimator.Commands;
+﻿ using ProjectCostEstimator.Commands;
 using ProjectCostEstimator.Model;
 using System;
 using System.Collections.Generic;
@@ -28,10 +28,16 @@ namespace ProjectCostEstimator.ViewModel
         public DataFileManagerViewModel()
         {
             SaveChangesCommand = new DelegateCommand(o => SaveChanges());
+            TestSigmundSkript = new DelegateCommand(o => TestSigmundSkriptMetode());
 
             collectXMLFilePaths();
         }
 
+        private void TestSigmundSkriptMetode()
+        {
+            var run = new ImportXML();
+            run.RunOnClick(_XMLPath);
+        }
 
         private void collectXMLFilePaths()
         {
@@ -138,5 +144,7 @@ namespace ProjectCostEstimator.ViewModel
 
 
         public ICommand SaveChangesCommand { get; private set; }
+        public ICommand TestSigmundSkript { get; private set; }
+
     }
 }
