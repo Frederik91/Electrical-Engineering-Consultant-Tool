@@ -12,12 +12,56 @@
                     Width="1200">
             <TabItem Header="Stored files">
                 <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height ="Auto"/>
+                        <RowDefinition Height ="25"/>
+                        <RowDefinition Height ="25"/>
+                        <RowDefinition Height ="275"/>
+                        <RowDefinition Height ="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    
                     <TextBlock HorizontalAlignment="Left"
 			       Margin="10"
 			       TextWrapping="Wrap"
 			       Text="List of stored XML-files."
 			       VerticalAlignment="Top"
 			       Width="Auto"/>
+
+                    <ListView Grid.Row="1" Grid.RowSpan="3" Margin="10,0,10,0" Height="300" Width="180" VerticalAlignment="Top" HorizontalAlignment="Left" Name="XMLFilePathList" ItemsSource="{Binding XMLFilePathList}" SelectedIndex="{Binding SelectedProjectIndex}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name" 
+                                                DisplayMemberBinding="{Binding Name}"
+                                                Width="170"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    
+                    <Label Grid.Row="0" Grid.Column="2" Content="Project name" Width="120"/>
+                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding ProjectName}"/>
+                    
+                    <Label Grid.Row="0" Grid.Column="3" Content="ATR"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding ATR}"/>
+
+                    <Label Grid.Row="0" Grid.Column="4" Content="Tender date" />
+                    <DatePicker Grid.Row="1" Grid.Column="4" SelectedDate="{Binding TenderDate}"/>
+
+                    <Label Grid.Row="0" Grid.Column="5" Content="Completion date" />
+                    <DatePicker Grid.Row="1" Grid.Column="5" SelectedDate="{Binding CompletionDate}"/>
+
+                    <Button Margin="10,0,0,0"  Grid.Row="1" Grid.Column="6" Content="Save changes"  Command="{Binding SaveChangesCommand}"/>
+
                 </Grid>
             </TabItem>
             <TabItem Header="Import">

@@ -1,32 +1,52 @@
 using GalaSoft.MvvmLight;
 using ProjectCostEstimator.Commands;
 using System.Windows.Input;
+using System.Configuration;
+using System.IO;
+using Microsoft.VisualBasic;
+using System.Xml;
+using System.Collections.Generic;
+using ProjectCostEstimator.Model;
+using System;
 
 namespace ProjectCostEstimator.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private string _XMLPath = ConfigurationManager.AppSettings["XMLFolderPath"];
+
+
+
         private ViewModelBase _currentViewModel;
+
+
         public MainViewModel()
         {
+            #region initialization Command members
+
             NewProjectCommand = new DelegateCommand(o => OpenNewProjectView());
             ExistingProjectCommand = new DelegateCommand(o => OpenExistingProjectView());
             StartScreenCommand = new DelegateCommand(o => OpenStartScreenView());
-            DataFileManagerCommand = new DelegateCommand(o => OpenDataFileManagerView());
+            DataFileManagerCommand = new DelegateCommand(o => OpenDataFileManagerView());            
+
+            #endregion
             OpenStartScreenView();
+            checkXMLPath();
         }
+
+        private void checkXMLPath()
+        {
+            if (!File.Exists(_XMLPath))
+            {
+                _XMLPath = Interaction.InputBox("FileList path in configuration file is wrong or missing, please provide correct path for FileList.xml", "File not found");
+                checkXMLPath();
+            }
+        }
+
+
+
+
+        #region Command members
 
         public void OpenNewProjectView()
         {
@@ -63,5 +83,7 @@ namespace ProjectCostEstimator.ViewModel
         public ICommand ExistingProjectCommand { get; private set; }
         public ICommand StartScreenCommand { get; private set; }
         public ICommand DataFileManagerCommand { get; private set; }
+
+        #endregion
     }
 }
