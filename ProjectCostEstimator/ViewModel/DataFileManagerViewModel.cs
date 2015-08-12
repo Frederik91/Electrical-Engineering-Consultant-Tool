@@ -1,12 +1,8 @@
-﻿ using ProjectCostEstimator.Commands;
+﻿using ProjectCostEstimator.Commands;
 using ProjectCostEstimator.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using System.Xml;
 using System.Xml.Linq;
@@ -66,7 +62,7 @@ namespace ProjectCostEstimator.ViewModel
             xele.Save(XMLFilePathList[SelectedProjectIndex].FilePath);
         }
 
-        private void getSelectedProjectInfo()
+        private void getSelectedProjectData()
         {
             XDocument xdocument = XDocument.Load(XMLFilePathList[SelectedProjectIndex].FilePath);
             IEnumerable<XElement> ProjectInfoFile = xdocument.Elements();
@@ -138,7 +134,7 @@ namespace ProjectCostEstimator.ViewModel
             {
                 _selectedProjectIndex = value;
                 OnPropertyChanged("SelectedProject");
-                getSelectedProjectInfo();
+                getSelectedProjectData();
             }
         }
 
