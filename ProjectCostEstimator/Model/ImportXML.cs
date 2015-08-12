@@ -20,6 +20,7 @@ namespace ProjectCostEstimator.ViewModel
         {
             //kjøres under knappeklikk
             MessageBox.Show("test");
+
         }
 
 
