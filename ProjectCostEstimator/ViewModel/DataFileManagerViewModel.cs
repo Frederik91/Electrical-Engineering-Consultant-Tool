@@ -3,6 +3,7 @@ using ProjectCostEstimator.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Windows;
 using System.Windows.Input;
 using System.Xml;
 using System.Xml.Linq;
@@ -64,14 +65,16 @@ namespace ProjectCostEstimator.ViewModel
 
         private void getSelectedProjectData()
         {
+            var projectCostData = new List<DisciplineValues>();
+
             XDocument xdocument = XDocument.Load(XMLFilePathList[SelectedProjectIndex].FilePath);
             IEnumerable<XElement> ProjectInfoFile = xdocument.Elements();
             foreach (var info in ProjectInfoFile)
             {
                 ProjectName = info.Element("BuildingInformation").Element("ProjectName").Value;
                 ATR = info.Element("BuildingInformation").Element("ATR").Value;
-                TenderDate = Convert.ToDateTime(info.Element("BuildingInformation").Element("TenderDate").Value);
-                CompletionDate = Convert.ToDateTime(info.Element("BuildingInformation").Element("CompletionDate").Value);
+                TenderDate = DateTime.ParseExact(info.Element("BuildingInformation").Element("TenderDate").Value, "dd.MM.yyyy", null);
+                CompletionDate = DateTime.ParseExact(info.Element("BuildingInformation").Element("CompletionDate").Value, "dd.MM.yyyy", null);
             }
         }
 
