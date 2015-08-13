@@ -2,6 +2,7 @@
 using ProjectCostEstimator.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Windows;
 using System.Windows.Input;
@@ -13,6 +14,7 @@ namespace ProjectCostEstimator.ViewModel
     class DataFileManagerViewModel : ViewModelBase
     {
         private List<FilePathList> _xmlFilePathsList = new List<FilePathList>();
+        private ObservableCollection<DisciplineValues> _projectCostData;
 
         private DateTime _tenderDate = new DateTime();
         private DateTime _completionDate = new DateTime();
@@ -53,19 +55,27 @@ namespace ProjectCostEstimator.ViewModel
 
         private void SaveChanges()
         {
-            XElement xele = XElement.Load(XMLFilePathList[SelectedProjectIndex].FilePath);
+            XElement xEle = XElement.Load(XMLFilePathList[SelectedProjectIndex].FilePath);
 
-            xele.Element("BuildingInformation").SetElementValue("ProjectName", ProjectName);
-            xele.Element("BuildingInformation").SetElementValue("ATR", ATR);
-            xele.Element("BuildingInformation").SetElementValue("TenderDate", TenderDate.ToShortDateString());
-            xele.Element("BuildingInformation").SetElementValue("CompletionDate", CompletionDate.ToShortDateString());
+            xEle.Element("BuildingInformation").SetElementValue("ProjectName", ProjectName);
+            xEle.Element("BuildingInformation").SetElementValue("ATR", ATR);
+            xEle.Element("BuildingInformation").SetElementValue("TenderDate", TenderDate.ToShortDateString());
+            xEle.Element("BuildingInformation").SetElementValue("CompletionDate", CompletionDate.ToShortDateString());
 
-            xele.Save(XMLFilePathList[SelectedProjectIndex].FilePath);
+            xEle.Element("CostData").RemoveAll();
+
+            foreach (var item in ProjectCostData)
+            {
+                xEle.Element("CostData").Add(new XElement("Chapter", new XElement("Discipline", item.Discipline), new XElement("ChapterNumber", item.Chapter), new XElement("Cost", item.Cost)));
+            }
+
+            xEle.Save(XMLFilePathList[SelectedProjectIndex].FilePath);
+
         }
 
         private void getSelectedProjectData()
         {
-            var projectCostData = new List<DisciplineValues>();
+            _projectCostData = new ObservableCollection<DisciplineValues>();
 
             XDocument xdocument = XDocument.Load(XMLFilePathList[SelectedProjectIndex].FilePath);
             IEnumerable<XElement> ProjectInfoFile = xdocument.Elements();
@@ -76,12 +86,25 @@ namespace ProjectCostEstimator.ViewModel
                 TenderDate = DateTime.ParseExact(info.Element("BuildingInformation").Element("TenderDate").Value, "dd.MM.yyyy", null);
                 CompletionDate = DateTime.ParseExact(info.Element("BuildingInformation").Element("CompletionDate").Value, "dd.MM.yyyy", null);
             }
+
+            foreach (XElement element in xdocument.Descendants("Chapter"))
+            {
+                _projectCostData.Add(new DisciplineValues
+                {
+                    Discipline = element.Element("Discipline").Value,
+                    Chapter = element.Element("ChapterNumber").Value,
+                    Cost = Convert.ToInt32(element.Element("Cost").Value)
+                });
+            }
+
+            ProjectCostData = _projectCostData;
         }
 
         public string ProjectName
         {
             get { return _projectName; }
-            set {
+            set
+            {
                 _projectName = value;
                 OnPropertyChanged("ProjectName");
             }
@@ -125,6 +148,16 @@ namespace ProjectCostEstimator.ViewModel
             {
                 _xmlFilePathsList = value;
                 OnPropertyChanged("XMLFilePathList");
+            }
+        }
+
+        public ObservableCollection<DisciplineValues> ProjectCostData
+        {
+            get { return _projectCostData; }
+            set
+            {
+                _projectCostData = value;
+                OnPropertyChanged("ProjectCostData");
             }
         }
 
