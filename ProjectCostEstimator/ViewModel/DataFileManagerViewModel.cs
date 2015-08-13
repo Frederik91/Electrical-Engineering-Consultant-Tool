@@ -73,8 +73,6 @@ namespace ProjectCostEstimator.ViewModel
                 TenderDate = Convert.ToDateTime(info.Element("BuildingInformation").Element("TenderDate").Value);
                 CompletionDate = Convert.ToDateTime(info.Element("BuildingInformation").Element("CompletionDate").Value);
             }
-
-
         }
 
         public string ProjectName
