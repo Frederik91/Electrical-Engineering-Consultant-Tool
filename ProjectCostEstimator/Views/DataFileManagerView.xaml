@@ -68,14 +68,40 @@
             </TabItem>
             <TabItem Header="Import">
                 <Grid>
-                    <TextBlock HorizontalAlignment="Left"
-			       Margin="10"
-			       TextWrapping="Wrap"
-			       Text="Import Gprog-file to new XML project file"
-			       VerticalAlignment="Top"
-			       Width="Auto"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height ="25"/>
+                        <RowDefinition Height ="25"/>
+                        <RowDefinition Height ="25"/>
+                        <RowDefinition Height ="30"/>
+                        <RowDefinition Height ="30"/>
+                        <RowDefinition Height ="30"/>
+                        <RowDefinition Height ="400"/>
+                        <RowDefinition Height ="30"/>
+                        <RowDefinition Height ="*"/>
+                    </Grid.RowDefinitions>
 
-                    <Button Height="300" Width="500" Content="Test programmet her" FontSize="50" Command="{Binding TestSigmundSkript}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="1"
+                               TextWrapping="Wrap"
+                               Text="Import Gprog-file to new XML project file"
+                               Width="Auto"/>
+
+                    <Label Grid.Row="2" Grid.Column="1" Content="Select file to import"/>
+                    <Button Grid.Row="3" Grid.Column="1" Content="Browse" Command="{Binding SelectImportFilePathCommand}" />
+                    <Label  Grid.Row="3" Grid.Column="2" BorderThickness="1" BorderBrush="Black" Content="{Binding SelectedImportFilePath}"/>
+
+                    <Label Grid.Column="1" Grid.Row="4" Content="Select chapter number layout" VerticalAlignment="Bottom"/>
+                    <ComboBox Grid.Column="1" Grid.Row="5" ItemsSource="{Binding ChapterTypes}"  SelectedValue="{Binding SelectedChapterType}"/>
+                    <ListView Grid.Column="1" Grid.Row="6" ItemsSource="{Binding ChapterNumber}"/>
+                    <Button Grid.Row="7" Grid.Column="1" Content="Import file" Command="{Binding ImportNewProject}"/>
+
+                    <DataGrid Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ImportedDataList}"/>
 
                 </Grid>
             </TabItem>

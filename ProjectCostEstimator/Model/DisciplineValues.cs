@@ -10,6 +10,7 @@ namespace ProjectCostEstimator.Model
     {
         public string Discipline { get; set; }
         public string Chapter { get; set; }
-        public int Cost { get; set; }
+        public double Cost { get; set; }
+        public string Comment { get; set; }
     }
 }
