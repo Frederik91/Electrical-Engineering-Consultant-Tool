@@ -28,6 +28,7 @@
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
 
@@ -39,6 +40,11 @@
 			       Width="Auto"/>
 
                     <ListView Grid.Row="1" Grid.RowSpan="3" Margin="10,0,0,0" Width="180" HorizontalAlignment="Left" Name="XMLFilePathList" ItemsSource="{Binding XMLFilePathList}" SelectedIndex="{Binding SelectedProjectIndex}">
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Delete" Command="{Binding DeleteStoredProjectCommand}"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Name" 
@@ -54,13 +60,16 @@
                     <Label Grid.Row="0" Grid.Column="3" Content="ATR"/>
                     <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding ATR}"/>
 
-                    <Label Grid.Row="0" Grid.Column="4" Content="Tender date" />
-                    <DatePicker Grid.Row="1" Grid.Column="4" SelectedDate="{Binding TenderDate}"/>
+                    <Label Grid.Row="0" Grid.Column="4" Content="Area"/>
+                    <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding Area}"/>
 
-                    <Label Grid.Row="0" Grid.Column="5" Content="Completion date" />
-                    <DatePicker Grid.Row="1" Grid.Column="5" SelectedDate="{Binding CompletionDate}"/>
+                    <Label Grid.Row="0" Grid.Column="5" Content="Tender date" />
+                    <DatePicker Grid.Row="1" Grid.Column="5" SelectedDate="{Binding TenderDate}"/>
 
-                    <Button Margin="10,0,0,0"  Grid.Row="1" Grid.Column="6" Content="Save changes"  Command="{Binding SaveChangesCommand}"/>
+                    <Label Grid.Row="0" Grid.Column="6" Content="Completion date" />
+                    <DatePicker Grid.Row="1" Grid.Column="6" SelectedDate="{Binding CompletionDate}"/>
+
+                    <Button Margin="10,0,0,0"  Grid.Row="1" Grid.Column="7" Content="Save changes"  Command="{Binding SaveChangesCommand}"/>
 
                     <DataGrid Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="4" ItemsSource="{Binding ProjectCostData}"></DataGrid>
 
@@ -82,26 +91,50 @@
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="29.631"/>
+                        <ColumnDefinition Width="220.369"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="1"
                                TextWrapping="Wrap"
                                Text="Import Gprog-file to new XML project file"
-                               Width="Auto"/>
+                               Width="Auto" Grid.ColumnSpan="2"/>
 
-                    <Label Grid.Row="2" Grid.Column="1" Content="Select file to import"/>
-                    <Button Grid.Row="3" Grid.Column="1" Content="Browse" Command="{Binding SelectImportFilePathCommand}" />
-                    <Label  Grid.Row="3" Grid.Column="2" BorderThickness="1" BorderBrush="Black" Content="{Binding SelectedImportFilePath}"/>
+                    <Label Grid.Row="2" Grid.Column="1" Content="Select file to import" Grid.ColumnSpan="2"/>
+                    <Button Grid.Row="3" Grid.Column="1" Content="Browse" Command="{Binding SelectImportFilePathCommand}" Grid.ColumnSpan="2" />
+                    <Label  Grid.Row="3" Grid.Column="3" BorderThickness="1" BorderBrush="Black" Content="{Binding SelectedImportFilePath}"/>
 
-                    <Label Grid.Column="1" Grid.Row="4" Content="Select chapter number layout" VerticalAlignment="Bottom"/>
-                    <ComboBox Grid.Column="1" Grid.Row="5" ItemsSource="{Binding ChapterTypes}"  SelectedValue="{Binding SelectedChapterType}"/>
-                    <ListView Grid.Column="1" Grid.Row="6" ItemsSource="{Binding ChapterNumber}"/>
-                    <Button Grid.Row="7" Grid.Column="1" Content="Import file" Command="{Binding ImportNewProject}"/>
+                    <Label Grid.Column="1" Grid.Row="4" Content="Select chapter number layout" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
+                    <ComboBox Grid.Column="1" Grid.Row="5" ItemsSource="{Binding ChapterTypes}"  SelectedValue="{Binding SelectedChapterType}" Grid.ColumnSpan="2"/>
+                    <ListView Grid.Column="1" Grid.Row="6" ItemsSource="{Binding ChapterNumber}" Grid.ColumnSpan="2"/>
+                    <Button Grid.Row="7" Grid.Column="1" Content="Import file" Command="{Binding ImportNewProject}" Grid.ColumnSpan="2"/>
 
-                    <DataGrid Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" ItemsSource="{Binding ImportedDataList}"/>
+                    <Button  Grid.Column="3" Grid.Row="7" Grid.ColumnSpan="2" Content="Compress List" Command="{Binding CompressListCommand}"/>
+                    <Button  Grid.Column="6" Grid.Row="7" Grid.ColumnSpan="2" Content="Save Import to XML" Command="{Binding SaveImportDataCommand}"/>
+
+                    <DataGrid Grid.Row="3" Grid.Column="3" Grid.RowSpan="4" Grid.ColumnSpan="6" ItemsSource="{Binding ImportedDataList}"/>
+
+                    <Label Grid.Row="0" Grid.Column="3" Content="Project name" Width="120"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding ImportProjectName}"/>
+
+                    <Label Grid.Row="0" Grid.Column="4" Content="ATR"/>
+                    <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding ImportATR}"/>
+
+                    <Label Grid.Row="0" Grid.Column="5" Content="Area"/>
+                    <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding ImportArea}"/>
+
+                    <Label Grid.Row="0" Grid.Column="6" Content="Tender date" />
+                    <DatePicker Grid.Row="1" Grid.Column="6" SelectedDate="{Binding ImportTenderDate}"/>
+
+                    <Label Grid.Row="0" Grid.Column="7" Content="Completion date" />
+                    <DatePicker Grid.Row="1" Grid.Column="7" SelectedDate="{Binding ImportCompletionDate}"/>
+
 
                 </Grid>
             </TabItem>

@@ -16,7 +16,6 @@ namespace ProjectCostEstimator.ViewModel
 
         }
 
-
         public List<string> GetChapterTypes(string XMLpath)
         {
             XDocument xdocument = XDocument.Load(XMLpath);
@@ -127,7 +126,6 @@ namespace ProjectCostEstimator.ViewModel
                 {
                     Chapter = chapterNumber,
                     Cost = Sum,
-                    Discipline = "RIE",
                     Comment = comment
                 });
 
@@ -135,6 +133,44 @@ namespace ProjectCostEstimator.ViewModel
 
             return ImportedDataList;
 
+        }
+
+        public string GetImportFileName(string XMLPath)
+        {
+            string ProjectName = string.Empty;
+
+            XDocument xdocument = XDocument.Load(XMLPath);
+            XNamespace df = xdocument.Root.Name.Namespace;
+
+            var ProjectInfo = from c in xdocument.Descendants(df + "ProsjektNS")
+                             select c;
+
+
+            foreach (var Info in ProjectInfo)
+            {
+                ProjectName = Info.Element(df + "Navn").Value;
+            }
+
+            return ProjectName;
+        }
+
+        public DateTime GetImportDate(string XMLPath)
+        {
+            DateTime ImportDate = new DateTime();
+
+            XDocument xdocument = XDocument.Load(XMLPath);
+            XNamespace df = xdocument.Root.Name.Namespace;
+
+            var ProjectInfo = from c in xdocument.Descendants(df + "Generelt")
+                              select c;
+
+
+            foreach (var Info in ProjectInfo)
+            {
+                ImportDate = DateTime.ParseExact(Info.Element(df + "Dato").Value, "yyyy-MM-dd", null);
+            }
+
+            return ImportDate;
         }
 
     }

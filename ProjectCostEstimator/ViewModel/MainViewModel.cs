@@ -13,7 +13,7 @@ namespace ProjectCostEstimator.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private string _XMLPath = ConfigurationManager.AppSettings["XMLFolderPath"];
+        private string _XMLPath = ConfigurationManager.AppSettings["XMLFolderPath"] + ConfigurationManager.AppSettings["XMLFileListName"] + ".xml";
 
 
 
