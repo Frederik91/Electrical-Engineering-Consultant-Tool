@@ -68,7 +68,7 @@ namespace ProjectCostEstimator.ViewModel
             return SelectedChapterNumber.Distinct().ToList();
         }
 
-        public List<DisciplineValues> ImportProjectFile(string SelectedChapterType, string XMLPath)
+        public List<DisciplineValues> ImportProjectFile(string SelectedChapterType, string XMLPath, int _area)
         {
             List<DisciplineValues> ImportedDataList = new List<DisciplineValues>();
             
@@ -126,6 +126,7 @@ namespace ProjectCostEstimator.ViewModel
                 {
                     Chapter = chapterNumber,
                     Cost = Sum,
+                    SqmCost = Sum / _area,
                     Comment = comment
                 });
 

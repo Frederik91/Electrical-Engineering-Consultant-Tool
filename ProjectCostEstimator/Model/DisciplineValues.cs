@@ -10,6 +10,7 @@ namespace ProjectCostEstimator.Model
     {
         public string Chapter { get; set; }
         public double Cost { get; set; }
+        public double SqmCost { get; set; }
         public string Comment { get; set; }
     }
 }

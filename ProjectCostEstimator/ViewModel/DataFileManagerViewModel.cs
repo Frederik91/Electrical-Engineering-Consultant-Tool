@@ -95,16 +95,18 @@ namespace ProjectCostEstimator.ViewModel
                     )
                 );
 
-            foreach (var item in ImportedDataList)
-            {
-                xEle.Add(new XElement("CostData",
-                            new XElement("Chapter",
-                                new XElement("ChapterNumber", item.Chapter),
-                                new XElement("Cost", Math.Round(item.Cost))
-                                )
-                            )
+            xEle.Add(new XElement("CostData", ""));
+                foreach (var item in ImportedDataList)
+                    {
+                        xEle.Element("CostData").Add(new XElement("Chapter",
+                                        new XElement("ChapterNumber", item.Chapter),
+                                        new XElement("Cost", Math.Round(item.Cost)),
+                                        new XElement("SqmCost", item.SqmCost)
+                                        )
                         );
-            }
+                     };
+
+
 
             xEle.Save(file);
 
@@ -129,6 +131,7 @@ namespace ProjectCostEstimator.ViewModel
                           {
                               Chapter = grp.Key,
                               Cost = grp.Sum(o => o.Cost),
+                              SqmCost = grp.Sum(o => o.SqmCost),
                               Comment = ""
                           });
 
@@ -139,7 +142,7 @@ namespace ProjectCostEstimator.ViewModel
         private void ImportProjectFile()
         {
             var run = new ImportXML();
-            ImportedDataList = run.ImportProjectFile(SelectedChapterType, SelectedImportFilePath);
+            ImportedDataList = run.ImportProjectFile(SelectedChapterType, SelectedImportFilePath, ImportArea);
         }
 
         private void SelectImportFilePath()
@@ -172,26 +175,7 @@ namespace ProjectCostEstimator.ViewModel
 
         }
 
-        private void collectXMLFilePaths()
-        {
-            var list = new List<FilePathList>();
 
-            XmlReader xmlReader = XmlReader.Create(_XMLPath);
-            while (xmlReader.Read())
-            {
-                if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "ProjectFile"))
-                {
-                    if (xmlReader.HasAttributes)
-                    {
-                        list.Add(new FilePathList() { Name = xmlReader.GetAttribute("Name"), FilePath = xmlReader.GetAttribute("Path") });
-                    }
-                }
-            }
-                        
-            XMLFilePathList = list;
-
-            xmlReader.Close();
-        }
 
         #endregion
 
@@ -325,8 +309,40 @@ namespace ProjectCostEstimator.ViewModel
 
         #region Stored Files Methods
 
+        private void collectXMLFilePaths()
+        {
+            int selectedIndex = SelectedProjectIndex;
+
+            var list = new List<FilePathList>();
+
+            XmlReader xmlReader = XmlReader.Create(_XMLPath);
+            while (xmlReader.Read())
+            {
+                if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "ProjectFile"))
+                {
+                    if (xmlReader.HasAttributes)
+                    {
+                        list.Add(new FilePathList() { Name = xmlReader.GetAttribute("Name"), FilePath = xmlReader.GetAttribute("Path") });
+                    }
+                }
+            }
+
+            XMLFilePathList = list;
+
+            SelectedProjectIndex = selectedIndex;
+
+            xmlReader.Close();
+        }
+
         private void DeleteStoredProject()
         {
+            var yes = MessageBox.Show("Do you want to delete '" + ProjectName + "'? This can not be undone.", "Warning", MessageBoxButton.YesNo);
+
+            if (yes == MessageBoxResult.No)
+            {
+                return;
+            }
+
             XElement xdoc = XElement.Load(_XMLPath);
 
             var elementsToRemove = from element in xdoc.Elements("ProjectFile")
@@ -367,7 +383,8 @@ namespace ProjectCostEstimator.ViewModel
                     _projectCostData.Add(new DisciplineValues
                     {
                         Chapter = element.Element("ChapterNumber").Value,
-                        Cost = Convert.ToInt32(element.Element("Cost").Value)
+                        Cost = Convert.ToInt32(element.Element("Cost").Value),
+                        SqmCost = Convert.ToDouble(element.Element("SqmCost").Value)
                     });
                 }
 
@@ -380,6 +397,12 @@ namespace ProjectCostEstimator.ViewModel
 
         private void SaveChanges()
         {
+            if (SelectedProjectIndex < 0)
+            {
+                MessageBox.Show("Project not selected, select project in list view before attempting to save.");
+                return;
+            }
+
             XElement xEle = XElement.Load(XMLFilePathList[SelectedProjectIndex].FilePath);
 
             xEle.Element("BuildingInformation").SetElementValue("ProjectName", ProjectName);
@@ -390,9 +413,11 @@ namespace ProjectCostEstimator.ViewModel
 
             xEle.Element("CostData").RemoveAll();
 
+            xEle.Save(XMLFilePathList[SelectedProjectIndex].FilePath);
+
             foreach (var item in ProjectCostData)
             {
-                xEle.Element("CostData").Add(new XElement("Chapter", new XElement("ChapterNumber", item.Chapter), new XElement("Cost", item.Cost)));
+                xEle.Element("CostData").Add(new XElement("Chapter", new XElement("ChapterNumber", item.Chapter), new XElement("Cost", item.Cost), new XElement("SqmCost", item.Cost / Area)));
             }
 
             xEle.Save(XMLFilePathList[SelectedProjectIndex].FilePath);

@@ -8,6 +8,7 @@ using System.Xml;
 using System.Collections.Generic;
 using ProjectCostEstimator.Model;
 using System;
+using System.Windows;
 
 namespace ProjectCostEstimator.ViewModel
 {
@@ -27,7 +28,8 @@ namespace ProjectCostEstimator.ViewModel
             NewProjectCommand = new DelegateCommand(o => OpenNewProjectView());
             ExistingProjectCommand = new DelegateCommand(o => OpenExistingProjectView());
             StartScreenCommand = new DelegateCommand(o => OpenStartScreenView());
-            DataFileManagerCommand = new DelegateCommand(o => OpenDataFileManagerView());            
+            DataFileManagerCommand = new DelegateCommand(o => OpenDataFileManagerView());
+            ExitCommand = new DelegateCommand(o => ExitProgram());
 
             #endregion
             OpenStartScreenView();
@@ -47,6 +49,11 @@ namespace ProjectCostEstimator.ViewModel
 
 
         #region Command members
+
+        public void ExitProgram()
+        {
+            Application.Current.Shutdown();
+        }
 
         public void OpenNewProjectView()
         {
@@ -79,6 +86,7 @@ namespace ProjectCostEstimator.ViewModel
             }
         }
 
+        public ICommand ExitCommand { get; private set; }
         public ICommand NewProjectCommand { get; private set; }
         public ICommand ExistingProjectCommand { get; private set; }
         public ICommand StartScreenCommand { get; private set; }
