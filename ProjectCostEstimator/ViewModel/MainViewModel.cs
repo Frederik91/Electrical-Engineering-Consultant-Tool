@@ -15,8 +15,6 @@ namespace EECT.ViewModel
     public class MainViewModel : ViewModelBase
     {
 
-
-
         private ViewModelBase _currentViewModel;
 
 
