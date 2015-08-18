@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProjectCostEstimator.Properties
+namespace EECT.Properties
 {
     using System;
 

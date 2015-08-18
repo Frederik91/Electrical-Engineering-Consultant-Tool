@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ProjectCostEstimator.Commands
+namespace EECT.Commands
 {
     public class DelegateCommand : ICommand
     {

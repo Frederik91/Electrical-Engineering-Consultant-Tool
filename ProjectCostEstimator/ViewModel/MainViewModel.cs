@@ -1,16 +1,16 @@
 using GalaSoft.MvvmLight;
-using ProjectCostEstimator.Commands;
+using EECT.Commands;
 using System.Windows.Input;
 using System.Configuration;
 using System.IO;
 using Microsoft.VisualBasic;
 using System.Xml;
 using System.Collections.Generic;
-using ProjectCostEstimator.Model;
+using EECT.Model;
 using System;
 using System.Windows;
 
-namespace ProjectCostEstimator.ViewModel
+namespace EECT.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {

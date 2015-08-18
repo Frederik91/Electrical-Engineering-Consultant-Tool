@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualBasic;
-using ProjectCostEstimator.Commands;
-using ProjectCostEstimator.Model;
+using EECT.Commands;
+using EECT.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
 
-namespace ProjectCostEstimator.ViewModel
+namespace EECT.ViewModel
 {
     class NewProjectViewModel : ViewModelBase
     {

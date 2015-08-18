@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 
-namespace ProjectCostEstimator
+namespace EECT
 {
     /// <summary>
     /// Interaction logic for App.xaml

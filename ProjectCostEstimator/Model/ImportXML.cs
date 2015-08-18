@@ -1,4 +1,4 @@
-﻿using ProjectCostEstimator.Model;
+﻿using EECT.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
 
-namespace ProjectCostEstimator.ViewModel
+namespace EECT.ViewModel
 {
     class ImportXML
     {

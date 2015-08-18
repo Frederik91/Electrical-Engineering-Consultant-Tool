@@ -1,7 +1,7 @@
 ﻿using System;
-using ProjectCostEstimator.Model;
+using EECT.Model;
 
-namespace ProjectCostEstimator.Design
+namespace EECT.Design
 {
     public class DesignDataService : IDataService
     {

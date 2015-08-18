@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using ProjectCostEstimator.ViewModel;
+using EECT.ViewModel;
 
-namespace ProjectCostEstimator.Views
+namespace EECT.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
