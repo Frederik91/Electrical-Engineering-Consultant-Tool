@@ -16,7 +16,7 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         
-        <Label Grid.Row="1" FontSize="72" Content="Project cost estimating tool" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="1" FontSize="62" Content="Electrical Engineering Calculation Tool" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label Grid.Row="3" FontSize="36" Content="Click file to start" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
     </Grid>

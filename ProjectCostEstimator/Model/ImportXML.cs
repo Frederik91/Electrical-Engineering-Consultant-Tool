@@ -114,9 +114,11 @@ namespace EECT.ViewModel
                     {
                         comment = Comment.Element(df + "Uformatert").Value;
                     }
-                    catch (Exception e)
+                    catch (NullReferenceException)
                     {
+                       
                         comment = string.Empty;
+ 
                         
                     }
 

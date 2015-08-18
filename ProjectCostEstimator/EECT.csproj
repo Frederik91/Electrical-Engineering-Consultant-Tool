@@ -81,10 +81,16 @@
     <Compile Include="Model\DisciplineValues.cs" />
     <Compile Include="Model\FilePathList.cs" />
     <Compile Include="Model\IDataService.cs" />
+    <Compile Include="Resources\strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\CableAndProtectionViewModel.cs" />
     <Compile Include="ViewModel\DataFileManagerViewModel.cs" />
     <Compile Include="ViewModel\ExistingProjectViewModel.cs" />
     <Compile Include="Model\ImportXML.cs" />
+    <Compile Include="ViewModel\Logic.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\NewProjectViewModel.cs" />
     <Compile Include="ViewModel\StartScreenViewModel.cs" />
@@ -159,6 +165,11 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\strings.no.resx" />
+    <EmbeddedResource Include="Resources\strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
