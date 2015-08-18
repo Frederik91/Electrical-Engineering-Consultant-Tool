@@ -14,7 +14,6 @@ namespace ProjectCostEstimator.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private string _XMLPath = ConfigurationManager.AppSettings["XMLFolderPath"] + ConfigurationManager.AppSettings["XMLFileListName"] + ".xml";
 
 
 
@@ -24,31 +23,25 @@ namespace ProjectCostEstimator.ViewModel
         public MainViewModel()
         {
             #region initialization Command members
-
+                        
             NewProjectCommand = new DelegateCommand(o => OpenNewProjectView());
             ExistingProjectCommand = new DelegateCommand(o => OpenExistingProjectView());
             StartScreenCommand = new DelegateCommand(o => OpenStartScreenView());
             DataFileManagerCommand = new DelegateCommand(o => OpenDataFileManagerView());
+            CableAndProtectionCommand = new DelegateCommand(o => OpenCableAndProtectionView());
             ExitCommand = new DelegateCommand(o => ExitProgram());
 
             #endregion
             OpenStartScreenView();
-            checkXMLPath();
         }
-
-        private void checkXMLPath()
-        {
-            if (!File.Exists(_XMLPath))
-            {
-                _XMLPath = Interaction.InputBox("FileList path in configuration file is wrong or missing, please provide correct path for FileList.xml", "File not found");
-                checkXMLPath();
-            }
-        }
-
-
 
 
         #region Command members
+
+        public void OpenCableAndProtectionView()
+        {
+            CurrentViewModel = new CableAndProtectionViewModel();
+        }
 
         public void ExitProgram()
         {
@@ -85,6 +78,8 @@ namespace ProjectCostEstimator.ViewModel
                 this.OnPropertyChanged("CurrentViewModel");
             }
         }
+
+        public ICommand CableAndProtectionCommand { get; private set; }
 
         public ICommand ExitCommand { get; private set; }
         public ICommand NewProjectCommand { get; private set; }

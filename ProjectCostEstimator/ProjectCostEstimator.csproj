@@ -80,6 +80,7 @@
     <Compile Include="Model\DisciplineValues.cs" />
     <Compile Include="Model\FilePathList.cs" />
     <Compile Include="Model\IDataService.cs" />
+    <Compile Include="ViewModel\CableAndProtectionViewModel.cs" />
     <Compile Include="ViewModel\DataFileManagerViewModel.cs" />
     <Compile Include="ViewModel\ExistingProjectViewModel.cs" />
     <Compile Include="Model\ImportXML.cs" />
@@ -88,6 +89,9 @@
     <Compile Include="ViewModel\StartScreenViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\CableAndProtectionView.xaml.cs">
+      <DependentUpon>CableAndProtectionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DataFileManagerView.xaml.cs">
       <DependentUpon>DataFileManagerView.xaml</DependentUpon>
     </Compile>
@@ -100,6 +104,10 @@
     <Compile Include="Views\StartScreenView.xaml.cs">
       <DependentUpon>StartScreenView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\CableAndProtectionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\DataFileManagerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

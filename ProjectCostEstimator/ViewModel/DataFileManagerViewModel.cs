@@ -61,6 +61,7 @@ namespace ProjectCostEstimator.ViewModel
             SaveImportDataCommand = new DelegateCommand(o => SaveImportData(SelectedImportFilePath));
             DeleteStoredProjectCommand = new DelegateCommand(o => DeleteStoredProject());
 
+            checkXMLPath();
             collectXMLFilePaths();
         }
 
@@ -497,6 +498,20 @@ namespace ProjectCostEstimator.ViewModel
         }
 
         public ICommand DeleteStoredProjectCommand { get; private set; }
+
+        #endregion
+
+
+        #region Common Methods
+
+        private void checkXMLPath()
+        {
+            if (!File.Exists(_XMLPath))
+            {
+                _XMLPath = Interaction.InputBox("FileList path in configuration file is wrong or missing, please provide correct path for FileList.xml", "File not found");
+                checkXMLPath();
+            }
+        }
 
         #endregion
 

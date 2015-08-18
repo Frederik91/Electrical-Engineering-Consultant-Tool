@@ -5,23 +5,83 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProjectCostEstimator.Views"
              mc:Ignorable="d" 
-                      d:DesignHeight="700" d:DesignWidth="1200">
+             d:DesignHeight="652" d:DesignWidth="1194">
     <Grid Background="White">
         <TabControl
-                    Height="700"
-                    Width="1200">
+                    Height="652"
+                    Width="1194">
             <TabItem Header="Selected projects">
                 <Grid>
-                    <TextBlock HorizontalAlignment="Left"
-			       Margin="10"
-			       TextWrapping="Wrap"
-			       Text="Show selected projects here"
-			       VerticalAlignment="Top"
-			       Width="Auto"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="250"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="1" 
+                               HorizontalAlignment="Left"
+                               Margin="10"
+                               TextWrapping="Wrap"
+                               Text="Show selected projects here"
+                               VerticalAlignment="Top"  
+                               Grid.ColumnSpan="2"
+                               Width="Auto"/>
+
+                    <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" Content="Select projects"/>
+                    <ListView Grid.Row="2" Grid.Column="1" ItemsSource="{Binding StoredProjectsList}" SelectionMode="Single" SelectedIndex="{Binding ProjectIndexToAdd}">
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Add" Command="{Binding AddToSelectedProjectsListCommand}"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Project" Width="190">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}">
+                                                <TextBlock.InputBindings>
+                                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding AddToSelectedProjectsListCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding Name}"/>
+                                                </TextBlock.InputBindings>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <Label Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" Content="Seleced projects"/>
+                    <ListView Grid.Row="4" Grid.Column="1" ItemsSource="{Binding SelectedProjectsList}" SelectionMode="Single" SelectedItem="{Binding ProjectIndexToRemove}">
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Remove" Command="{Binding RemoveFromSelectedProjectsListCommand}"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Project" 
+                                                DisplayMemberBinding="{Binding Name}"
+                                                Width="190"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
                 </Grid>
             </TabItem>
             <TabItem Header="XML properties">
                 <Grid>
+
                     <TextBlock HorizontalAlignment="Left"
 			       Margin="10"
 			       TextWrapping="Wrap"

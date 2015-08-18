@@ -13,6 +13,11 @@
         ResizeMode="NoResize">
 
     <Window.Resources>
+
+        <DataTemplate DataType="{x:Type ViewModel:CableAndProtectionViewModel}">
+            <Views:DataFileManagerView/>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type ViewModel:NewProjectViewModel}">
             <Views:NewProjectView/>
         </DataTemplate>
@@ -25,6 +30,7 @@
         <DataTemplate DataType="{x:Type ViewModel:DataFileManagerViewModel}">
             <Views:DataFileManagerView/>
         </DataTemplate>
+        
     </Window.Resources>
 
 
@@ -33,12 +39,17 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <Menu  Background="LightSlateGray" Grid.Row="0" Grid.ColumnSpan="2">
             <MenuItem Header="File" Grid.Row="0">
-                <MenuItem Header="New project" Command="{Binding NewProjectCommand}"/>
-                <MenuItem Header="Existing project" Command="{Binding ExistingProjectCommand}"/>
-                <MenuItem Header="Data file manager" Command="{Binding DataFileManagerCommand}"/>
+                <MenuItem Header="Electrical">
+                    <MenuItem Header="Cable and protection calculation" Command="{Binding CableAndProtectionCommand}"/>
+                </MenuItem>
+                <MenuItem Header="Project Cost">
+                    <MenuItem Header="New project" Command="{Binding NewProjectCommand}"/>
+                    <MenuItem Header="Existing project" Command="{Binding ExistingProjectCommand}"/>
+                    <MenuItem Header="Data files manager" Command="{Binding DataFileManagerCommand}"/>
+                </MenuItem>
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
             </MenuItem>
             <MenuItem Header="Edit" Grid.Row="0">
@@ -46,7 +57,7 @@
             </MenuItem>
         </Menu>
 
-        <ContentControl Content="{Binding Path=CurrentViewModel}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1200" Height="700"/>
+        <ContentControl Content="{Binding Path=CurrentViewModel}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1194" Height="652"/>
 
     </Grid>
 </Window>
