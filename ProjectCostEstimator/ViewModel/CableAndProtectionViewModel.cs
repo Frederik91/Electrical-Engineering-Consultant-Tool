@@ -12,7 +12,6 @@ namespace ProjectCostEstimator.ViewModel
 
         public CableAndProtectionViewModel()
         {
-            MessageBox.Show("Test");
         }
 
     }
