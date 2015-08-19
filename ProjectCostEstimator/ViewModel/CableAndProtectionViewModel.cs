@@ -1,6 +1,7 @@
 ﻿using ProjectCostEstimator.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -12,16 +13,144 @@ namespace EECT.ViewModel
 {
     class CableAndProtectionViewModel : ViewModelBase
     {
+        private double _selectedPhases = 1;
+        private double _selectedCableSize;
+        private double _voltage = 230;
+        private double _current = 0;
+        private double _power = 0;
+
+        private bool _powerLockedInverted = true;
+        private bool _currentLockedInverted = true;
+        private bool _voltageLockedInverted = false;
+
+        private bool _powerLocked = false;
+        private bool _currentLocked= false;
+        private bool _voltageLocked = true;
+
         private string _cableData = ConfigurationManager.AppSettings["CableDataFolderPath"];
 
-        List<CableData> _cableList = new List<CableData>();
+        private List<CableData> _cableList = new List<CableData>();
+        private List<double> _phasesList = new List<double>();
+        private List<double> _cableSizeList = new List<double>();
 
         public CableAndProtectionViewModel()
         {
 
-            GetCableData();
+            StartupActions();
         }
 
+        private void StartupActions()
+        {            
+            GetCableData();
+            GetPhases();
+            GetCableSizes();
+        }
+        
+        private void Recalculate(string lastUpdated)
+        {
+            var calc = new PowerCalculations();
+
+            if (lastUpdated == "Power")
+            {
+                if (CurrentLocked)
+                {
+                    var voltage = calc.Voltage(Current, Power, SelectedPhases);
+                    if (Voltage != voltage)
+                    {
+                        Voltage = voltage;
+                    }
+                    return;                
+                }
+
+                if (VoltageLocked)
+                {
+                    var current = calc.Current(Voltage, Power, SelectedPhases);
+                    if (Current != current)
+                    {
+                        Current = current;
+                    }
+                    return;
+                }
+            }
+
+            if (lastUpdated == "Current")
+            {
+                if (PowerLocked)
+                {
+                    var voltage = calc.Voltage(Current, Power, SelectedPhases);
+                    if (Voltage != voltage)
+                    {
+                        Voltage = voltage;
+                    }
+                    return;
+                }
+
+                if (VoltageLocked)
+                {
+                    var power = calc.Power(Current, Voltage, SelectedPhases);
+                    if (Power != power)
+                    {
+                        Power = power;
+                    }
+                    return;
+                }
+                                
+            }
+
+            if (lastUpdated == "Voltage")
+            {
+                if (PowerLocked)
+                {
+                    var current = calc.Current(Voltage, Power, SelectedPhases);
+                    if (Current != current)
+                    {
+                        Current = current;
+                    }
+                    return;
+                }
+
+                if (CurrentLocked)
+                {
+                    var power = calc.Power(Current, Voltage, SelectedPhases);
+                    if (Power != power)
+                    {
+                        Power = power;
+                    }
+                    return;
+                }
+                
+            }
+        }
+
+
+        private void GetCableSizes()
+        {
+            var list = new List<double>();
+
+            foreach (var item in CableList)
+            {
+                list.Add(item.Dimension);
+            }
+
+            list = list.Distinct().ToList();
+
+            var sortedList = from dbl in list
+                         orderby dbl ascending
+                         select dbl;
+
+            CableSizeList = sortedList.ToList();            
+            
+        }
+
+        private void GetPhases()
+        {
+            var list = new List<double>();
+
+            list.Add(1);
+            list.Add(3);
+
+            PhasesList = list;
+        }
 
         private void GetCableData()
         {
@@ -99,18 +228,153 @@ namespace EECT.ViewModel
                     {
                         errorlist.Add(cable);
                     }
-
                 }
-
                 CableList = cableList;
-
-                MessageBox.Show("There was an error reading " + errorlist.Count + " lines");
-
             }
         }
 
 
+
+
         #region Properties
+
+        public bool PowerLocked
+        {
+            get { return _powerLocked; }
+            set
+            {
+                PowerLockedInverted = !value;
+                _powerLocked = value;
+                OnPropertyChanged("PowerLocked");
+            }
+        }
+
+
+        public bool CurrentLocked
+        {
+            get { return _currentLocked; }
+            set
+            {
+                CurrentLockedInverted = !value;
+                _currentLocked = value;
+                OnPropertyChanged("CurrentLocked");
+            }
+        }
+
+        public bool VoltageLocked
+        {
+            get { return _voltageLocked; }
+            set
+            {
+                VoltageLockedInverted = !value;
+                _voltageLocked = value;
+                OnPropertyChanged("VoltageLocked");
+            }
+        }
+
+        public bool PowerLockedInverted
+        {
+            get { return _powerLockedInverted; }
+            set
+            {
+                _powerLockedInverted = value;
+                OnPropertyChanged("PowerLockedInverted");
+            }
+        }
+
+
+        public bool CurrentLockedInverted
+        {
+            get { return _currentLockedInverted; }
+            set
+            {
+                _currentLockedInverted = value;
+                OnPropertyChanged("CurrentLockedInverted");
+            }
+        }
+
+        public bool VoltageLockedInverted
+        {
+            get { return _voltageLockedInverted; }
+            set
+            {
+                _voltageLockedInverted = value;
+                OnPropertyChanged("VoltageLockedInverted");
+            }
+        }
+
+        public double Power
+        {
+            get { return _power; }
+            set
+            {
+                _power = value;
+                OnPropertyChanged("Power");
+                Recalculate("Power");
+            }
+        }
+        
+        public double Current
+        {
+            get { return _current; }
+            set
+            {
+                _current = value;
+                OnPropertyChanged("Current");
+                Recalculate("Current");
+            }
+        }
+
+        public double Voltage
+        {
+            get { return _voltage; }
+            set
+            {
+                _voltage = value;
+                OnPropertyChanged("Voltage");
+                Recalculate("Voltage");
+            }
+        }
+
+        public double SelectedCableSize
+        {
+            get { return _selectedCableSize; }
+            set
+            {
+                _selectedCableSize = value;
+                OnPropertyChanged("SelectedCableSize");
+            }
+        }
+
+        public List<double> CableSizeList
+        {
+            get { return _cableSizeList; }
+            set
+            {
+                _cableSizeList = value;
+                OnPropertyChanged("CableSizeList");
+            }
+        }
+
+        public double SelectedPhases
+        {
+            get { return _selectedPhases; }
+            set
+            {
+                _selectedPhases = value;
+                OnPropertyChanged("SelectedPhases");
+            }
+        }
+
+        public List<double> PhasesList
+        {
+            get { return _phasesList; }
+            set
+            {
+                _phasesList = value;
+                OnPropertyChanged("Phases");
+            }
+        }
 
         public List<CableData> CableList
         {
@@ -118,7 +382,7 @@ namespace EECT.ViewModel
             set
             {
                 _cableList = value;
-                OnPropertyChanged("cableList");
+                OnPropertyChanged("CableList");
             }
         }
 

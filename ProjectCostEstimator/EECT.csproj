@@ -81,6 +81,7 @@
     <Compile Include="Model\DisciplineValues.cs" />
     <Compile Include="Model\FilePathList.cs" />
     <Compile Include="Model\IDataService.cs" />
+    <Compile Include="Model\PowerCalculations.cs" />
     <Compile Include="Resources\strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

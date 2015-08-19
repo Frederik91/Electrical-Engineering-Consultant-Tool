@@ -24,5 +24,10 @@ namespace EECT.Views
         {
             InitializeComponent();
         }
+
+        private void TextBox_Error(object sender, ValidationErrorEventArgs e)
+        {
+
+        }
     }
 }
