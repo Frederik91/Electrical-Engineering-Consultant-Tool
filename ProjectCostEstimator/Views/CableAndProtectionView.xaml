@@ -141,7 +141,7 @@
             </Grid>
         </TabItem>
         <TabItem Header="Graphs">
-
+            
         </TabItem>
     </TabControl>
 </UserControl>

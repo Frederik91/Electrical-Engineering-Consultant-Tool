@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjectCostEstimator.Model
 {
-    class PowerCalculations
+    class PowerCalculations: Power.IPowerCalculations
     {
         public double Power(double current, double voltage, double phases)
         {
@@ -21,6 +21,11 @@ namespace ProjectCostEstimator.Model
         public double Voltage(double current, double power, double phases)
         {
             return power / (Math.Sqrt(phases) * current);
+        }
+
+        public double TransformerCurrent(double Sk, double voltage)
+        {
+            return Sk / (voltage * Math.Sqrt(3));
         }
     }
 }

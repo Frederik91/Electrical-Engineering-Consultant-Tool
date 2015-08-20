@@ -18,6 +18,9 @@ namespace EECT.ViewModel
         private double _voltage = 230;
         private double _current = 0;
         private double _power = 0;
+        private double _ek = 0.057;
+        private double _Sk = 1600000;
+        private double _Vp = 22000;
 
         private bool _powerLockedInverted = true;
         private bool _currentLockedInverted = true;
