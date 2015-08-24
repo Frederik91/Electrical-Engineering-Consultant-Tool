@@ -1,4 +1,4 @@
-﻿using ProjectCostEstimator.ElectricalCalculations;
+﻿using EECT.ElectricalCalculations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectCostEstimator.ElectricalCalculations
+namespace EECT.ElectricalCalculations
 {
     public class TransformerCalc : ITransformerCalc
     {

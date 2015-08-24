@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectCostEstimator.ElectricalCalculations
+namespace EECT.ElectricalCalculations
 {
     public interface ITransformerCalc
     {

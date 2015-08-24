@@ -1,5 +1,6 @@
-﻿using ProjectCostEstimator.Assets;
-using ProjectCostEstimator.Model;
+﻿using EECT.Assets;
+using EECT.ElectricalCalculations;
+using EECT.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
