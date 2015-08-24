@@ -1,4 +1,5 @@
-﻿using ProjectCostEstimator.Model;
+﻿using ProjectCostEstimator.Assets;
+using ProjectCostEstimator.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,7 +21,9 @@ namespace EECT.ViewModel
         private double _power = 0;
         private double _ek = 0.057;
         private double _Sk = 1600000;
-        private double _Vp = 22000;
+        private double _Vp = 22000;        
+
+        private int _numberOfCables = 1;
 
         private bool _powerLockedInverted = true;
         private bool _currentLockedInverted = true;
@@ -31,6 +34,8 @@ namespace EECT.ViewModel
         private bool _voltageLocked = true;
 
         private string _cableData = ConfigurationManager.AppSettings["CableDataFolderPath"];
+        
+        private PowerUnits _lastRecalculation;
 
         private List<CableData> _cableList = new List<CableData>();
         private List<double> _phasesList = new List<double>();
@@ -38,7 +43,7 @@ namespace EECT.ViewModel
 
         public CableAndProtectionViewModel()
         {
-
+                
             StartupActions();
         }
 
@@ -49,11 +54,41 @@ namespace EECT.ViewModel
             GetCableSizes();
         }
         
-        private void Recalculate(string lastUpdated)
+        private void resetLastLocked(PowerUnits newLocked)
+        {
+            if (PowerLocked && VoltageLocked || PowerLocked && CurrentLocked || VoltageLocked && CurrentLocked)
+            {
+
+                if (newLocked == PowerUnits.Voltage || newLocked == PowerUnits.Power)
+                {
+                    if (CurrentLocked)
+                    {
+                        CurrentLocked = !CurrentLocked;
+                    }
+                }
+                if (newLocked == PowerUnits.Current || newLocked == PowerUnits.Voltage)
+                {
+                    if (PowerLocked)
+                    {
+                        PowerLocked = !PowerLocked;
+                    }
+                }
+                if (newLocked == PowerUnits.Current || newLocked == PowerUnits.Power)
+                {
+                    if (VoltageLocked)
+                    {
+                        VoltageLocked = !VoltageLocked;
+                    }
+                }
+            }
+        }
+
+        private void Recalculate(PowerUnits lastUpdated)
         {
             var calc = new PowerCalculations();
 
-            if (lastUpdated == "Power")
+
+            if (lastUpdated == PowerUnits.Power)
             {
                 if (CurrentLocked)
                 {
@@ -61,6 +96,7 @@ namespace EECT.ViewModel
                     if (Voltage != voltage)
                     {
                         Voltage = voltage;
+                        _lastRecalculation = lastUpdated;
                     }
                     return;                
                 }
@@ -71,12 +107,13 @@ namespace EECT.ViewModel
                     if (Current != current)
                     {
                         Current = current;
+                        _lastRecalculation = lastUpdated;
                     }
                     return;
                 }
             }
 
-            if (lastUpdated == "Current")
+            if (lastUpdated == PowerUnits.Current)
             {
                 if (PowerLocked)
                 {
@@ -84,6 +121,7 @@ namespace EECT.ViewModel
                     if (Voltage != voltage)
                     {
                         Voltage = voltage;
+                        _lastRecalculation = lastUpdated;
                     }
                     return;
                 }
@@ -94,13 +132,14 @@ namespace EECT.ViewModel
                     if (Power != power)
                     {
                         Power = power;
+                        _lastRecalculation = lastUpdated;
                     }
                     return;
                 }
                                 
             }
 
-            if (lastUpdated == "Voltage")
+            if (lastUpdated == PowerUnits.Voltage)
             {
                 if (PowerLocked)
                 {
@@ -108,6 +147,7 @@ namespace EECT.ViewModel
                     if (Current != current)
                     {
                         Current = current;
+                        _lastRecalculation = lastUpdated;
                     }
                     return;
                 }
@@ -118,6 +158,7 @@ namespace EECT.ViewModel
                     if (Power != power)
                     {
                         Power = power;
+                        _lastRecalculation = lastUpdated;
                     }
                     return;
                 }
@@ -241,6 +282,16 @@ namespace EECT.ViewModel
 
         #region Properties
 
+        public int NumberOfCables
+        {
+            get { return _numberOfCables; }
+            set
+            {
+                _numberOfCables = value;
+                OnPropertyChanged("NumberOfCables");
+            }
+        }
+
         public bool PowerLocked
         {
             get { return _powerLocked; }
@@ -248,6 +299,7 @@ namespace EECT.ViewModel
             {
                 PowerLockedInverted = !value;
                 _powerLocked = value;
+                resetLastLocked(PowerUnits.Power);
                 OnPropertyChanged("PowerLocked");
             }
         }
@@ -260,6 +312,7 @@ namespace EECT.ViewModel
             {
                 CurrentLockedInverted = !value;
                 _currentLocked = value;
+                resetLastLocked(PowerUnits.Current);
                 OnPropertyChanged("CurrentLocked");
             }
         }
@@ -271,6 +324,7 @@ namespace EECT.ViewModel
             {
                 VoltageLockedInverted = !value;
                 _voltageLocked = value;
+                resetLastLocked(PowerUnits.Voltage);
                 OnPropertyChanged("VoltageLocked");
             }
         }
@@ -313,7 +367,7 @@ namespace EECT.ViewModel
             {
                 _power = value;
                 OnPropertyChanged("Power");
-                Recalculate("Power");
+                Recalculate(PowerUnits.Power);
             }
         }
         
@@ -324,7 +378,7 @@ namespace EECT.ViewModel
             {
                 _current = value;
                 OnPropertyChanged("Current");
-                Recalculate("Current");
+                Recalculate(PowerUnits.Current);
             }
         }
 
@@ -335,7 +389,7 @@ namespace EECT.ViewModel
             {
                 _voltage = value;
                 OnPropertyChanged("Voltage");
-                Recalculate("Voltage");
+                Recalculate(PowerUnits.Voltage);
             }
         }
 
@@ -366,6 +420,7 @@ namespace EECT.ViewModel
             {
                 _selectedPhases = value;
                 OnPropertyChanged("SelectedPhases");
+                Recalculate(_lastRecalculation);
             }
         }
 

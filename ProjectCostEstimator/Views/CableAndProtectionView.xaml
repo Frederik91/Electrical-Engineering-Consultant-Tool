@@ -6,8 +6,17 @@
              xmlns:local="clr-namespace:EECT.Views"
              mc:Ignorable="d" 
              d:DesignHeight="652" d:DesignWidth="1194"
-             Margin="10,10,10,10">
+             Margin="10,10,10,10"
+             xmlns:Views="clr-namespace:EECT.Views"
+             xmlns:ViewModel="clr-namespace:EECT.ViewModel">
+    
+
     <TabControl>
+
+        <DataTemplate DataType="{x:Type ViewModel:GridDataViewModel}">
+            <Views:GridDataView/>
+        </DataTemplate>
+        
         <TabItem Header="Data">
             <Grid Background="white">
                 <Grid.RowDefinitions>
@@ -27,7 +36,9 @@
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="120"/>
                     <ColumnDefinition Width="100"/>
+
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -41,57 +52,60 @@
                 <Label Grid.Row="1" Grid.Column="5" Content="Lock"  HorizontalAlignment="Left"/>
                 <Label Grid.Row="1" Grid.Column="6" Content="Protection [A]"/>
                 <Label Grid.Row="1" Grid.Column="7" Content="Cable size [mm2]"/>
-                <Label Grid.Row="1" Grid.Column="8" Content="Phases"/>
+                <Label Grid.Row="1" Grid.Column="8" Content ="Number of cables" />
+                <Label Grid.Row="1" Grid.Column="9" Content="Phases"/>
 
                 <TextBox Grid.Row="2" 
-                 Text="{Binding Power, UpdateSourceTrigger=PropertyChanged}"  
-                 IsEnabled="{Binding PowerLockedInverted}" />
+                         Text="{Binding Power, UpdateSourceTrigger=PropertyChanged}"  
+                         IsEnabled="{Binding PowerLockedInverted}" />
 
                 <CheckBox Grid.Row="2" 
-                  Grid.Column="1" 
-                  VerticalAlignment="Center" 
-                  HorizontalAlignment="Center" 
-                  Name="PowerCheck" 
-                  IsChecked="{Binding PowerLocked}"/>
+                          Grid.Column="1" 
+                          VerticalAlignment="Center" 
+                          HorizontalAlignment="Center" 
+                          Name="PowerCheck" 
+                          IsChecked="{Binding PowerLocked}"/>
 
                 <TextBox Grid.Row="2" 
-                 Grid.Column="2" 
-                 Text="{Binding Current, UpdateSourceTrigger=PropertyChanged}"  
-                 IsEnabled="{Binding CurrentLockedInverted}" />
+                         Grid.Column="2" 
+                         Text="{Binding Current, UpdateSourceTrigger=PropertyChanged}"  
+                         IsEnabled="{Binding CurrentLockedInverted}" />
 
                 <CheckBox Grid.Row="2" 
-                  Grid.Column="3" 
-                  VerticalAlignment="Center" 
-                  HorizontalAlignment="Center" 
-                  Name="CurrentCheck" 
-                  IsChecked="{Binding CurrentLocked}"/>
+                          Grid.Column="3" 
+                          VerticalAlignment="Center" 
+                          HorizontalAlignment="Center" 
+                          Name="CurrentCheck" 
+                          IsChecked="{Binding CurrentLocked}"/>
 
                 <TextBox Grid.Row="2" 
-                 Grid.Column="4" 
-                 Text="{Binding Voltage, UpdateSourceTrigger=PropertyChanged}" 
-                 IsEnabled="{Binding VoltageLockedInverted}"/>
+                         Grid.Column="4" 
+                         Text="{Binding Voltage, UpdateSourceTrigger=PropertyChanged}" 
+                         IsEnabled="{Binding VoltageLockedInverted}"/>
 
                 <CheckBox Grid.Row="2" 
-                  Grid.Column="5" 
-                  VerticalAlignment="Center" 
-                  HorizontalAlignment="Center" 
-                  Name="VoltageCheck"  
-                  IsChecked="{Binding VoltageLocked}"/>
+                          Grid.Column="5" 
+                          VerticalAlignment="Center" 
+                          HorizontalAlignment="Center" 
+                          Name="VoltageCheck"  
+                          IsChecked="{Binding VoltageLocked}"/>
 
                 <ComboBox Grid.Row="2" 
-                  Grid.Column="6"/>
+                          Grid.Column="6"/>
 
                 <ComboBox Grid.Row="2" 
-                  Grid.Column="7" 
-                  ItemsSource="{Binding CableSizeList}" 
-                  SelectedValue="{Binding SelectedCableSize}"/>
+                          Grid.Column="7" 
+                          ItemsSource="{Binding CableSizeList}" 
+                          SelectedValue="{Binding SelectedCableSize}"/>
+
+                <TextBox Grid.Row="2"
+                         Grid.Column="8"
+                         Text="{Binding NumberOfCables}"/>
 
                 <ComboBox Grid.Row="2" 
-                  Grid.Column="8" 
-                  ItemsSource="{Binding PhasesList}" 
-                  SelectedValue="{Binding SelectedPhases}"/>
-
-
+                          Grid.Column="9" 
+                          ItemsSource="{Binding PhasesList}" 
+                          SelectedValue="{Binding SelectedPhases}"/>
 
                 <TabControl VerticalAlignment="Top" 
                     HorizontalAlignment="Left"
@@ -101,26 +115,9 @@
                     Width="800"
                     Grid.ColumnSpan="100">
                     <TabItem Header="Grid data" Height="30">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="40"/>
-                            </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="1" Grid.Column="0"  Content="Ik"></Label>
-                            
-                        </Grid>
+                        <ContentControl Content="{Binding Path=GridDataView}"/>
+
                     </TabItem>
                     <TabItem Header="Cable data" Height="30">
                         <Grid>

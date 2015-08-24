@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Assets\PowerUnits.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Model\CableData.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="ViewModel\DataFileManagerViewModel.cs" />
     <Compile Include="ViewModel\ExistingProjectViewModel.cs" />
     <Compile Include="Model\ImportXML.cs" />
+    <Compile Include="ViewModel\GridDataViewModel.cs" />
     <Compile Include="ViewModel\Logic.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\NewProjectViewModel.cs" />
@@ -106,6 +108,9 @@
     </Compile>
     <Compile Include="Views\ExistingProjectView.xaml.cs">
       <DependentUpon>ExistingProjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GridDataView.xaml.cs">
+      <DependentUpon>GridDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewProjectView.xaml.cs">
       <DependentUpon>NewProjectView.xaml</DependentUpon>
@@ -122,6 +127,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExistingProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GridDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
