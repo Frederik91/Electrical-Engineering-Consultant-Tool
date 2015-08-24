@@ -21,7 +21,7 @@ namespace EECT.ViewModel
         private double _power = 0;
         private double _ek = 0.057;
         private double _Sk = 1600000;
-        private double _Vp = 22000;        
+        private double _Vp = 22000;
 
         private int _numberOfCables = 1;
 
@@ -34,7 +34,7 @@ namespace EECT.ViewModel
         private bool _voltageLocked = true;
 
         private string _cableData = ConfigurationManager.AppSettings["CableDataFolderPath"];
-        
+
         private PowerUnits _lastRecalculation;
 
         private List<CableData> _cableList = new List<CableData>();
@@ -43,7 +43,7 @@ namespace EECT.ViewModel
 
         public CableAndProtectionViewModel()
         {
-                
+
             StartupActions();
         }
 
@@ -85,7 +85,7 @@ namespace EECT.ViewModel
 
         private void Recalculate(PowerUnits lastUpdated)
         {
-            var calc = new PowerCalculations();
+            var calc = new PowerCalc();
 
 
             if (lastUpdated == PowerUnits.Power)

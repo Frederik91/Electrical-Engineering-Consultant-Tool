@@ -52,6 +52,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Reflection.Context" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.1.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -76,14 +77,16 @@
     <Compile Include="Assets\PowerUnits.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="ElectricalCalculations\ITransformerCalc.cs" />
     <Compile Include="Model\CableData.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\DisciplineValues.cs" />
     <Compile Include="Model\FilePathList.cs" />
     <Compile Include="Model\IDataService.cs" />
-    <Compile Include="Power\IPowerCalculations.cs" />
-    <Compile Include="Power\PowerCalculations.cs" />
+    <Compile Include="ElectricalCalculations\IPowerCalc.cs" />
+    <Compile Include="ElectricalCalculations\PowerCalc.cs" />
+    <Compile Include="ElectricalCalculations\TransformerCalc.cs" />
     <Compile Include="Resources\strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
