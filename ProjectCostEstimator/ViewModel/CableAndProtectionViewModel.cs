@@ -1,4 +1,5 @@
-﻿using ProjectCostEstimator.Model;
+﻿using EECT.ElectricalCalculations;
+using EECT.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -51,7 +52,7 @@ namespace EECT.ViewModel
         
         private void Recalculate(string lastUpdated)
         {
-            var calc = new PowerCalculations();
+            var calc = new PowerCalc();
 
             if (lastUpdated == "Power")
             {

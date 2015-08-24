@@ -1,16 +1,17 @@
-﻿using ProjectCostEstimator.Power;
+﻿
+using EECT.ElectricalCalculations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectCostEstimator.ViewModel
+namespace EECT.ViewModel
 {
    public class Logic
     {
-        public IPowerCalculations PowerCalculations { get; set; }
-        public Logic(IPowerCalculations pwc)
+        public IPowerCalc PowerCalculations { get; set; }
+        public Logic(IPowerCalc pwc)
         {
             PowerCalculations = pwc;
         }

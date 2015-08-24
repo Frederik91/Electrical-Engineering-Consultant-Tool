@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProjectCostEstimator.Resources {
+namespace EECT.Resources {
     using System;
     
     
