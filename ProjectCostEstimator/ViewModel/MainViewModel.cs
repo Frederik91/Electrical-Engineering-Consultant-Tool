@@ -27,6 +27,7 @@ namespace EECT.ViewModel
             StartScreenCommand = new DelegateCommand(o => OpenStartScreenView());
             DataFileManagerCommand = new DelegateCommand(o => OpenDataFileManagerView());
             CableAndProtectionCommand = new DelegateCommand(o => OpenCableAndProtectionView());
+            ShortCircuitViewModelCommand = new DelegateCommand(o => OpenShortCircuitView());
             ExitCommand = new DelegateCommand(o => ExitProgram());
 
             #endregion
@@ -35,6 +36,11 @@ namespace EECT.ViewModel
 
 
         #region Command members
+
+        public void OpenShortCircuitView()
+        {
+            CurrentViewModel = new ShortCircuitViewModel();
+        }
 
         public void OpenCableAndProtectionView()
         {
@@ -78,6 +84,7 @@ namespace EECT.ViewModel
         }
 
         public ICommand CableAndProtectionCommand { get; private set; }
+        public ICommand ShortCircuitViewModelCommand { get; private set; }
 
         public ICommand ExitCommand { get; private set; }
         public ICommand NewProjectCommand { get; private set; }

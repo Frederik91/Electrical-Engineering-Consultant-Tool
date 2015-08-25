@@ -7,8 +7,8 @@
     <ProjectGuid>{AF4D1A8B-D44C-4F21-93A0-2614B2849BC2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProjectCostEstimator</RootNamespace>
-    <AssemblyName>ProjectCostEstimator</AssemblyName>
+    <RootNamespace>EECT</RootNamespace>
+    <AssemblyName>EECT</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -52,8 +52,10 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Reflection.Context" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.1.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -74,9 +76,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Assets\CableUnits.cs" />
     <Compile Include="Assets\PowerUnits.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="ElectricalCalculations\CableDataHandler.cs" />
     <Compile Include="ElectricalCalculations\ITransformerCalc.cs" />
     <Compile Include="Model\CableData.cs" />
     <Compile Include="Model\DataItem.cs" />
@@ -100,6 +104,7 @@
     <Compile Include="ViewModel\Logic.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\NewProjectViewModel.cs" />
+    <Compile Include="ViewModel\ShortCircuitViewModel.cs" />
     <Compile Include="ViewModel\StartScreenViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -117,6 +122,9 @@
     </Compile>
     <Compile Include="Views\NewProjectView.xaml.cs">
       <DependentUpon>NewProjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShortCircuitView.xaml.cs">
+      <DependentUpon>ShortCircuitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StartScreenView.xaml.cs">
       <DependentUpon>StartScreenView.xaml</DependentUpon>
@@ -154,6 +162,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NewProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShortCircuitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

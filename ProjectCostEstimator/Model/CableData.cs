@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EECT.Model
 {
-    class CableData
+    public class CableData
     {
         public int ID { get; set; }
         public string Cable { get; set; }

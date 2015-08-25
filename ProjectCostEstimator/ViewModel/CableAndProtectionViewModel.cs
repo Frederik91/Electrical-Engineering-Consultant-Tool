@@ -15,14 +15,13 @@ namespace EECT.ViewModel
 {
     class CableAndProtectionViewModel : ViewModelBase
     {
+        private ViewModelBase _gridDataModel;
+
         private double _selectedPhases = 1;
         private double _selectedCableSize;
         private double _voltage = 230;
         private double _current = 0;
         private double _power = 0;
-        private double _ek = 0.057;
-        private double _Sk = 1600000;
-        private double _Vp = 22000;
 
         private int _numberOfCables = 1;
 
@@ -31,7 +30,7 @@ namespace EECT.ViewModel
         private bool _voltageLockedInverted = false;
 
         private bool _powerLocked = false;
-        private bool _currentLocked= false;
+        private bool _currentLocked = false;
         private bool _voltageLocked = true;
 
         private string _cableData = ConfigurationManager.AppSettings["CableDataFolderPath"];
@@ -39,22 +38,27 @@ namespace EECT.ViewModel
         private PowerUnits _lastRecalculation;
 
         private List<CableData> _cableList = new List<CableData>();
+
         private List<double> _phasesList = new List<double>();
         private List<double> _cableSizeList = new List<double>();
 
         public CableAndProtectionViewModel()
         {
-
             StartupActions();
+            GridDataModel = new GridDataViewModel();
+
         }
+
 
         private void StartupActions()
-        {            
-            GetCableData();
-            GetPhases();
-            GetCableSizes();
+        {
+            var CableData = new CableDataHandler();
+
+            CableList = CableData.GetCableData(_cableData);
+            CableSizeList = CableData.GetCableSizesList(CableList);
+            PhasesList = CableData.GetPhases(CableList);
         }
-        
+
         private void resetLastLocked(PowerUnits newLocked)
         {
             if (PowerLocked && VoltageLocked || PowerLocked && CurrentLocked || VoltageLocked && CurrentLocked)
@@ -99,7 +103,7 @@ namespace EECT.ViewModel
                         Voltage = voltage;
                         _lastRecalculation = lastUpdated;
                     }
-                    return;                
+                    return;
                 }
 
                 if (VoltageLocked)
@@ -137,7 +141,7 @@ namespace EECT.ViewModel
                     }
                     return;
                 }
-                                
+
             }
 
             if (lastUpdated == PowerUnits.Voltage)
@@ -163,122 +167,9 @@ namespace EECT.ViewModel
                     }
                     return;
                 }
-                
+
             }
         }
-
-
-        private void GetCableSizes()
-        {
-            var list = new List<double>();
-
-            foreach (var item in CableList)
-            {
-                list.Add(item.Dimension);
-            }
-
-            list = list.Distinct().ToList();
-
-            var sortedList = from dbl in list
-                         orderby dbl ascending
-                         select dbl;
-
-            CableSizeList = sortedList.ToList();            
-            
-        }
-
-        private void GetPhases()
-        {
-            var list = new List<double>();
-
-            list.Add(1);
-            list.Add(3);
-
-            PhasesList = list;
-        }
-
-        private void GetCableData()
-        {
-            var cableList = new List<CableData>();
-            var errorlist = new List<string>();
-
-            using (StreamReader sr = new StreamReader(_cableData))
-            {
-                sr.ReadLine();
-                while (sr.Peek() >= 0)
-                {
-                    var cable = sr.ReadLine();
-                    var cableArray = cable.Split('\t');
-
-                    for (int i = 0; i < cableArray.Length; i++)
-                    {
-                        if (cableArray[i] == string.Empty)
-                        {
-                            cableArray[i] = "-1";
-                        }
-                    }
-
-                    try
-                    {
-                        cableList.Add(new CableData
-                        {
-                            ID = Convert.ToInt32(cableArray[0]),
-                            Cable = cableArray[1],
-                            CableID = cableArray[2],
-                            CableType = cableArray[3],
-                            Isolation = cableArray[4],
-                            OperatingTemp = Convert.ToInt32(cableArray[5]),
-                            MaxTemp = Convert.ToInt32(cableArray[6]),
-                            Voltage = Convert.ToInt32(cableArray[7]),
-                            Phases = Convert.ToInt32(cableArray[8]),
-                            Conductors = Convert.ToInt32(cableArray[9]),
-                            Dimension = Convert.ToDouble(cableArray[10]),
-                            Material = cableArray[11],
-                            Jacket = Convert.ToBoolean(cableArray[12]),
-                            Narea = Convert.ToDouble(cableArray[13]),
-                            Nmaterial = cableArray[14],
-                            PEArea = cableArray[15],
-                            PEmaterial = cableArray[16],
-                            CenterDistance = Convert.ToDouble(cableArray[17]),
-                            ConductiorDiameter = Convert.ToDouble(cableArray[18]),
-                            CableDiameter = Convert.ToDouble(cableArray[19]),
-                            JacketDiameter = Convert.ToDouble(cableArray[20]),
-                            CableWeight = Convert.ToDouble(cableArray[21]),
-                            Rpos = Convert.ToDouble(cableArray[22]),
-                            Lpos = Convert.ToDouble(cableArray[23]),
-                            R0N = Convert.ToDouble(cableArray[24]),
-                            L0N = Convert.ToDouble(cableArray[25]),
-                            R0PEN = Convert.ToDouble(cableArray[26]),
-                            L0PEN = Convert.ToDouble(cableArray[27]),
-                            RPE = Convert.ToDouble(cableArray[28]),
-                            LPE = Convert.ToDouble(cableArray[29]),
-                            RPhasePhase = Convert.ToDouble(cableArray[30]),
-                            LPhasePhase = Convert.ToDouble(cableArray[31]),
-                            RPhaseN = Convert.ToDouble(cableArray[32]),
-                            LPhaseN = Convert.ToDouble(cableArray[33]),
-                            RPhasePEN = Convert.ToDouble(cableArray[34]),
-                            LPhasePEN = Convert.ToDouble(cableArray[35]),
-                            PhasePhaseGmd = Convert.ToDouble(cableArray[36]),
-                            PhasePhaseGroupGmd = Convert.ToDouble(cableArray[37]),
-                            PhaseNGmd = Convert.ToDouble(cableArray[38]),
-                            PhasePEGmd = Convert.ToDouble(cableArray[39]),
-                            NGmd = Convert.ToDouble(cableArray[40]),
-                            PEGmd = Convert.ToDouble(cableArray[41]),
-                            Capacitance = Convert.ToDouble(cableArray[42]),
-                            ELnumber = Convert.ToInt32(cableArray[43]),
-                            CENELEC = cableArray[44]
-                        });
-                    }
-                    catch (Exception)
-                    {
-                        errorlist.Add(cable);
-                    }
-                }
-                CableList = cableList;
-            }
-        }
-
-
 
 
         #region Properties
@@ -371,7 +262,7 @@ namespace EECT.ViewModel
                 Recalculate(PowerUnits.Power);
             }
         }
-        
+
         public double Current
         {
             get { return _current; }
@@ -442,6 +333,16 @@ namespace EECT.ViewModel
             {
                 _cableList = value;
                 OnPropertyChanged("CableList");
+            }
+        }
+
+        public ViewModelBase GridDataModel
+        {
+            get { return _gridDataModel; }
+            set
+            {
+                _gridDataModel = value;
+                this.OnPropertyChanged("CurrentViewModel");
             }
         }
 

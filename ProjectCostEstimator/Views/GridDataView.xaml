@@ -5,27 +5,72 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EECT.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="25"/>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="25"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="40"/>
-            </Grid.ColumnDefinitions>
+             d:DesignHeight="622" d:DesignWidth="1194"
+             Margin="15,0,0,0">
 
-            <Label Grid.Row="0" Grid.Column="0"  Content="Ik"></Label>
-        <TextBox  Grid.Row="0" Grid.Column="1" Tag="Ik"></TextBox>
-        
+    <Grid Background="white">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Transformer data"/>
+
+        <Label Grid.Row="1" Grid.Column="4" Content="No. of cables"/>
+        <Label Grid.Row="1" Grid.Column="5" Content="Conductors"/>
+        <Label Grid.Row="1" Grid.Column="7" Content="Dimension"/>
+        <Label Grid.Row="1" Grid.Column="6" Content="Material"/>
+        <Label Grid.Row="1" Grid.Column="8" Content="Isolation"/>
+        <Label Grid.Row="1" Grid.Column="9" Content="Length"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Power Rating (S):"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="SC impedance (Ek):"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Primary Voltage (Vp):"/>
+        <Label Grid.Row="5" Grid.Column="0" Content="Secondary Voltage (Vs):"/>
+
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PowerRating, StringFormat=N0}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Ek, StringFormat={}{0:N1}%}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Vp, StringFormat=N0}"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Vs, StringFormat=N0}"/>
+
+        <Label Grid.Row="2" Grid.Column="3" Content="Cable 1:"/>
+        <Label Grid.Row="3" Grid.Column="3" Content="Cable 2:"/>
+        <Label Grid.Row="4" Grid.Column="3" Content="Cable 3:"/>
+        <Label Grid.Row="5" Grid.Column="3" Content="Cable 4:"/>
+
+        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding NumberOfCables1}"/>
+        <ComboBox Grid.Row="2" Grid.Column="5" ItemsSource="{Binding CableConductorList}" SelectedItem="{Binding Conductors1}"/>
+        <ComboBox Grid.Row="2" Grid.Column="6" ItemsSource="{Binding CableMaterialList}" SelectedItem="{Binding Material1}"/>
+        <ComboBox Grid.Row="2" Grid.Column="7" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension1 }"/>
+        <ComboBox Grid.Row="2" Grid.Column="8" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type1}"/>
+        <TextBox Grid.Row="2" Grid.Column="9" Text="{Binding Length1}"/>
+
+        <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding NumberOfCables2}"/>
+        <ComboBox Grid.Row="3" Grid.Column="5" ItemsSource="{Binding CableConductorList}" SelectedItem="{Binding Conductors2}"/>
+        <ComboBox Grid.Row="3" Grid.Column="6" ItemsSource="{Binding CableMaterialList}" SelectedItem="{Binding Material2}"/>
+        <ComboBox Grid.Row="3" Grid.Column="7" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension2}"/>
+        <ComboBox Grid.Row="3" Grid.Column="8" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type2}"/>
+        <TextBox Grid.Row="3" Grid.Column="9" Text="{Binding Length2}"/>
 
     </Grid>
+
+
 </UserControl>

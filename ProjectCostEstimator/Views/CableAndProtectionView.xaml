@@ -5,140 +5,110 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EECT.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="652" d:DesignWidth="1194"
+             d:DesignHeight="620" d:DesignWidth="1150"
              Margin="10,10,10,10"
              xmlns:Views="clr-namespace:EECT.Views"
              xmlns:ViewModel="clr-namespace:EECT.ViewModel">
-    
+    <Grid Background="white">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="500"/>
+            <RowDefinition Height="500"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="100"/>
 
-    <TabControl>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <DataTemplate DataType="{x:Type ViewModel:GridDataViewModel}">
-            <Views:GridDataView/>
-        </DataTemplate>
+
+        <Border Grid.Row="1"  Grid.ColumnSpan="3" Grid.RowSpan="4" Background="Transparent"
+        BorderBrush="Gray" BorderThickness="2" Opacity="1.0" Margin="0,0,0,-5"/>
+
+
+
+        <Label Content="Cable and protection calculations" FontSize="40" HorizontalAlignment="Center" Grid.ColumnSpan="100"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Unit" HorizontalAlignment="Center" FontSize="16"/>
+        <Label Grid.Row="1" Grid.Column="2" Content="Lock" HorizontalAlignment="Center" FontSize="16"/>
+
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Power [W]"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Current [A]"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Voltage [V]"/>
         
-        <TabItem Header="Data">
-            <Grid Background="white">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="500"/>
-                    <RowDefinition Height="500"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="100"/>
+        <Label Grid.Row="1" Grid.Column="6" Content="Protection [A]"/>
+        <Label Grid.Row="1" Grid.Column="7" Content="Cable size [mm2]"/>
+        <Label Grid.Row="1" Grid.Column="8" Content ="Number of cables" />
+        <Label Grid.Row="1" Grid.Column="9" Content="Phases"/>
 
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Label Content="Cable and protection calculations" FontSize="40" HorizontalAlignment="Center" Grid.ColumnSpan="100"/>
-
-                <Label Grid.Row="1" Content="Power [W]"/>
-                <Label Grid.Row="1" Grid.Column="1" Content="Lock" HorizontalAlignment="Left"/>
-                <Label Grid.Row="1" Grid.Column="2" Content="Current [A]"/>
-                <Label Grid.Row="1" Grid.Column="3" Content="Lock"  HorizontalAlignment="Left"/>
-                <Label Grid.Row="1" Grid.Column="4" Content="Voltage [V]"/>
-                <Label Grid.Row="1" Grid.Column="5" Content="Lock"  HorizontalAlignment="Left"/>
-                <Label Grid.Row="1" Grid.Column="6" Content="Protection [A]"/>
-                <Label Grid.Row="1" Grid.Column="7" Content="Cable size [mm2]"/>
-                <Label Grid.Row="1" Grid.Column="8" Content ="Number of cables" />
-                <Label Grid.Row="1" Grid.Column="9" Content="Phases"/>
-
-                <TextBox Grid.Row="2" 
-                         Text="{Binding Power, UpdateSourceTrigger=PropertyChanged}"  
+        <TextBox Grid.Row="2"
+                 Grid.Column="1"
+                         Text="{Binding Power, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"  
                          IsEnabled="{Binding PowerLockedInverted}" />
 
-                <CheckBox Grid.Row="2" 
-                          Grid.Column="1" 
+        <CheckBox Grid.Row="2" 
+                          Grid.Column="2" 
                           VerticalAlignment="Center" 
                           HorizontalAlignment="Center" 
                           Name="PowerCheck" 
                           IsChecked="{Binding PowerLocked}"/>
 
-                <TextBox Grid.Row="2" 
-                         Grid.Column="2" 
-                         Text="{Binding Current, UpdateSourceTrigger=PropertyChanged}"  
+        <TextBox Grid.Row="3" 
+                         Grid.Column="1" 
+                         Text="{Binding Current, UpdateSourceTrigger=PropertyChanged, StringFormat=N1}"  
                          IsEnabled="{Binding CurrentLockedInverted}" />
 
-                <CheckBox Grid.Row="2" 
-                          Grid.Column="3" 
+        <CheckBox Grid.Row="3" 
+                          Grid.Column="2" 
                           VerticalAlignment="Center" 
                           HorizontalAlignment="Center" 
                           Name="CurrentCheck" 
                           IsChecked="{Binding CurrentLocked}"/>
 
-                <TextBox Grid.Row="2" 
-                         Grid.Column="4" 
-                         Text="{Binding Voltage, UpdateSourceTrigger=PropertyChanged}" 
+        <TextBox Grid.Row="4" 
+                         Grid.Column="1" 
+                         Text="{Binding Voltage, UpdateSourceTrigger=PropertyChanged, StringFormat=N1}" 
                          IsEnabled="{Binding VoltageLockedInverted}"/>
 
-                <CheckBox Grid.Row="2" 
-                          Grid.Column="5" 
+        <CheckBox Grid.Row="4" 
+                          Grid.Column="2" 
                           VerticalAlignment="Center" 
                           HorizontalAlignment="Center" 
                           Name="VoltageCheck"  
                           IsChecked="{Binding VoltageLocked}"/>
 
-                <ComboBox Grid.Row="2" 
+        <ComboBox Grid.Row="2" 
                           Grid.Column="6"/>
 
-                <ComboBox Grid.Row="2" 
+        <ComboBox Grid.Row="2" 
                           Grid.Column="7" 
                           ItemsSource="{Binding CableSizeList}" 
                           SelectedValue="{Binding SelectedCableSize}"/>
 
-                <TextBox Grid.Row="2"
-                         Grid.Column="8"
-                         Text="{Binding NumberOfCables}"/>
+        <TextBox Grid.Row="2"
+                     Grid.Column="8"                  
+                     Text="{Binding NumberOfCables}"/>
 
-                <ComboBox Grid.Row="2" 
+        <ComboBox Grid.Row="2" 
                           Grid.Column="9" 
                           ItemsSource="{Binding PhasesList}" 
                           SelectedValue="{Binding SelectedPhases}"/>
 
-                <TabControl VerticalAlignment="Top" 
-                    HorizontalAlignment="Left"
-                    Grid.Row="4"
-                    TabStripPlacement="Left"
-                    Height="400"
-                    Width="800"
-                    Grid.ColumnSpan="100">
-                    <TabItem Header="Grid data" Height="30">
-
-                        <ContentControl Content="{Binding Path=GridDataView}"/>
-
-                    </TabItem>
-                    <TabItem Header="Cable data" Height="30">
-                        <Grid>
-
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="Results" Height="30">
-                        <Grid>
-                            <TextBlock HorizontalAlignment="Left"
-			       Margin="10"
-			       TextWrapping="Wrap"
-			       Text="Edit existing XML-file"
-			       VerticalAlignment="Top"
-			       Width="Auto"/>
-                        </Grid>
-                    </TabItem>
-                </TabControl>
-            </Grid>
-        </TabItem>
-        <TabItem Header="Graphs">
-            
-        </TabItem>
-    </TabControl>
+    </Grid>
+    
 </UserControl>
