@@ -91,6 +91,7 @@
     <Compile Include="ElectricalCalculations\IPowerCalc.cs" />
     <Compile Include="ElectricalCalculations\PowerCalc.cs" />
     <Compile Include="ElectricalCalculations\TransformerCalc.cs" />
+    <Compile Include="Model\CableProperties.cs" />
     <Compile Include="Resources\strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

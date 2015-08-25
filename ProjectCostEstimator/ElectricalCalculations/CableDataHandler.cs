@@ -94,8 +94,7 @@ namespace EECT.ElectricalCalculations
             return sortedList.ToList();
 
         }
-
-
+        
 
         public List<double> GetCableSizesList(List<CableData> CableList)
         {

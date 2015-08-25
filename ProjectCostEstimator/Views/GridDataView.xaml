@@ -56,19 +56,19 @@
         <Label Grid.Row="4" Grid.Column="3" Content="Cable 3:"/>
         <Label Grid.Row="5" Grid.Column="3" Content="Cable 4:"/>
 
-        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding NumberOfCables1}"/>
+        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding NumberOfCables1, StringFormat=N0}"/>
         <ComboBox Grid.Row="2" Grid.Column="5" ItemsSource="{Binding CableConductorList}" SelectedItem="{Binding Conductors1}"/>
         <ComboBox Grid.Row="2" Grid.Column="6" ItemsSource="{Binding CableMaterialList}" SelectedItem="{Binding Material1}"/>
         <ComboBox Grid.Row="2" Grid.Column="7" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension1 }"/>
         <ComboBox Grid.Row="2" Grid.Column="8" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type1}"/>
-        <TextBox Grid.Row="2" Grid.Column="9" Text="{Binding Length1}"/>
+        <TextBox Grid.Row="2" Grid.Column="9" Text="{Binding Length1, StringFormat=N0}"/>
 
-        <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding NumberOfCables2}"/>
+        <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding NumberOfCables2, StringFormat=N0}"/>
         <ComboBox Grid.Row="3" Grid.Column="5" ItemsSource="{Binding CableConductorList}" SelectedItem="{Binding Conductors2}"/>
         <ComboBox Grid.Row="3" Grid.Column="6" ItemsSource="{Binding CableMaterialList}" SelectedItem="{Binding Material2}"/>
         <ComboBox Grid.Row="3" Grid.Column="7" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension2}"/>
         <ComboBox Grid.Row="3" Grid.Column="8" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type2}"/>
-        <TextBox Grid.Row="3" Grid.Column="9" Text="{Binding Length2}"/>
+        <TextBox Grid.Row="3" Grid.Column="9" Text="{Binding Length2, StringFormat=N0}"/>
 
     </Grid>
 
