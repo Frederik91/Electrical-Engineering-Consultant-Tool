@@ -76,7 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Assets\CableUnits.cs" />
+    <Compile Include="Assets\Cables.cs" />
     <Compile Include="Assets\PowerUnits.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Design\DesignDataService.cs" />
@@ -98,6 +98,7 @@
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CableAndProtectionViewModel.cs" />
+    <Compile Include="ViewModel\CableSelectViewModel.cs" />
     <Compile Include="ViewModel\DataFileManagerViewModel.cs" />
     <Compile Include="ViewModel\ExistingProjectViewModel.cs" />
     <Compile Include="Model\ImportXML.cs" />
@@ -119,6 +120,9 @@
     </Compile>
     <Compile Include="Views\GridDataView.xaml.cs">
       <DependentUpon>GridDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GridDataViewComponents\CableSelectView.xaml.cs">
+      <DependentUpon>CableSelectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewProjectView.xaml.cs">
       <DependentUpon>NewProjectView.xaml</DependentUpon>
@@ -142,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GridDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GridDataViewComponents\CableSelectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

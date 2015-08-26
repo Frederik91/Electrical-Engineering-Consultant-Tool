@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EECT.Assets
 {
-    public enum CableUnits
+    public enum Cables
     {
-        Conductors, Materials, Dimension, Type
+        Cable1, Cable2, Cable3, Cable4
     }
 }

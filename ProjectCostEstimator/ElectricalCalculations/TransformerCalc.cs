@@ -22,7 +22,7 @@ namespace EECT.ElectricalCalculations
         
         public double Z(double Ek, double Voltage, double S)
         {
-            return Ek * (Math.Pow(Voltage, 2) / S);
+            return (Math.Pow(Voltage, 2) / (S/ Ek));
         }
     }
 }

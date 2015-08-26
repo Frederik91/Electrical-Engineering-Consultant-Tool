@@ -9,10 +9,15 @@
         Width="1200"
         Title="Electrical Engineering Consultant Tool"
         xmlns:Views="clr-namespace:EECT.Views"
+        xmlns:GridDataView="clr-namespace:EECT.Views.GridDataViewComponents"
         xmlns:ViewModel="clr-namespace:EECT.ViewModel"
         ResizeMode="NoResize">
 
     <Window.Resources>
+
+        <DataTemplate DataType="{x:Type ViewModel:CableSelectViewModel}">
+            <GridDataView:CableSelectView/>
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type ViewModel:ShortCircuitViewModel}">
             <Views:ShortCircuitView/>

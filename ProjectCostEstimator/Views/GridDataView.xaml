@@ -17,11 +17,17 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="140"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="60"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
@@ -33,6 +39,8 @@
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
 
+        
+        
         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Transformer data"/>
 
         <Label Grid.Row="1" Grid.Column="4" Content="No. of cables"/>
@@ -49,30 +57,36 @@
         <Label Grid.Row="5" Grid.Column="0" Content="Secondary Voltage (Vs):"/>
 
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PowerRating, StringFormat=N0}"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Ek, StringFormat={}{0:N1}%}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Ek}"/>
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Vp, StringFormat=N0}"/>
         <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Vs, StringFormat=N0}"/>
 
+        <Label Grid.Row="2" Grid.Column="2" Content="VA"/>
+        <Label Grid.Row="4" Grid.Column="2" Content="V"/>
+        <Label Grid.Row="5" Grid.Column="2" Content="V"/>
+
         <Label Grid.Row="2" Grid.Column="3" Content="Cable 1:"/>
-        <Label Grid.Row="3" Grid.Column="3" Content="Cable 2:"/>
-        <Label Grid.Row="4" Grid.Column="3" Content="Cable 3:"/>
-        <Label Grid.Row="5" Grid.Column="3" Content="Cable 4:"/>
+        <Label Grid.Row="3" Grid.Column="3" Content="Cable 2:" Visibility="{Binding Cable1Selected}"/>
+        <Label Grid.Row="4" Grid.Column="3" Content="Cable 3:" Visibility="{Binding Cable2Selected}"/>
+        <Label Grid.Row="5" Grid.Column="3" Content="Cable 4:" Visibility="{Binding Cable3Selected}"/>
 
-        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding NumberOfCables1, StringFormat=N0}"/>
-        <ComboBox Grid.Row="2" Grid.Column="5" ItemsSource="{Binding CableConductorList}" SelectedItem="{Binding Conductors1}"/>
-        <ComboBox Grid.Row="2" Grid.Column="6" ItemsSource="{Binding CableMaterialList}" SelectedItem="{Binding Material1}"/>
-        <ComboBox Grid.Row="2" Grid.Column="7" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension1 }"/>
-        <ComboBox Grid.Row="2" Grid.Column="8" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type1}"/>
-        <TextBox Grid.Row="2" Grid.Column="9" Text="{Binding Length1, StringFormat=N0}"/>
-        <ComboBox Grid.Row="2" Grid.Column="10" ItemsSource="{Binding AviliableCablesList1}" SelectedItem="{Binding SelectedCable1}"/>
+        <ContentControl Content="{Binding Path=Cable1ViewModel}" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="7" Width="700" Height="26"/>
+        <ContentControl Content="{Binding Path=Cable2ViewModel}" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="7" Width="700" Height="26" Visibility="{Binding Cable1Selected}"/>
+        <ContentControl Content="{Binding Path=Cable3ViewModel}" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="7" Width="700" Height="26" Visibility="{Binding Cable2Selected}"/>
+        <ContentControl Content="{Binding Path=Cable4ViewModel}" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="7" Width="700" Height="26" Visibility="{Binding Cable3Selected}"/>
 
-        <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding NumberOfCables2, StringFormat=N0}"/>
-        <ComboBox Grid.Row="3" Grid.Column="5" ItemsSource="{Binding CableConductorList}" SelectedItem="{Binding Conductors2}"/>
-        <ComboBox Grid.Row="3" Grid.Column="6" ItemsSource="{Binding CableMaterialList}" SelectedItem="{Binding Material2}"/>
-        <ComboBox Grid.Row="3" Grid.Column="7" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension2}"/>
-        <ComboBox Grid.Row="3" Grid.Column="8" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type2}"/>
-        <TextBox Grid.Row="3" Grid.Column="9" Text="{Binding Length2, StringFormat=N0}"/>
-        <ComboBox Grid.Row="3" Grid.Column="10" ItemsSource="{Binding AviliableCablesList2}" SelectedItem="{Binding SelectedCable2}"/>
+        <Label Grid.Row="7" Grid.Column="0" Content="Short circuit power (Sk):"/>
+        <Label Grid.Row="8" Grid.Column="0" Content="Short circuit current (Ik):"/>
+        <Label Grid.Row="9" Grid.Column="0" Content="Short circuit Impedance (Zk3p):"/>
+        
+        
+        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Sk, StringFormat=N0}" IsEnabled="false"/>
+        <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Ik, StringFormat=N0}" IsEnabled="false"/>
+        <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Zk3p, StringFormat=N4}" IsEnabled="false"/>
+
+        <Label Grid.Row="7" Grid.Column="2" Content="VA"/>
+        <Label Grid.Row="8" Grid.Column="2" Content="A"/>
+        <Label Grid.Row="9" Grid.Column="2" Content="Ω"/>
 
     </Grid>
 

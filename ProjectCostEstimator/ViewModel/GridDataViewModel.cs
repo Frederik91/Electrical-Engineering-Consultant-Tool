@@ -3,67 +3,78 @@ using EECT.ElectricalCalculations;
 using EECT.Model;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Windows;
 
 namespace EECT.ViewModel
 {
     public class GridDataViewModel : ViewModelBase
     {
-        private List<CableData> _cableList = new List<CableData>();
-        private List<CableData> _filteredCableList1 = new List<CableData>();
 
-        private CableProperties _cable1 = new CableProperties();
+        private ViewModelBase _cable1ViewModel { get; set; }
+        private ViewModelBase _cable2ViewModel { get; set; }
+        private ViewModelBase _cable3ViewModel { get; set; }
+        private ViewModelBase _cable4ViewModel { get; set; }
+
+        private CableData _cable1;
+        private CableData _cable2;
+        private CableData _cable3;
+        private CableData _cable4;
 
         private double _powerRating;
         private double _Ek;
         private double _Vp;
         private double _Vs;
+        private double _Ik;
+        private double _Sk;
+        private double _Zk3p;
 
-
-        private List<double> _cableDimensionList;
-                
-        private List<int> _cableConductorList;
-
-        private List<string> _cableTypeList;
-        private List<string> _cableMaterialList;
-
-        private string _cableData = ConfigurationManager.AppSettings["CableDataFolderPath"];
-        private List<string> _aviliableCableList1;
-        private string _selectedCable1;
-        private CableData _selectedCableData;
-
+        private Visibility _cable1Selected = Visibility.Hidden;
+        private Visibility _cable2Selected = Visibility.Hidden;
+        private Visibility _cable3Selected = Visibility.Hidden;
 
 
         public GridDataViewModel()
         {
-            var CBH = new CableDataHandler();
-            CableList = CBH.GetCableData(_cableData);
-            CableConductorList = CBH.GetCableConductorList(_cableList);
-            CableMaterialList = CBH.GetMaterialList(_cableList);
-            CableDimensionList = CBH.GetCableSizesList(_cableList);
-            CableTypeList = CBH.GetCableTypeList(_cableList);
+            Cable1ViewModel = new CableSelectViewModel(this);
+            Cable2ViewModel = new CableSelectViewModel(this);
+            Cable3ViewModel = new CableSelectViewModel(this);
+            Cable4ViewModel = new CableSelectViewModel(this);
         }
 
         #region Methods
 
-        private List<CableData> FilterAviliableCables(CableProperties Cable)
+        public void TransformerCalculations()
         {
-            var CBH = new CableDataHandler();
+            var Calc = new TransformerCalc();
 
-            return CBH.FilterAviliableCables(CableList, Cable);
+            Sk = Calc.Sk(_powerRating, _Ek);
+            Ik = Calc.Ik(_Sk, Vs);
+            Zk3p = Calc.Z(Ek, Vs, _powerRating);
         }
 
-        private List<string> GetAviliableCablesList1(List<CableData> ListToSort)
+
+        public void CableSelected(CableSelectViewModel CSVM, CableData SelectedCable)
         {
-            var CBH = new CableDataHandler();
+            if (CSVM == Cable1ViewModel)
+            {
+                Cable1 = SelectedCable;
+            }
 
-            return CBH.GetCableNameList(ListToSort);
-        }
 
-        private CableData GetSelectedCableID(string cableName)
-        {
-            var CBH = new CableDataHandler();
+            if (CSVM == Cable2ViewModel)
+            {
+                Cable2 = SelectedCable;
+            }
 
-            return CBH.GetCableID(cableName, _cableList);
+            if (CSVM == Cable3ViewModel)
+            {
+                Cable3 = SelectedCable;
+            }
+
+            if (CSVM == Cable4ViewModel)
+            {
+                Cable4 = SelectedCable;
+            }
         }
 
         #endregion
@@ -71,159 +82,164 @@ namespace EECT.ViewModel
 
         #region Properties
 
-        #region Cable1
+        #region Cables
 
-        public CableProperties Cable1
+        public CableData Cable1
         {
             get { return _cable1; }
             set
             {
-                _cable1 = value;                
+                _cable1 = value;
                 OnPropertyChanged("Cable1");
+                if (value != null)
+                {
+                    Cable1Selected = Visibility.Visible;
+                }
             }
         }
 
-        public List<CableData> FilteredCableList1
+        public CableData Cable2
         {
-            get { return _filteredCableList1; }
+            get { return _cable2; }
             set
             {
-                _filteredCableList1 = value;
-                OnPropertyChanged("FilteredCableList1");
+                _cable2 = value;
+                OnPropertyChanged("Cable2");
+                if (value != null)
+                {
+                    Cable2Selected = Visibility.Visible;
+                }
             }
         }
 
-        public List<string> AviliableCablesList1
+        public CableData Cable3
         {
-            get { return _aviliableCableList1; }
+            get { return _cable3; }
             set
             {
-                _aviliableCableList1 = value;
-                OnPropertyChanged("AviliableCablesList1");
+                _cable3 = value;
+                OnPropertyChanged("Cable3");
+                if (value != null)
+                {
+                    Cable3Selected = Visibility.Visible;
+                }
             }
         }
 
-        public string SelectedCable1
+        public CableData Cable4
         {
-            get { return _selectedCable1; }
+            get { return _cable4; }
             set
             {
-                _selectedCable1 = value;
-                OnPropertyChanged("SelectedCable1");
-                _selectedCableData = GetSelectedCableID(value);
+                _cable4 = value;
+                OnPropertyChanged("Cable4");
             }
         }
 
 
-        public int Conductors1
+        public Visibility Cable1Selected
         {
-            get { return Cable1.Conductors; }
+            get { return _cable1Selected; }
             set
             {
-                Cable1.Conductors = value;
-                OnPropertyChanged("Conductors1");
-                FilteredCableList1 = FilterAviliableCables(_cable1);
-                AviliableCablesList1 = GetAviliableCablesList1(_filteredCableList1);
+                _cable1Selected = value;
+                this.OnPropertyChanged("Cable1Selected");
             }
         }
 
-        public string Material1
+        public Visibility Cable2Selected
         {
-            get { return Cable1.Material; }
+            get { return _cable2Selected; }
             set
             {
-                Cable1.Material = value;
-                OnPropertyChanged("Material1");
-                FilteredCableList1 = FilterAviliableCables(_cable1);
-                AviliableCablesList1 = GetAviliableCablesList1(_filteredCableList1);
+                _cable2Selected = value;
+                this.OnPropertyChanged("Cable2Selected");
             }
         }
 
-        public double Dimension1
+        public Visibility Cable3Selected
         {
-            get { return Cable1.dimension; }
+            get { return _cable3Selected; }
             set
             {
-                Cable1.dimension = value;
-                OnPropertyChanged("Dimension1");
-                FilteredCableList1 = FilterAviliableCables(_cable1);
-                AviliableCablesList1 = GetAviliableCablesList1(_filteredCableList1);
+                _cable3Selected = value;
+                this.OnPropertyChanged("Cable3Selected");
             }
         }
 
-        public string Type1
+        public ViewModelBase Cable1ViewModel
         {
-            get { return Cable1.CableType; }
+            get { return _cable1ViewModel; }
             set
             {
-                Cable1.CableType = value;
-                OnPropertyChanged("Type1");
-                FilteredCableList1 = FilterAviliableCables(_cable1);
-                AviliableCablesList1 = GetAviliableCablesList1(_filteredCableList1);
+                _cable1ViewModel = value;
+                OnPropertyChanged("Cable1ViewModel");
             }
         }
 
-        public double Length1
+        public ViewModelBase Cable2ViewModel
         {
-            get { return Cable1.Length; }
+            get { return _cable2ViewModel; }
             set
             {
-                Cable1.Length = value;
-                OnPropertyChanged("Length1");
+                _cable2ViewModel = value;
+                OnPropertyChanged("Cable2ViewModel");
             }
         }
 
-        public int NumberOfCables1
+        public ViewModelBase Cable3ViewModel
         {
-            get { return Cable1.NumberOfCables; }
+            get { return _cable3ViewModel; }
             set
             {
-                Cable1.NumberOfCables = value;
-                OnPropertyChanged("NumberOfCables1");
+                _cable3ViewModel = value;
+                OnPropertyChanged("Cable3ViewModel");
             }
         }
+
+        public ViewModelBase Cable4ViewModel
+        {
+            get { return _cable4ViewModel; }
+            set
+            {
+                _cable4ViewModel = value;
+                OnPropertyChanged("Cable4ViewModel");
+            }
+        }
+
 
         #endregion
 
-        #region Input data
+        #region PowerUnits
 
-        public List<int> CableConductorList
+        public double Zk3p
         {
-            get { return _cableConductorList; }
+            get { return _Zk3p; }
             set
             {
-                _cableConductorList = value;
-                OnPropertyChanged("CableConductorList");
+                _Zk3p = value;
+                OnPropertyChanged("Zk3p");
             }
         }
 
-        public List<string> CableMaterialList
+
+        public double Ik
         {
-            get { return _cableMaterialList; }
+            get { return _Ik; }
             set
             {
-                _cableMaterialList = value;
-                OnPropertyChanged("CableMaterialList");
+                _Ik = value;
+                OnPropertyChanged("Ik");
             }
         }
 
-        public List<string> CableTypeList
+        public double Sk
         {
-            get { return _cableTypeList; }
+            get { return _Sk; }
             set
             {
-                _cableTypeList = value;
-                OnPropertyChanged("CableTypeList");
-            }
-        }
-
-        public List<double> CableDimensionList
-        {
-            get { return _cableDimensionList; }
-            set
-            {
-                _cableDimensionList = value;
-                OnPropertyChanged("CableDimensionList");
+                _Sk = value;
+                OnPropertyChanged("Sk");
             }
         }
 
@@ -234,6 +250,7 @@ namespace EECT.ViewModel
             {
                 _powerRating = value;
                 OnPropertyChanged("PowerRating");
+                TransformerCalculations();
             }
         }
 
@@ -242,8 +259,16 @@ namespace EECT.ViewModel
             get { return _Ek; }
             set
             {
-                _Ek = value;
+                if (value > 1)
+                {
+                    _Ek = value / 100;
+                }
+                else
+                {
+                    _Ek = value;
+                }
                 OnPropertyChanged("Ek");
+                TransformerCalculations();
             }
         }
 
@@ -254,6 +279,7 @@ namespace EECT.ViewModel
             {
                 _Vp = value;
                 OnPropertyChanged("Vp");
+                TransformerCalculations();
             }
         }
 
@@ -265,16 +291,7 @@ namespace EECT.ViewModel
             {
                 _Vs = value;
                 OnPropertyChanged("Vs");
-            }
-        }
-
-        public List<CableData> CableList
-        {
-            get { return _cableList; }
-            set
-            {
-                _cableList = value;
-                OnPropertyChanged("CableList");
+                TransformerCalculations();
             }
         }
 
