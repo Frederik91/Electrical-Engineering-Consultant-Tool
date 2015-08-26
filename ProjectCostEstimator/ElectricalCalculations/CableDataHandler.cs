@@ -12,30 +12,58 @@ namespace EECT.ElectricalCalculations
     class CableDataHandler
     {
 
-        public List<CableData> FilterAviliableCables(List<CableData> CableList, int Conductors, string Material, double Dimension, string Type)
+        public List<CableData> FilterAviliableCables(List<CableData> CableList, CableProperties CableProperties)
         {
-            if (Conductors > 0)
+            if (CableProperties.Conductors > 0)
             {
-                CableList = CableList.Where(x => x.Conductors == Conductors).ToList();
+                CableList = CableList.Where(x => x.Conductors == CableProperties.Conductors).ToList();
             }
 
-            if (Material != null)
+            if (CableProperties.Material != null)
             {
-                CableList = CableList.Where(x => x.Material == Material).ToList();
+                CableList = CableList.Where(x => x.Material == CableProperties.Material).ToList();
             }
 
-            if (Dimension > 0)
+            if (CableProperties.dimension > 0)
             {
-                CableList = CableList.Where(x => x.Dimension == Dimension).ToList();
+                CableList = CableList.Where(x => x.Dimension == CableProperties.dimension).ToList();
             }
 
-            if (Type != null)
+            if (CableProperties.CableType != null)
             {
-                CableList = CableList.Where(x => x.CableType == Type).ToList();
+                CableList = CableList.Where(x => x.CableType == CableProperties.CableType).ToList();
             }
 
             return CableList;
         }
+
+        public CableData GetCableID(string CableName, List<CableData> CableList)
+        {
+            List<CableData> results = CableList.FindAll(x => x.Cable == CableName);
+
+            return results[0];
+        }
+
+
+        public List<string> GetCableNameList(List<CableData> CableList)
+        {
+            var list = new List<string>();
+
+            foreach (var item in CableList)
+            {
+                list.Add(item.Cable);
+            }
+
+            list = list.Distinct().ToList();
+
+            var sortedList = from dbl in list
+                             orderby dbl ascending
+                             select dbl;
+
+            return sortedList.ToList();
+
+        }
+        
 
         public List<int> GetCableConductorList(List<CableData> CableList)
         {

@@ -30,6 +30,7 @@
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Transformer data"/>
@@ -38,8 +39,9 @@
         <Label Grid.Row="1" Grid.Column="5" Content="Conductors"/>
         <Label Grid.Row="1" Grid.Column="7" Content="Dimension"/>
         <Label Grid.Row="1" Grid.Column="6" Content="Material"/>
-        <Label Grid.Row="1" Grid.Column="8" Content="Isolation"/>
+        <Label Grid.Row="1" Grid.Column="8" Content="Type"/>
         <Label Grid.Row="1" Grid.Column="9" Content="Length"/>
+        <Label Grid.Row="1" Grid.Column="10" Content="Select cable"/>
 
         <Label Grid.Row="2" Grid.Column="0" Content="Power Rating (S):"/>
         <Label Grid.Row="3" Grid.Column="0" Content="SC impedance (Ek):"/>
@@ -62,6 +64,7 @@
         <ComboBox Grid.Row="2" Grid.Column="7" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension1 }"/>
         <ComboBox Grid.Row="2" Grid.Column="8" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type1}"/>
         <TextBox Grid.Row="2" Grid.Column="9" Text="{Binding Length1, StringFormat=N0}"/>
+        <ComboBox Grid.Row="2" Grid.Column="10" ItemsSource="{Binding AviliableCablesList1}" SelectedItem="{Binding SelectedCable1}"/>
 
         <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding NumberOfCables2, StringFormat=N0}"/>
         <ComboBox Grid.Row="3" Grid.Column="5" ItemsSource="{Binding CableConductorList}" SelectedItem="{Binding Conductors2}"/>
@@ -69,6 +72,7 @@
         <ComboBox Grid.Row="3" Grid.Column="7" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension2}"/>
         <ComboBox Grid.Row="3" Grid.Column="8" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type2}"/>
         <TextBox Grid.Row="3" Grid.Column="9" Text="{Binding Length2, StringFormat=N0}"/>
+        <ComboBox Grid.Row="3" Grid.Column="10" ItemsSource="{Binding AviliableCablesList2}" SelectedItem="{Binding SelectedCable2}"/>
 
     </Grid>
 

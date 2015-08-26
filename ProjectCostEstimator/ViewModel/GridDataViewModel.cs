@@ -17,9 +17,7 @@ namespace EECT.ViewModel
         private double _Ek;
         private double _Vp;
         private double _Vs;
-        private double _dimension1;
 
-        private int _conductors1;
 
         private List<double> _cableDimensionList;
                 
@@ -29,8 +27,9 @@ namespace EECT.ViewModel
         private List<string> _cableMaterialList;
 
         private string _cableData = ConfigurationManager.AppSettings["CableDataFolderPath"];
-        private string _material1;
-        private string _type1;
+        private List<string> _aviliableCableList1;
+        private string _selectedCable1;
+        private CableData _selectedCableData;
 
 
 
@@ -38,15 +37,34 @@ namespace EECT.ViewModel
         {
             var CBH = new CableDataHandler();
             CableList = CBH.GetCableData(_cableData);
-            CableConductorList = CBH.GetCableConductorList(CableList);
-            CableMaterialList = CBH.GetMaterialList(CableList);
-            CableDimensionList = CBH.GetCableSizesList(CableList);
-            CableTypeList = CBH.GetCableTypeList(CableList);
+            CableConductorList = CBH.GetCableConductorList(_cableList);
+            CableMaterialList = CBH.GetMaterialList(_cableList);
+            CableDimensionList = CBH.GetCableSizesList(_cableList);
+            CableTypeList = CBH.GetCableTypeList(_cableList);
         }
 
         #region Methods
 
+        private List<CableData> FilterAviliableCables(CableProperties Cable)
+        {
+            var CBH = new CableDataHandler();
 
+            return CBH.FilterAviliableCables(CableList, Cable);
+        }
+
+        private List<string> GetAviliableCablesList1(List<CableData> ListToSort)
+        {
+            var CBH = new CableDataHandler();
+
+            return CBH.GetCableNameList(ListToSort);
+        }
+
+        private CableData GetSelectedCableID(string cableName)
+        {
+            var CBH = new CableDataHandler();
+
+            return CBH.GetCableID(cableName, _cableList);
+        }
 
         #endregion
 
@@ -60,48 +78,108 @@ namespace EECT.ViewModel
             get { return _cable1; }
             set
             {
-                _cable1 = value;
+                _cable1 = value;                
                 OnPropertyChanged("Cable1");
             }
         }
 
-        public int Conductors1
+        public List<CableData> FilteredCableList1
         {
-            get { return _conductors1; }
+            get { return _filteredCableList1; }
             set
             {
-                _conductors1 = value;
+                _filteredCableList1 = value;
+                OnPropertyChanged("FilteredCableList1");
+            }
+        }
+
+        public List<string> AviliableCablesList1
+        {
+            get { return _aviliableCableList1; }
+            set
+            {
+                _aviliableCableList1 = value;
+                OnPropertyChanged("AviliableCablesList1");
+            }
+        }
+
+        public string SelectedCable1
+        {
+            get { return _selectedCable1; }
+            set
+            {
+                _selectedCable1 = value;
+                OnPropertyChanged("SelectedCable1");
+                _selectedCableData = GetSelectedCableID(value);
+            }
+        }
+
+
+        public int Conductors1
+        {
+            get { return Cable1.Conductors; }
+            set
+            {
+                Cable1.Conductors = value;
                 OnPropertyChanged("Conductors1");
+                FilteredCableList1 = FilterAviliableCables(_cable1);
+                AviliableCablesList1 = GetAviliableCablesList1(_filteredCableList1);
             }
         }
 
         public string Material1
         {
-            get { return _material1; }
+            get { return Cable1.Material; }
             set
             {
-                _material1 = value;
+                Cable1.Material = value;
                 OnPropertyChanged("Material1");
+                FilteredCableList1 = FilterAviliableCables(_cable1);
+                AviliableCablesList1 = GetAviliableCablesList1(_filteredCableList1);
             }
         }
 
         public double Dimension1
         {
-            get { return _dimension1; }
+            get { return Cable1.dimension; }
             set
             {
-                _dimension1 = value;
+                Cable1.dimension = value;
                 OnPropertyChanged("Dimension1");
+                FilteredCableList1 = FilterAviliableCables(_cable1);
+                AviliableCablesList1 = GetAviliableCablesList1(_filteredCableList1);
             }
         }
 
         public string Type1
         {
-            get { return _type1; }
+            get { return Cable1.CableType; }
             set
             {
-                _type1 = value;
+                Cable1.CableType = value;
                 OnPropertyChanged("Type1");
+                FilteredCableList1 = FilterAviliableCables(_cable1);
+                AviliableCablesList1 = GetAviliableCablesList1(_filteredCableList1);
+            }
+        }
+
+        public double Length1
+        {
+            get { return Cable1.Length; }
+            set
+            {
+                Cable1.Length = value;
+                OnPropertyChanged("Length1");
+            }
+        }
+
+        public int NumberOfCables1
+        {
+            get { return Cable1.NumberOfCables; }
+            set
+            {
+                Cable1.NumberOfCables = value;
+                OnPropertyChanged("NumberOfCables1");
             }
         }
 
