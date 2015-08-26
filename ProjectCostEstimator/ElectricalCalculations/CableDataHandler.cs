@@ -19,7 +19,7 @@ namespace EECT.ElectricalCalculations
                 CableList = CableList.Where(x => x.Conductors == Conductors).ToList();
             }
 
-            if (Material != string.Empty)
+            if (Material != null)
             {
                 CableList = CableList.Where(x => x.Material == Material).ToList();
             }
@@ -29,7 +29,7 @@ namespace EECT.ElectricalCalculations
                 CableList = CableList.Where(x => x.Dimension == Dimension).ToList();
             }
 
-            if (Type != string.Empty)
+            if (Type != null)
             {
                 CableList = CableList.Where(x => x.CableType == Type).ToList();
             }
@@ -94,8 +94,7 @@ namespace EECT.ElectricalCalculations
             return sortedList.ToList();
 
         }
-
-
+        
 
         public List<double> GetCableSizesList(List<CableData> CableList)
         {

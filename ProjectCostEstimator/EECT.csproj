@@ -91,6 +91,7 @@
     <Compile Include="ElectricalCalculations\IPowerCalc.cs" />
     <Compile Include="ElectricalCalculations\PowerCalc.cs" />
     <Compile Include="ElectricalCalculations\TransformerCalc.cs" />
+    <Compile Include="Model\CableProperties.cs" />
     <Compile Include="Resources\strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -101,7 +102,6 @@
     <Compile Include="ViewModel\ExistingProjectViewModel.cs" />
     <Compile Include="Model\ImportXML.cs" />
     <Compile Include="ViewModel\GridDataViewModel.cs" />
-    <Compile Include="ViewModel\Logic.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\NewProjectViewModel.cs" />
     <Compile Include="ViewModel\ShortCircuitViewModel.cs" />

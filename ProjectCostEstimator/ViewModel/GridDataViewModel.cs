@@ -1,19 +1,17 @@
 ﻿using EECT.Assets;
 using EECT.ElectricalCalculations;
 using EECT.Model;
-using EECT.ViewModel;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EECT.ViewModel
 {
     public class GridDataViewModel : ViewModelBase
     {
         private List<CableData> _cableList = new List<CableData>();
+        private List<CableData> _filteredCableList1 = new List<CableData>();
+
+        private CableProperties _cable1 = new CableProperties();
 
         private double _powerRating;
         private double _Ek;
@@ -23,8 +21,6 @@ namespace EECT.ViewModel
 
         private int _conductors1;
 
-        private CableUnits _lastUpdated;
-
         private List<double> _cableDimensionList;
                 
         private List<int> _cableConductorList;
@@ -33,8 +29,8 @@ namespace EECT.ViewModel
         private List<string> _cableMaterialList;
 
         private string _cableData = ConfigurationManager.AppSettings["CableDataFolderPath"];
-        private string _material1 = string.Empty;
-        private string _type1 = string.Empty;
+        private string _material1;
+        private string _type1;
 
 
 
@@ -51,35 +47,6 @@ namespace EECT.ViewModel
         #region Methods
 
 
-        private void FilterAviliableCableOptions(CableUnits Updated)
-        {
-            var CBH = new CableDataHandler();
-
-            CableList = CBH.FilterAviliableCables(CableList, Conductors1, Material1, Dimension1, Type1);
-
-            if (_lastUpdated != Updated)
-            {
-                _lastUpdated = Updated;
-                switch (Updated)
-                {
-                    case CableUnits.Conductors:
-                        CableConductorList = CBH.GetCableConductorList(CableList);                        
-                        break;
-                    case CableUnits.Materials:
-                        CableMaterialList = CBH.GetMaterialList(CableList);                        
-                        break;
-                    case CableUnits.Dimension:
-                        CableDimensionList = CBH.GetCableSizesList(CableList);                        
-                        break;
-                    case CableUnits.Type:
-                        CableTypeList = CBH.GetCableTypeList(CableList);                       
-                        break;
-                    default:
-                        break;
-                }
-            }               
-        }
-
 
         #endregion
 
@@ -88,13 +55,22 @@ namespace EECT.ViewModel
 
         #region Cable1
 
+        public CableProperties Cable1
+        {
+            get { return _cable1; }
+            set
+            {
+                _cable1 = value;
+                OnPropertyChanged("Cable1");
+            }
+        }
+
         public int Conductors1
         {
             get { return _conductors1; }
             set
             {
                 _conductors1 = value;
-                FilterAviliableCableOptions(CableUnits.Conductors);
                 OnPropertyChanged("Conductors1");
             }
         }
@@ -105,7 +81,6 @@ namespace EECT.ViewModel
             set
             {
                 _material1 = value;
-                FilterAviliableCableOptions(CableUnits.Materials);
                 OnPropertyChanged("Material1");
             }
         }
@@ -116,7 +91,6 @@ namespace EECT.ViewModel
             set
             {
                 _dimension1 = value;
-                FilterAviliableCableOptions(CableUnits.Dimension);
                 OnPropertyChanged("Dimension1");
             }
         }
@@ -127,7 +101,6 @@ namespace EECT.ViewModel
             set
             {
                 _type1 = value;
-                FilterAviliableCableOptions(CableUnits.Type);
                 OnPropertyChanged("Type1");
             }
         }
