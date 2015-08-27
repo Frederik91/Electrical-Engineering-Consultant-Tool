@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,22 +20,47 @@ namespace EECT.ElectricalCalculations
                 CableList = CableList.Where(x => x.Conductors == CableProperties.Conductors).ToList();
             }
 
-            if (CableProperties.Material != null)
+            if (CableProperties.CableData.Material != null)
             {
-                CableList = CableList.Where(x => x.Material == CableProperties.Material).ToList();
+                CableList = CableList.Where(x => x.Material == CableProperties.CableData.Material).ToList();
             }
 
-            if (CableProperties.dimension > 0)
+            if (CableProperties.CableData.Dimension > 0)
             {
-                CableList = CableList.Where(x => x.Dimension == CableProperties.dimension).ToList();
+                CableList = CableList.Where(x => x.Dimension == CableProperties.CableData.Dimension).ToList();
             }
 
-            if (CableProperties.CableType != null)
+            if (CableProperties.CableData.CableType != null)
             {
-                CableList = CableList.Where(x => x.CableType == CableProperties.CableType).ToList();
+                CableList = CableList.Where(x => x.CableType == CableProperties.CableData.CableType).ToList();
             }
 
             return CableList;
+        }
+
+        public Complex GetCableImpedance(CableData Cable)
+        {
+            var Z = new Complex();
+
+            try
+            {
+                if (Cable.Phases == 2)
+                {
+                    Z = new Complex(Cable.RPhasePhase, Cable.LPhasePhase);
+                }
+
+                if (Cable.Phases > 2)
+                {
+                    Z = new Complex(Cable.Rpos, Cable.Lpos);
+                }
+
+            }
+            catch (Exception)
+            {
+                
+            }
+
+            return Z;
         }
 
         public CableData GetCableID(string CableName, List<CableData> CableList)
