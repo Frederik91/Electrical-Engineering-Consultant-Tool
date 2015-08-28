@@ -11,14 +11,20 @@ namespace EECT.ElectricalCalculations
     public class PowerCalc : IPowerCalc
     {
 
-        public Complex GridAndTransformerImpedance(GridAndTransformerData GTD, double tolerance, double Cmax)
+        public Complex GridImpedance(GridAndTransformerData GTD, double Tolerance)
         {
-            var GridImpedance = ((tolerance * GTD.GridVoltage) / (Math.Sqrt(3) * GTD.GridIk))*(Math.Pow(GTD.GridVoltage/GTD.TransformerVoltageLow,2));
-
+            var GridImpedance = ((Tolerance * GTD.GridVoltage) / (Math.Sqrt(3) * GTD.GridIk)) * (Math.Pow(GTD.TransformerVoltageLow / GTD.GridVoltage, 2));
             var Zq = new Complex(0.1 * 0.995 * GridImpedance, 0.995 * GridImpedance);
-            var Ztmagnitude = GTD.Ek * (GTD.TransformerVoltageLow / GTD.TransformerPowerRating);
+            return Zq;
+        }
+
+        public Complex TransformerImpedance(GridAndTransformerData GTD, double Cmax, double GridImpedance)
+        {
+            
+            
+            var Ztmagnitude = GTD.Ek * (Math.Pow(GTD.TransformerVoltageLow, 2) / GTD.TransformerPowerRating);
             var Rt = GTD.TransformerFullLoadLoss * (Math.Pow(GTD.TransformerVoltageLow, 2) / Math.Pow(GTD.TransformerPowerRating, 2));
-            var Xt = Math.Sqrt(Math.Pow(Ztmagnitude, 2) - Math.Pow(Ztmagnitude, 2));
+            var Xt = Math.Sqrt(Math.Pow(Ztmagnitude, 2) - Math.Pow(Rt, 2));
 
             var _xt = Xt * (GTD.TransformerPowerRating / Math.Pow(GTD.TransformerVoltageLow, 2));
 
@@ -26,7 +32,6 @@ namespace EECT.ElectricalCalculations
 
             var Zt = new Complex(Kt * Rt, Kt * Xt);
 
-            
             return Zt;
         }
 
@@ -64,9 +69,17 @@ namespace EECT.ElectricalCalculations
             return power / (Math.Sqrt(phases) * current);
         }
 
-        public double Ik(double voltage, Complex Z)
+        public double Ik3p(double voltage, Complex Z, double Tolerance)
         {
-            return voltage / (Math.Sqrt(3) * Z.Magnitude);
+            return (Tolerance * voltage) / (Math.Sqrt(3) * Z.Magnitude);
+        }
+
+        public double Ik3pPeak(Complex Ztotal, double Ik3p)
+        {
+            var RX = Ztotal.Real / Ztotal.Imaginary;
+            var k = 1.02 + 0.98 * Math.Pow(Math.E, -3 * RX);
+
+            return k * Math.Sqrt(2) * Ik3p;
         }
 
         public double Zk3p(double voltage, double Ik, double Ek)
@@ -82,18 +95,6 @@ namespace EECT.ElectricalCalculations
         public double Rk3p(double voltage, double S, double Er)
         {
             return (voltage * voltage) / (S / Er);
-        }
-
-        public Complex EqualParallelImpedances(Complex Impedance, int NumberOfParallels)
-        {
-            var Zinverted = new Complex();
-
-            for (int i = 0; i < NumberOfParallels; i++)
-            {
-                Zinverted = Zinverted + 1 / Impedance;
-            }
-
-            return 1 / Zinverted;
         }
 
         public double CosPhi(double Er, double Ek)
@@ -150,7 +151,7 @@ namespace EECT.ElectricalCalculations
                 sum = sum + 1 / S;
             }
 
-            return sum;
+            return 1/sum;
         }
     }
 }

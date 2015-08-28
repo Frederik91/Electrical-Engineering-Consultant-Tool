@@ -53,9 +53,6 @@ namespace EECT.Model
         public double Capacitance { get; set; }
         public int ELnumber { get; set; }
         public string CENELEC { get; set; }
-        public double Length { get; set; }
-        public double NumberOfCables { get; set; }
-        public CableProperties CableProperties {get;set;}
 
     }
 }

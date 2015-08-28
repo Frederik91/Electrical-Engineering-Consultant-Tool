@@ -22,12 +22,12 @@ namespace EECT.ViewModel
         private List<int> _cableConductorList;
         private List<string> _cableTypeList;
         private List<string> _cableMaterialList;
-        
+
         private List<string> _aviliableCableList;
 
         private CableProperties _cable = new CableProperties();
 
-        private CableData _selectedCableData;
+        private CableProperties _selectedCableData = new CableProperties { CableData = new CableData() };
 
         private string _cableData = ConfigurationManager.AppSettings["CableDataFolderPath"];
         private string _selectedCable;
@@ -38,6 +38,7 @@ namespace EECT.ViewModel
         public CableSelectViewModel(GridDataViewModel gridDataViewModel)
         {
             GridDataViewModel = gridDataViewModel;
+
             Cable.CableData = new CableData();
 
             CableList = CBH.GetCableData(_cableData);
@@ -59,8 +60,8 @@ namespace EECT.ViewModel
 
         private void RecalculateImpedance()
         {
-            var PC = new PowerCalc();
-            CableImpedance = PC.EqualParallelImpedances(CBH.GetCableImpedance(_selectedCableData) * Length, NumberOfCables).Magnitude;
+            var CDH = new CableDataHandler();
+            CableImpedance = CDH.GetCableImpedance(_selectedCableData).Magnitude;
         }
 
 
@@ -186,7 +187,7 @@ namespace EECT.ViewModel
                 OnPropertyChanged("SelectedCable");
                 if (value != null)
                 {
-                    _selectedCableData = GetSelectedCableID(value);
+                    _selectedCableData.CableData = GetSelectedCableID(value);
                     RecalculateImpedance();
                     SendSelectedCable();
                 }
@@ -196,10 +197,10 @@ namespace EECT.ViewModel
 
         public int Conductors
         {
-            get { return Cable.Conductors; }
+            get { return Cable.CableData.Conductors; }
             set
             {
-                Cable.Conductors = value;
+                Cable.CableData.Conductors = value;
                 OnPropertyChanged("Conductors");
                 FilteredCableList = FilterAviliableCables(_cable);
                 AviliableCablesList = GetAviliableCablesList(_filteredCableList);
@@ -244,12 +245,13 @@ namespace EECT.ViewModel
 
         public double Length
         {
-            get { return Cable.CableData.Length; }
+            get { return Cable.Length; }
             set
             {
-                Cable.CableData.Length = value;
+                Cable.Length = value;
                 OnPropertyChanged("Length");
                 RecalculateImpedance();
+                SendSelectedCable();
             }
         }
 
@@ -261,6 +263,7 @@ namespace EECT.ViewModel
                 Cable.NumberOfCables = value;
                 OnPropertyChanged("NumberOfCables");
                 RecalculateImpedance();
+                SendSelectedCable();
             }
         }
 

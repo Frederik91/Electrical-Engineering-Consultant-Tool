@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace EECT.ElectricalCalculations
 {
-    class CableDataHandler
+    public class CableDataHandler
     {
 
         public List<CableData> FilterAviliableCables(List<CableData> CableList, CableProperties CableProperties)
         {
-            if (CableProperties.Conductors > 0)
+            if (CableProperties.CableData.Conductors > 0)
             {
-                CableList = CableList.Where(x => x.Conductors == CableProperties.Conductors).ToList();
+                CableList = CableList.Where(x => x.Conductors == CableProperties.CableData.Conductors).ToList();
             }
 
             if (CableProperties.CableData.Material != null)
@@ -38,23 +38,28 @@ namespace EECT.ElectricalCalculations
             return CableList;
         }
 
-        public Complex GetCableImpedance(CableData Cable)
+        public Complex GetCableImpedance(CableProperties Cable)
         {
             var Z = new Complex();
 
             try
             {
-                if (Cable.Phases == 2)
+                if (Cable.CableData.Phases == 2)
                 {
-                    Z = new Complex(Cable.RPhasePhase, Cable.LPhasePhase);
+                    Z = new Complex(Cable.CableData.RPhasePhase, (Cable.CableData.LPhasePhase * 2 * Math.PI * 50)/1000);
                 }
 
-                if (Cable.Phases > 2)
+                if (Cable.CableData.Phases > 2)
                 {
-                    Z = new Complex(Cable.Rpos, Cable.Lpos);
+                    Z = new Complex(Cable.CableData.Rpos, (Cable.CableData.Lpos * 2 * Math.PI * 50)/1000);
                 }
+
+                Z = Z / Cable.NumberOfCables;
+
+                return Z * Cable.Length / 1000; //Multipliserer med lengden av kabelen for total motstand i kabelen. Deler på 1000 fordi motstand i kabel oppgis i Ohm/km, mens lengde er i meter.
 
             }
+
             catch (Exception)
             {
                 

@@ -28,7 +28,7 @@
         <ComboBox  Grid.Column="3" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension }"/>
         <ComboBox  Grid.Column="4" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type}"/>
         <TextBox  Grid.Column="5" Text="{Binding Length, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <ComboBox  Grid.Column="6" ItemsSource="{Binding AviliableCablesList}" SelectedItem="{Binding SelectedCable}"/>
+        <ComboBox  Grid.Column="6" ItemsSource="{Binding AviliableCablesList}" SelectedItem="{Binding SelectedCable, UpdateSourceTrigger=LostFocus}"/>
         <TextBox  Grid.Column="8" Text="{Binding CableImpedance, StringFormat=N2}" IsEnabled="false"/>
     </Grid>
 </UserControl>

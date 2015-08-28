@@ -16,18 +16,32 @@ namespace EECT.ViewModel
         private ViewModelBase _cable3ViewModel { get; set; }
         private ViewModelBase _cable4ViewModel { get; set; }
 
-        private CableProperties _cable1;
-        private CableProperties _cable2;
-        private CableProperties _cable3;
-        private CableProperties _cable4;
+        private CableProperties _cable1 = new CableProperties { CableData = new CableData() };
+        private CableProperties _cable2 = new CableProperties { CableData = new CableData() };
+        private CableProperties _cable3 = new CableProperties { CableData = new CableData() };
+        private CableProperties _cable4 = new CableProperties { CableData = new CableData() };
 
-        private Complex _Zk3p;
 
-        private double _powerRating;
-        private double _Ek;
-        private double _Vp;
-        private double _Vs;
+        private GridAndTransformerData GTD = new GridAndTransformerData();
+
+
+        private Complex Zq;
+        private Complex Zt;
+        private Complex _totalImpedance;
+
+        private double _Ik3p;
+        private double _Ik3pPeak;
+        private double _R0 = 1;
+        private double _X0 = 0.95;
+        private double _Tolerance = 1.05;
+        private double _Cmax = 1.05;
+        private double _powerRating = 400000;
+        private double _TransformerPowerLoss = 4600;
+        private double _Ek = 0.04;
+        private double _Vp = 20000;
+        private double _Vs = 410;
         private double _Ik;
+        private double _IkGrid = 10000;
         private double _SkTransformer;
         private double _skCable1;
         private double _skCable2;
@@ -38,66 +52,106 @@ namespace EECT.ViewModel
         private double _totalSkCable3;
         private double _totalSkCable4;
 
+
+
         private Visibility _cable1Selected = Visibility.Hidden;
         private Visibility _cable2Selected = Visibility.Hidden;
         private Visibility _cable3Selected = Visibility.Hidden;
 
         public GridDataViewModel()
         {
-            _cable1.CableData = new CableData();
-            _cable2.CableData = new CableData();
-            _cable3.CableData = new CableData();
-            _cable4.CableData = new CableData();
-
             Cable1ViewModel = new CableSelectViewModel(this);
             Cable2ViewModel = new CableSelectViewModel(this);
             Cable3ViewModel = new CableSelectViewModel(this);
             Cable4ViewModel = new CableSelectViewModel(this);
+
+            TransformerCalculations();
         }
 
         #region Methods
 
-        public void TransformerCalculations()
+        private void TransformerCalculations()
         {
             var Calc = new TransformerCalc();
 
+            GTD.Ek = _Ek;
+            GTD.GridVoltage = _Vp;
+            GTD.GridIk = _IkGrid;
+            GTD.TransfomerX0 = _X0;
+            GTD.TransformerRo = _R0;
+            GTD.TransformerFullLoadLoss = _TransformerPowerLoss;
+            GTD.TransformerPowerRating = _powerRating;
+            GTD.TransformerVoltageLow = _Vs;
+
             SkTransformer = Calc.Sk(_powerRating, _Ek);
             Ik = Calc.Ik(_SkTransformer, Vs);
-            Zk3p = Calc.Z(Ek, Vs, _powerRating);
+            EndOfCableCalculation();
+        }
+
+        private void EndOfCableCalculation()
+        {
+            var CableList = new List<CableProperties>();
+            var PC = new PowerCalc();
+            var CDH = new CableDataHandler();
+
+            CableList.Add(_cable1);
+            CableList.Add(_cable2);
+            CableList.Add(_cable3);
+            CableList.Add(_cable4);
+
+            Zq = PC.GridImpedance(GTD, _Tolerance);
+            Zt = PC.TransformerImpedance(GTD, _Cmax, Zq.Magnitude);
+
+            Complex Zcables = new Complex();
+            foreach (var cable in CableList)
+            {
+                if (cable.NumberOfCables > 0)
+                {
+                    Zcables = Zcables + CDH.GetCableImpedance(cable);
+                    cable.ImpedanceBehind = Zcables;
+                }
+            }
+
+            TotalImpedance = PC.SumImpedances(Zq, Zt, Zcables);
+
+            Ik3p = PC.Ik3p(Vs, TotalImpedance, _Tolerance);
+            Ik3pPeak = PC.Ik3pPeak(TotalImpedance, Ik3p);
+
         }
 
 
-        public void CableSelected(CableSelectViewModel CSVM, CableData SelectedCable)
+        public void CableSelected(CableSelectViewModel CSVM, CableProperties SelectedCable)
         {
             var PC = new PowerCalc();
             var CDH = new CableDataHandler();
             if (CSVM == Cable1ViewModel)
             {
-                Cable1.CableData = SelectedCable;
-                SkCable1 = PC.Sk(_Vs, PC.SumImpedances(_Zk3p, CDH.GetCableImpedance(Cable1.CableData)));
+                Cable1 = SelectedCable;
+                SkCable1 = PC.Sk(_Vs, PC.SumImpedances(Zq+Zt, CDH.GetCableImpedance(Cable1)));
                 TotalSkCable1 = PC.SumSk(SkTransformer, SkCable1);
             }
 
             if (CSVM == Cable2ViewModel)
             {
-                Cable2.CableData = SelectedCable;
-                SkCable2 = PC.Sk(_Vs, PC.SumImpedances(SkCable1, CDH.GetCableImpedance(Cable2.CableData)));
+                Cable2 = SelectedCable;
+                SkCable2 = PC.Sk(_Vs, PC.SumImpedances(SkCable1, CDH.GetCableImpedance(Cable2)));
                 TotalSkCable2 = PC.SumSk(SkTransformer, TotalSkCable1);
             }
 
             if (CSVM == Cable3ViewModel)
             {
-                Cable3.CableData = SelectedCable;
-                SkCable3 = PC.Sk(_Vs, PC.SumImpedances(SkCable2, CDH.GetCableImpedance(Cable3.CableData)));
+                Cable3 = SelectedCable;
+                SkCable3 = PC.Sk(_Vs, PC.SumImpedances(SkCable2, CDH.GetCableImpedance(Cable3)));
                 TotalSkCable3 = PC.SumSk(SkTransformer, TotalSkCable2);
             }
 
             if (CSVM == Cable4ViewModel)
             {
-                Cable4.CableData = SelectedCable;
-                SkCable4 = PC.Sk(_Vs, PC.SumImpedances(SkCable3, CDH.GetCableImpedance(Cable4.CableData)));
+                Cable4 = SelectedCable;
+                SkCable4 = PC.Sk(_Vs, PC.SumImpedances(SkCable3, CDH.GetCableImpedance(Cable4)));
                 TotalSkCable4 = PC.SumSk(SkTransformer, TotalSkCable3);
             }
+            EndOfCableCalculation();
         }
 
 
@@ -333,13 +387,55 @@ namespace EECT.ViewModel
 
         #region PowerUnits
 
-        public Complex Zk3p
+        public double Ik3pPeak
         {
-            get { return _Zk3p; }
+            get { return _Ik3pPeak; }
             set
             {
-                _Zk3p = value;
-                OnPropertyChanged("Zk3p");
+                _Ik3pPeak = value;
+                OnPropertyChanged("Ik3pPeak");
+            }
+        }
+
+        public double Ik3p
+        {
+            get { return _Ik3p; }
+            set
+            {
+                _Ik3p = value;
+                OnPropertyChanged("Ik3p");
+            }
+        }
+
+        public double TransformerPowerLoss
+        {
+            get { return _TransformerPowerLoss; }
+            set
+            {
+                _TransformerPowerLoss = value;
+                OnPropertyChanged("TransformerPowerLoss");
+                TransformerCalculations();
+            }
+        }
+
+        public double IkGrid
+        {
+            get { return _IkGrid; }
+            set
+            {
+                _IkGrid = value;
+                OnPropertyChanged("IkGrid");
+                TransformerCalculations();
+            }
+        }
+
+        public Complex TotalImpedance
+        {
+            get { return _totalImpedance; }
+            set
+            {
+                _totalImpedance = value;
+                OnPropertyChanged("TotalImpedance");
             }
         }
 
