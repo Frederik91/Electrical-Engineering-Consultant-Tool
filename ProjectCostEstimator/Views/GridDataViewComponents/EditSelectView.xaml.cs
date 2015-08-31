@@ -18,9 +18,9 @@ namespace EECT.Views.GridDataViewComponents
     /// <summary>
     /// Interaction logic for CableSelectView.xaml
     /// </summary>
-    public partial class CableSelectView : UserControl
+    public partial class EditCableView : UserControl
     {
-        public CableSelectView()
+        public EditCableView()
         {
             InitializeComponent();
         }

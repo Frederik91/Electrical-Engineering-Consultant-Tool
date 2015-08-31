@@ -13,5 +13,9 @@ namespace EECT.Model
         public int NumberOfCables { get; set; }
         public Complex ImpedanceBehind { get; set; }
         public double Length { get; set; }
+        public string Name { get; set; }
+        public double SkCable { get; set; }
+        public double TotalSkCable { get; set; }
+        public double Ik3p { get; set; }
     }
 }

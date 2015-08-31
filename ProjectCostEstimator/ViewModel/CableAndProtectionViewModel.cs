@@ -52,11 +52,11 @@ namespace EECT.ViewModel
 
         private void StartupActions()
         {
-            var CableData = new CableDataHandler();
+            var CDH = new CableDataHandler();
 
-            CableList = CableData.GetCableData(_cableData);
-            CableSizeList = CableData.GetCableSizesList(CableList);
-            PhasesList = CableData.GetPhases(CableList);
+            CableList = CDH.GetCableData(_cableData);
+            CableSizeList = CDH.GetCableSizesList(CableList);
+            PhasesList = CDH.GetPhases(CableList);
         }
 
         private void resetLastLocked(PowerUnits newLocked)

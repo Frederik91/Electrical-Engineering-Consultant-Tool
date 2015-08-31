@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EECT.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -21,5 +22,12 @@ namespace EECT.ElectricalCalculations
         Complex Z2p(double R, double X);
         Complex Z3Phase1polePE(double R, double X, double R0pen, double X0pen);
         Complex Z1Phase1PolePE(double RphasePEN, double XphasePEN);
+        Complex GridImpedance(GridAndTransformerData GTD, double Tolerance);
+        Complex TransformerImpedance(GridAndTransformerData GTD, double Cmax, double GridImpedance);
+        double IkMultipleImpedances(double Voltage, params Complex[] Impedance);
+        double Sk(double vVoltage, Complex Z);
+        double Ik3p(double Voltage, Complex Z, double Tolerance);
+        double Ik3pPeak(Complex Ztotal, double Ik3p);
+        double SumSk(params double[] Sk);
     }
 }

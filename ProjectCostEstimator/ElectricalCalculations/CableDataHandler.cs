@@ -13,26 +13,26 @@ namespace EECT.ElectricalCalculations
     public class CableDataHandler
     {
 
-        public List<CableData> FilterAviliableCables(List<CableData> CableList, CableProperties CableProperties)
+        public List<CableData> FilterAviliableCables(List<CableData> CableList, CableData CableProperties)
         {
-            if (CableProperties.CableData.Conductors > 0)
+            if (CableProperties.Conductors > 0)
             {
-                CableList = CableList.Where(x => x.Conductors == CableProperties.CableData.Conductors).ToList();
+                CableList = CableList.Where(x => x.Conductors == CableProperties.Conductors).ToList();
             }
 
-            if (CableProperties.CableData.Material != null)
+            if (CableProperties.Material != null)
             {
-                CableList = CableList.Where(x => x.Material == CableProperties.CableData.Material).ToList();
+                CableList = CableList.Where(x => x.Material == CableProperties.Material).ToList();
             }
 
-            if (CableProperties.CableData.Dimension > 0)
+            if (CableProperties.Dimension > 0)
             {
-                CableList = CableList.Where(x => x.Dimension == CableProperties.CableData.Dimension).ToList();
+                CableList = CableList.Where(x => x.Dimension == CableProperties.Dimension).ToList();
             }
 
-            if (CableProperties.CableData.CableType != null)
+            if (CableProperties.CableType != null)
             {
-                CableList = CableList.Where(x => x.CableType == CableProperties.CableData.CableType).ToList();
+                CableList = CableList.Where(x => x.CableType == CableProperties.CableType).ToList();
             }
 
             return CableList;
@@ -46,12 +46,12 @@ namespace EECT.ElectricalCalculations
             {
                 if (Cable.CableData.Phases == 2)
                 {
-                    Z = new Complex(Cable.CableData.RPhasePhase, (Cable.CableData.LPhasePhase * 2 * Math.PI * 50)/1000);
+                    Z = new Complex(Cable.CableData.RPhasePhase, (Cable.CableData.LPhasePhase * 2 * Math.PI * 50) / 1000);
                 }
 
                 if (Cable.CableData.Phases > 2)
                 {
-                    Z = new Complex(Cable.CableData.Rpos, (Cable.CableData.Lpos * 2 * Math.PI * 50)/1000);
+                    Z = new Complex(Cable.CableData.Rpos, (Cable.CableData.Lpos * 2 * Math.PI * 50) / 1000);
                 }
 
                 Z = Z / Cable.NumberOfCables;
@@ -62,17 +62,17 @@ namespace EECT.ElectricalCalculations
 
             catch (Exception)
             {
-                
+
             }
 
             return Z;
         }
 
-        public CableData GetCableID(string CableName, List<CableData> CableList)
+        public CableData GetCableID(string CableName, List<CableData> CableDataList)
         {
-            List<CableData> results = CableList.FindAll(x => x.Cable == CableName);
+            List<CableData> results = CableDataList.FindAll(x => x.Cable == CableName);
 
-            return results[0];            
+            return results[0];
         }
 
 
@@ -94,7 +94,7 @@ namespace EECT.ElectricalCalculations
             return sortedList.ToList();
 
         }
-        
+
 
         public List<int> GetCableConductorList(List<CableData> CableList)
         {
@@ -153,7 +153,7 @@ namespace EECT.ElectricalCalculations
             return sortedList.ToList();
 
         }
-        
+
 
         public List<double> GetCableSizesList(List<CableData> CableList)
         {
@@ -195,7 +195,8 @@ namespace EECT.ElectricalCalculations
 
         public List<CableData> GetCableData(string _cableData)
         {
-            var cableList = new List<CableData>();
+
+            var cableDataList = new List<CableData>();
             var errorlist = new List<string>();
 
             using (StreamReader sr = new StreamReader(_cableData, Encoding.GetEncoding("iso-8859-1")))
@@ -216,7 +217,7 @@ namespace EECT.ElectricalCalculations
 
                     try
                     {
-                        cableList.Add(new CableData
+                        cableDataList.Add(new CableData
                         {
                             ID = Convert.ToInt32(cableArray[0]),
                             Cable = cableArray[1],
@@ -264,13 +265,15 @@ namespace EECT.ElectricalCalculations
                             ELnumber = Convert.ToInt32(cableArray[43]),
                             CENELEC = cableArray[44]
                         });
+
                     }
-                    catch (Exception)
+                    catch
                     {
-                        errorlist.Add(cable);
+                        errorlist.Add(cableArray.ToString());
                     }
                 }
-                 return cableList;
+
+                return cableDataList;
             }
         }
     }

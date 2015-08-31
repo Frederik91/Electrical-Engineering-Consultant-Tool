@@ -15,8 +15,8 @@
 
     <Window.Resources>
 
-        <DataTemplate DataType="{x:Type ViewModel:CableSelectViewModel}">
-            <GridDataView:CableSelectView/>
+        <DataTemplate DataType="{x:Type ViewModel:EditCableViewModel}">
+            <GridDataView:EditCableView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type ViewModel:ShortCircuitViewModel}">

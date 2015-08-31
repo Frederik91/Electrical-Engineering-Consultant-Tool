@@ -99,7 +99,7 @@
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CableAndProtectionViewModel.cs" />
-    <Compile Include="ViewModel\CableSelectViewModel.cs" />
+    <Compile Include="ViewModel\EditCableViewModel.cs" />
     <Compile Include="ViewModel\DataFileManagerViewModel.cs" />
     <Compile Include="ViewModel\ExistingProjectViewModel.cs" />
     <Compile Include="Model\ImportXML.cs" />
@@ -122,8 +122,8 @@
     <Compile Include="Views\GridDataView.xaml.cs">
       <DependentUpon>GridDataView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GridDataViewComponents\CableSelectView.xaml.cs">
-      <DependentUpon>CableSelectView.xaml</DependentUpon>
+    <Compile Include="Views\GridDataViewComponents\EditSelectView.xaml.cs">
+      <DependentUpon>EditSelectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewProjectView.xaml.cs">
       <DependentUpon>NewProjectView.xaml</DependentUpon>
@@ -150,7 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GridDataViewComponents\CableSelectView.xaml">
+    <Page Include="Views\GridDataViewComponents\EditSelectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

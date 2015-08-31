@@ -36,7 +36,7 @@ namespace EECT.ElectricalCalculations
         }
 
 
-        public double IkMultipleImpedances(double Voltage, Complex[] Impedance)
+        public double IkMultipleImpedances(double Voltage, params Complex[] Impedance)
         {
             Complex TotalImpedance = new Complex();
 
