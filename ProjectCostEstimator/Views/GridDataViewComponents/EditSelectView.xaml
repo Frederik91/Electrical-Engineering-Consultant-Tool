@@ -33,7 +33,7 @@
         <ComboBox  Grid.Column="4" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension }"/>
         <ComboBox  Grid.Column="5" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type}"/>
         <TextBox  Grid.Column="6" Text="{Binding Length, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <ComboBox  Grid.Column="7" ItemsSource="{Binding AviliableCablesList}" SelectedItem="{Binding SelectedCableType, UpdateSourceTrigger=PropertyChanged}"/>
+        <ComboBox  Grid.Column="7" ItemsSource="{Binding AviliableCablesList}" SelectedItem="{Binding Type, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBox  Grid.Column="9" Text="{Binding CableImpedance, StringFormat=N5}" IsEnabled="false"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="4">
@@ -41,10 +41,12 @@
             <Button Width="80" Grid.Column="2" Content="Delete" Command="{Binding DeleteCableCommand}"/>
         </StackPanel>
 
-        <ListView Height="300" Grid.Row="3" Grid.ColumnSpan="10" ItemsSource="{Binding CableList}" SelectedIndex="0">
+        <ListView Height="300" Grid.Row="3" Grid.ColumnSpan="10" ItemsSource="{Binding CableList}" SelectedIndex="{Binding SelectedCableIndex}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding CableData.CableType}" Header="Cable Type" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Length}" Header="Length" Width="100"/>
                 </GridView>
             </ListView.View>
         </ListView>

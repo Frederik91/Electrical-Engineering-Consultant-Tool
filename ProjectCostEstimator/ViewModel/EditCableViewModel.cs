@@ -4,6 +4,7 @@ using EECT.Model;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -21,27 +22,22 @@ namespace EECT.ViewModel
 
         private List<string> _cableNameList = new List<string>();
 
-        
-        private List<CableProperties> _cableList = new List<CableProperties>();
+
+        private ObservableCollection<CableProperties> _cableList = new ObservableCollection<CableProperties>();
         private List<CableData> _filteredCableList;
         private List<CableData> _cableDataList;
 
 
-        private List<double> _cableDimensionList;
-        private List<int> _cableConductorList;
+        private List<double?> _cableDimensionList;
+        private List<int?> _cableConductorList;
         private List<string> _cableTypeList;
         private List<string> _cableMaterialList;
 
         private List<string> _aviliableCableList;
 
-        //////private CableProperties _cable = new CableProperties();
-
         private CableProperties _chosenCable = new CableProperties { CableData = new CableData() };
-        private CableProperties _selectedCableProperties = new CableProperties { CableData = new CableData() };
 
         private string _cableDataLocation = ConfigurationManager.AppSettings["CableDataFolderPath"];
-        private string _selectedCableType;
-        private string _cableName;
 
         private double _cableImpedance;
 
@@ -66,49 +62,67 @@ namespace EECT.ViewModel
 
         #region Methods
 
-
-        private void SaveCable()
+        private void UpdateUserControlls()
         {
-            if (_cableList.Count == 0)
-            {
-                MessageBoxResult createNew = MessageBox.Show("No cable exist, do you want to create one?", "Warning", MessageBoxButton.YesNo);
-
-                if (createNew == MessageBoxResult.Yes)
-                {
-                    AddCable();
-                }
-                else
-                {
-                    return;
-                }
-
-            }
-            //Må finne aktiv kabel i CableList og sette denne lik _chosenCable.
+            Conductors = Conductors;
+            Material = Material;
+            Type = Type;
+            Dimension = Dimension;
+            SelectedCable = SelectedCable;
+            CableList = CableList;
         }
+
 
         private void AddCable()
         {
-            List<CableProperties> list = new List<CableProperties>();
+            ObservableCollection<CableProperties> list = new ObservableCollection<CableProperties>();
 
             list = _cableList;
 
-            string Name = Interaction.InputBox("Enter cable name", "New Cable");
+            string _name = Interaction.InputBox("Enter cable name", "New Cable");
+
+            if (_name == string.Empty)
+            {
+                return;
+            }
 
             list.Add(new CableProperties
             {
                 CableData = new CableData(),
-                Name = Name
+                Name = _name
             });
 
-            CableName = Name;
             CableList = list;
-            SetSelectedCableProperties();
+
+            _selectedCableIndex = CableList.Count() - 1;
+            _chosenCable = CableList[_selectedCableIndex];
+            CableName = _name;
         }
 
-        private void GetSelectedCableData()
+        private void ChangeCable()
         {
             //Når en annen kabel en den som er aktiv i listen CableList velges, skal comboboxer nullstilles, med unntak av combobox for valg av kabel.
             //tekstbokser med navn, antall kabler og lengde skal få verdiene fra valgte kabel.
+            if (_selectedCableIndex == -1)
+            {
+                return;
+            }
+
+            _chosenCable = CableList[_selectedCableIndex];
+
+            NumberOfCables = _chosenCable.NumberOfCables;
+            Length = _chosenCable.Length;
+            CableName = _chosenCable.Name;
+
+            _chosenCable.CableData.Conductors = null;
+            _chosenCable.CableData.Material = null;
+            _chosenCable.CableData.CableType = null;
+            _chosenCable.CableData.Dimension = null;
+            SelectedCable = _chosenCable;
+            FilteredCableList = FilterAviliableCables();
+            AviliableCablesList = GetAviliableCablesList();
+
+            UpdateUserControlls();
         }
 
         private void DeleteSelectedCable()
@@ -116,43 +130,55 @@ namespace EECT.ViewModel
             //Valgt kabel skal slettes fra listen.
         }
 
-        private void SetSelectedCableProperties()
-        {
-            var currentCable = CableList.Find(item => item.Name == CableName);
 
-            SelectedCableType = currentCable.CableData.CableType;
-            Material = currentCable.CableData.Material;
-            Conductors = currentCable.CableData.Conductors;
-            Type = currentCable.CableData.CableType;
-            Dimension = currentCable.CableData.Dimension;
-        }
 
         private void EditCable()
         {
-            _selectedCableProperties.Length = Length;
-            _selectedCableProperties.NumberOfCables = NumberOfCables;
-            GridDataViewModel.CableSelected(_selectedCableProperties);
+
+            if (_cableList.Count == 0)
+            {
+                MessageBoxResult result = MessageBox.Show("No cable exist, do you want to create one?", "Warning", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    AddCable();
+                }
+                if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+
+            }
+
+            var index = _selectedCableIndex;
+            var list = CableList;
+            list[_selectedCableIndex] = _chosenCable;
+
+            CableList = list;
+            _selectedCableIndex = index;
+
+            GridDataViewModel.CableSelected(_chosenCable);
         }
 
         private void RecalculateImpedance()
         {
-            SelectedCable.CableData = _selectedCableProperties.CableData;
-            CableImpedance = CDH.GetCableImpedance(_selectedCableProperties).Magnitude;
+            SelectedCable.CableData = _chosenCable.CableData;
+            CableImpedance = CDH.GetCableImpedance(_chosenCable).Magnitude;
         }
 
         public string CableName
         {
-            get { return _cableName; }
+            get { return _chosenCable.Name; }
             set
             {
-                _cableName = value;
+                _chosenCable.Name = value;
                 OnPropertyChanged("CableName");
                 SelectedCable.Name = value;
             }
         }
 
 
-        public List<int> CableConductorList
+        public List<int?> CableConductorList
         {
             get { return _cableConductorList; }
             set
@@ -182,7 +208,7 @@ namespace EECT.ViewModel
             }
         }
 
-        public List<double> CableDimensionList
+        public List<double?> CableDimensionList
         {
             get { return _cableDimensionList; }
             set
@@ -194,7 +220,7 @@ namespace EECT.ViewModel
 
         private List<CableData> FilterAviliableCables()
         {
-            return CDH.FilterAviliableCables(_cableDataList, _selectedCableProperties.CableData);
+            return CDH.FilterAviliableCables(_cableDataList, _chosenCable.CableData);
         }
 
         private List<string> GetAviliableCablesList()
@@ -204,7 +230,7 @@ namespace EECT.ViewModel
 
         private CableData GetSelectedCableID()
         {
-            return CDH.GetCableID(_selectedCableType, _cableDataList);
+            return CDH.GetCableID(_chosenCable.CableData.CableType, _cableDataList);
         }
 
         #endregion
@@ -221,7 +247,7 @@ namespace EECT.ViewModel
             }
         }
 
-        public List<CableProperties> CableList
+        public ObservableCollection<CableProperties> CableList
         {
             get { return _cableList; }
             set
@@ -233,10 +259,10 @@ namespace EECT.ViewModel
 
         public CableProperties SelectedCable
         {
-            get { return _selectedCableProperties; }
+            get { return _chosenCable; }
             set
             {
-                _selectedCableProperties = value;
+                _chosenCable = value;
                 OnPropertyChanged("SelectedCable");
             }
         }
@@ -260,95 +286,138 @@ namespace EECT.ViewModel
                 OnPropertyChanged("AviliableCablesList");
                 if (AviliableCablesList.Count == 1)
                 {
-                    SelectedCableType = value[0];
+                    Type = value[0];
                 }
             }
         }
 
-        public string SelectedCableType
+        //public string SelectedCableType
+        //{
+        //    get { return _chosenCable.CableData.CableType; }
+        //    set
+        //    {
+        //        if (value != null && value != _chosenCable.CableData.CableType)
+        //        {
+        //            _chosenCable.CableData.CableType = value;
+        //            _chosenCable = SelectedCable;
+        //            RecalculateImpedance();
+        //            EditCable();
+        //        }
+        //        _chosenCable.CableData.CableType = value;
+        //        OnPropertyChanged("SelectedCableType");
+        //    }
+        //}
+
+
+        public int? Conductors
         {
-            get { return _selectedCableType; }
+            get { return _chosenCable.CableData.Conductors; }
             set
             {
-                _selectedCableType = value;
-                OnPropertyChanged("SelectedCableType");
-                if (value != null)
+                if (value != null && value != _chosenCable.CableData.Conductors)
                 {
-                    _chosenCable = SelectedCable;
-                    RecalculateImpedance();
-                    SaveCable();
+                    _chosenCable.CableData.Conductors = value;
+                    FilteredCableList = FilterAviliableCables();
+                    AviliableCablesList = GetAviliableCablesList();
                 }
-            }
-        }
-
-
-        public int Conductors
-        {
-            get { return _selectedCableProperties.CableData.Conductors; }
-            set
-            {
-                _selectedCableProperties.CableData.Conductors = value;
+                _chosenCable.CableData.Conductors = value;
                 OnPropertyChanged("Conductors");
-                FilteredCableList = FilterAviliableCables();
-                AviliableCablesList = GetAviliableCablesList();
             }
         }
 
         public string Material
         {
-            get { return _selectedCableProperties.CableData.Material; }
+            get { return _chosenCable.CableData.Material; }
             set
             {
-                _selectedCableProperties.CableData.Material = value;
+                if (value != null && value != _chosenCable.CableData.Material)
+                {
+                    _chosenCable.CableData.Material = value;
+                    FilteredCableList = FilterAviliableCables();
+                    AviliableCablesList = GetAviliableCablesList();
+                }
+                _chosenCable.CableData.Material = value;
                 OnPropertyChanged("Material");
-                FilteredCableList = FilterAviliableCables();
-                AviliableCablesList = GetAviliableCablesList();
             }
         }
 
-        public double Dimension
+        public double? Dimension
         {
-            get { return _selectedCableProperties.CableData.Dimension; }
+            get { return _chosenCable.CableData.Dimension; }
             set
             {
-                _selectedCableProperties.CableData.Dimension = value;
+                if (value != null && value != _chosenCable.CableData.Dimension)
+                {
+                    _chosenCable.CableData.Dimension = value;
+                    FilteredCableList = FilterAviliableCables();
+                    AviliableCablesList = GetAviliableCablesList();
+                }
+                _chosenCable.CableData.Dimension = value;
                 OnPropertyChanged("Dimension");
-                FilteredCableList = FilterAviliableCables();
-                AviliableCablesList = GetAviliableCablesList();
             }
         }
 
         public string Type
         {
-            get { return _selectedCableProperties.CableData.CableType; }
+            get { return _chosenCable.CableData.CableType; }
             set
             {
-                _selectedCableProperties.CableData.CableType = value;
+                if (value != null && value != _chosenCable.CableData.CableType)
+                {
+                    _chosenCable.CableData.CableType = value;
+                    FilteredCableList = FilterAviliableCables();
+                    AviliableCablesList = GetAviliableCablesList();
+                }
+                _chosenCable.CableData.CableType = value;
                 OnPropertyChanged("Type");
-                FilteredCableList = FilterAviliableCables();
-                AviliableCablesList = GetAviliableCablesList();
             }
         }
 
         public double Length
         {
-            get { return _selectedCableProperties.Length; }
+            get { return _chosenCable.Length; }
             set
             {
-                _selectedCableProperties.Length = value;
+                if (value != _chosenCable.Length)
+                {
+                    _chosenCable.Length = value;
+                    RecalculateImpedance();
+                    EditCable();
+                }
+                _chosenCable.Length = value;
                 OnPropertyChanged("Length");
-                RecalculateImpedance();
             }
         }
 
         public int NumberOfCables
         {
-            get { return _selectedCableProperties.NumberOfCables; }
+            get { return _chosenCable.NumberOfCables; }
             set
             {
-                _selectedCableProperties.NumberOfCables = value;
+                if (value != _chosenCable.NumberOfCables)
+                {
+                    _chosenCable.NumberOfCables = value;
+                    RecalculateImpedance();
+                    EditCable();
+                }
+                _chosenCable.NumberOfCables = value;
                 OnPropertyChanged("NumberOfCables");
-                RecalculateImpedance();
+
+            }
+        }
+
+        public int SelectedCableIndex
+        {
+            get { return _selectedCableIndex; }
+            set
+            {
+                if (_selectedCableIndex != value)
+                {
+                    _selectedCableIndex = value;
+                    ChangeCable();
+                }
+                _selectedCableIndex = value;
+                OnPropertyChanged("SelectedCableIndex");
             }
         }
 

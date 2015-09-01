@@ -40,7 +40,7 @@ namespace EECT.ViewModel
         private List<CableData> _cableList = new List<CableData>();
 
         private List<double> _phasesList = new List<double>();
-        private List<double> _cableSizeList = new List<double>();
+        private List<double?> _cableSizeList = new List<double?>();
 
         public CableAndProtectionViewModel()
         {
@@ -295,7 +295,7 @@ namespace EECT.ViewModel
             }
         }
 
-        public List<double> CableSizeList
+        public List<double?> CableSizeList
         {
             get { return _cableSizeList; }
             set

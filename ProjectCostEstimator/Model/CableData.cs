@@ -17,8 +17,8 @@ namespace EECT.Model
         public int MaxTemp { get; set; }
         public int Voltage { get; set; }
         public int Phases { get; set; }
-        public int Conductors { get; set; }
-        public double Dimension { get; set; }
+        public int? Conductors { get; set; }
+        public double? Dimension { get; set; }
         public string Material { get; set; }
         public bool Jacket { get; set; }
         public double Narea { get; set; }

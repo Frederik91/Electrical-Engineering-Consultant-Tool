@@ -96,9 +96,9 @@ namespace EECT.ElectricalCalculations
         }
 
 
-        public List<int> GetCableConductorList(List<CableData> CableList)
+        public List<int?> GetCableConductorList(List<CableData> CableList)
         {
-            var list = new List<int>();
+            var list = new List<int?>();
 
             foreach (var item in CableList)
             {
@@ -155,9 +155,9 @@ namespace EECT.ElectricalCalculations
         }
 
 
-        public List<double> GetCableSizesList(List<CableData> CableList)
+        public List<double?> GetCableSizesList(List<CableData> CableList)
         {
-            var list = new List<double>();
+            var list = new List<double?>();
 
             foreach (var item in CableList)
             {
