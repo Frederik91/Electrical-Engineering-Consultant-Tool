@@ -11,6 +11,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="300"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -26,27 +27,21 @@
             <ColumnDefinition Width="110"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Column="0" Content="{Binding CableName, StringFormat=N0}"/>
-        <TextBox Grid.Column="1" Text="{Binding NumberOfCables, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <ComboBox  Grid.Column="2" ItemsSource="{Binding CableConductorList}" SelectedItem="{Binding Conductors}"/>
-        <ComboBox  Grid.Column="3" ItemsSource="{Binding CableMaterialList}" SelectedItem="{Binding Material}"/>
-        <ComboBox  Grid.Column="4" ItemsSource="{Binding CableDimensionList}" SelectedItem="{Binding Dimension }"/>
-        <ComboBox  Grid.Column="5" ItemsSource="{Binding CableTypeList}" SelectedItem="{Binding Type}"/>
-        <TextBox  Grid.Column="6" Text="{Binding Length, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <ComboBox  Grid.Column="7" ItemsSource="{Binding AviliableCablesList}" SelectedItem="{Binding Type, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox  Grid.Column="9" Text="{Binding CableImpedance, StringFormat=N5}" IsEnabled="false"/>
+        <ContentControl Content="{Binding Path=ViewModelBase}"  Grid.ColumnSpan="9" Grid.RowSpan="2" Width="745" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="4">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="4">
             <Button Width="80" Grid.Column="0" Content="Add" Command="{Binding AddCableCommand}"/>
             <Button Width="80" Grid.Column="2" Content="Delete" Command="{Binding DeleteCableCommand}"/>
         </StackPanel>
 
-        <ListView Height="300" Grid.Row="3" Grid.ColumnSpan="10" ItemsSource="{Binding CableList}" SelectedIndex="{Binding SelectedCableIndex}">
+        <ListView Height="300" Grid.Row="4" Grid.ColumnSpan="10" ItemsSource="{Binding CableList}" SelectedIndex="{Binding SelectedCableIndex}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding CableData.CableType}" Header="Cable Type" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding NumberOfCables}" Header="cables" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding CableData.Cable}" Header="Cable Type" Width="100"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Length}" Header="Length" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Ik3p, StringFormat=N0}" Header="Ik3p" Width="100"/>
                 </GridView>
             </ListView.View>
         </ListView>

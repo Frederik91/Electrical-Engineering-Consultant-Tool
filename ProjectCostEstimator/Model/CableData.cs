@@ -53,6 +53,5 @@ namespace EECT.Model
         public double Capacitance { get; set; }
         public int ELnumber { get; set; }
         public string CENELEC { get; set; }
-
     }
 }

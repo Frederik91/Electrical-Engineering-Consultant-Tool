@@ -106,6 +106,7 @@
     <Compile Include="ViewModel\GridDataViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\NewProjectViewModel.cs" />
+    <Compile Include="ViewModel\SelectCableControllsViewModel.cs" />
     <Compile Include="ViewModel\ShortCircuitViewModel.cs" />
     <Compile Include="ViewModel\StartScreenViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
@@ -124,6 +125,9 @@
     </Compile>
     <Compile Include="Views\GridDataViewComponents\EditSelectView.xaml.cs">
       <DependentUpon>EditSelectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GridDataViewComponents\SelectCableControllsView.xaml.cs">
+      <DependentUpon>SelectCableControllsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewProjectView.xaml.cs">
       <DependentUpon>NewProjectView.xaml</DependentUpon>
@@ -151,6 +155,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GridDataViewComponents\EditSelectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GridDataViewComponents\SelectCableControllsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

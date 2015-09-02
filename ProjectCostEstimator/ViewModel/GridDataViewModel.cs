@@ -79,6 +79,7 @@ namespace EECT.ViewModel
                 {
                     Zcables = Zcables + CDH.GetCableImpedance(cable);
                     cable.ImpedanceBehind = Zcables;
+                    cable.Ik3p = PC.Ik3p(Vs, cable.ImpedanceBehind + Zq + Zt, _Tolerance);
                 }
             }
 
@@ -88,21 +89,9 @@ namespace EECT.ViewModel
         }
 
 
-        public void CableSelected(CableProperties SelectedCable)
+        public void CableSelected(List<CableProperties> UpdatedCableList)
         {
-            var PC = new PowerCalc();
-            var CDH = new CableDataHandler();            
-            var list = CableList;
-
-            list.Add(SelectedCable);
-
-            foreach (var Cable in CableList)
-            {
-                Cable.SkCable = PC.Sk(_Vs, PC.SumImpedances(Zq + Zt, CDH.GetCableImpedance(Cable)));
-                Cable.TotalSkCable = PC.SumSk(SkTransformer, Cable.SkCable);
-            }
-
-            CableList = list;
+            CableList = UpdatedCableList;
             EndOfCableCalculation();
         }
 

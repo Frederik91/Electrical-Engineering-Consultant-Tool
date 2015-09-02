@@ -13,29 +13,29 @@ namespace EECT.ElectricalCalculations
     public class CableDataHandler
     {
 
-        public List<CableData> FilterAviliableCables(List<CableData> CableList, CableData CableProperties)
+        public List<CableData> FilterAviliableCables(List<CableData> CableDataList, CableData CurrentCableData)
         {
-            if (CableProperties.Conductors > 0)
+            if (CurrentCableData.Conductors > 0)
             {
-                CableList = CableList.Where(x => x.Conductors == CableProperties.Conductors).ToList();
+                CableDataList = CableDataList.Where(x => x.Conductors == CurrentCableData.Conductors).ToList();
             }
 
-            if (CableProperties.Material != null)
+            if (CurrentCableData.Material != null)
             {
-                CableList = CableList.Where(x => x.Material == CableProperties.Material).ToList();
+                CableDataList = CableDataList.Where(x => x.Material == CurrentCableData.Material).ToList();
             }
 
-            if (CableProperties.Dimension > 0)
+            if (CurrentCableData.Dimension > 0)
             {
-                CableList = CableList.Where(x => x.Dimension == CableProperties.Dimension).ToList();
+                CableDataList = CableDataList.Where(x => x.Dimension == CurrentCableData.Dimension).ToList();
             }
 
-            if (CableProperties.CableType != null)
+            if (CurrentCableData.CableType != null)
             {
-                CableList = CableList.Where(x => x.CableType == CableProperties.CableType).ToList();
+                CableDataList = CableDataList.Where(x => x.CableType == CurrentCableData.CableType).ToList();
             }
 
-            return CableList;
+            return CableDataList;
         }
 
         public Complex GetCableImpedance(CableProperties Cable)

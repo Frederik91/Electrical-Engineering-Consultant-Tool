@@ -28,8 +28,6 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="60"/>
-            <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="*"/>
 
         </Grid.ColumnDefinitions>
@@ -37,31 +35,6 @@
 
 
         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Transformer data"/>
-
-        <Grid Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="75"/>
-                <ColumnDefinition Width="70"/>
-                <ColumnDefinition Width="70"/>
-                <ColumnDefinition Width="65"/>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="65"/>
-                <ColumnDefinition Width="110"/>
-            </Grid.ColumnDefinitions>
-
-            <Label Grid.Column="0" Content="Name"/>
-            <Label Grid.Column="1" Content="Count"/>
-            <Label Grid.Column="2" Content="Conductors"/>
-            <Label Grid.Column="3" Content="Material"/>
-            <Label Grid.Column="4" Content="Dimension"/>                        
-            <Label Grid.Column="5" Content="Type"/>
-            <Label Grid.Column="6" Content="Length"/>
-            <Label Grid.Column="7" Content="Select cable"/>
-            <Label Grid.Column="9" Content="Cable Impedance"/>
-        </Grid>
 
 
 
@@ -85,7 +58,8 @@
         <Label Grid.Row="6" Grid.Column="2" Content="W"/>
         <Label Grid.Row="7" Grid.Column="2" Content="A"/>
 
-        <ContentControl Content="{Binding Path=EditCableViewModel}" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="9" Grid.RowSpan="30" Width="745" Height="378" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        
+        <ContentControl Content="{Binding Path=EditCableViewModel}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="9" Grid.RowSpan="30" Width="745" Height="378" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <Label Grid.Row="9" Grid.Column="0" Content="Short circuit power (Sk):"/>
         <Label Grid.Row="10" Grid.Column="0" Content="End of cable impedance (Ztotal):"/>
