@@ -13,7 +13,10 @@ namespace EECT.Model
         private double _length { get; set; }
         private CableData _cableData { get; set; }
         private int _numberOfCables { get; set; }
-        private double _ik3p { get; set; }
+        private double _ik3pMax { get; set; }
+        private double _ik3pMin { get; set; }
+        private double _ik2pMax { get; set; }
+        private double _ik2pMin { get; set; }
 
         public Complex ImpedanceBehind { get; set; }
         public string Name { get; set; }
@@ -60,20 +63,59 @@ namespace EECT.Model
             }
         }
 
-        public double Ik3p
+        public double Ik3pMax
         {
             get
             {
-                return _ik3p;
+                return _ik3pMax;
             }
             set
             {
-                _ik3p = value;
-                OnPropertyChanged("Ik3p");
+                _ik3pMax = value;
+                OnPropertyChanged("Ik3pMax");
             }
         }
 
-        
+        public double Ik3pMin
+        {
+            get
+            {
+                return _ik3pMin;
+            }
+            set
+            {
+                _ik3pMin = value;
+                OnPropertyChanged("Ik3pMin");
+            }
+        }
+
+        public double Ik2pMax
+        {
+            get
+            {
+                return _ik2pMax;
+            }
+            set
+            {
+                _ik2pMax = value;
+                OnPropertyChanged("Ik2pMax");
+            }
+        }
+
+
+        public double Ik2pMIn
+        {
+            get
+            {
+                return _ik2pMin;
+            }
+            set
+            {
+                _ik2pMin = value;
+                OnPropertyChanged("Ik2pMIn");
+            }
+        }
+
 
     }
 }

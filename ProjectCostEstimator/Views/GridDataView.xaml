@@ -13,13 +13,7 @@
             <RowDefinition Height="75"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>
+            <RowDefinition Height="300"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
@@ -32,46 +26,30 @@
 
         </Grid.ColumnDefinitions>
 
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Label Content="Mode:"/>
+            <ComboBox HorizontalAlignment="Right" ItemsSource="{Binding ModeList}" SelectedIndex="{Binding SelectedMode}"/>
+        </StackPanel>
 
 
-        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Transformer data"/>
+        <ContentControl Content="{Binding Path=CurentDataVM}" Grid.Row="3"/>
 
 
-
-        <Label Grid.Row="2" Grid.Column="0" Content="Power Rating (S):"/>
-        <Label Grid.Row="3" Grid.Column="0" Content="SC impedance (Ek):"/>
-        <Label Grid.Row="4" Grid.Column="0" Content="Primary Voltage (Vp):"/>
-        <Label Grid.Row="5" Grid.Column="0" Content="Secondary Voltage (Vs):"/>
-        <Label Grid.Row="6" Grid.Column="0" Content="Transformer full load power loss:"/>
-        <Label Grid.Row="7" Grid.Column="0" Content="Short circuit current grid"/>
-
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PowerRating, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Ek, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Vp, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Vs, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding TransformerPowerLoss, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding IkGrid, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <Label Grid.Row="2" Grid.Column="2" Content="VA"/>
-        <Label Grid.Row="4" Grid.Column="2" Content="V"/>
-        <Label Grid.Row="5" Grid.Column="2" Content="V"/>
-        <Label Grid.Row="6" Grid.Column="2" Content="W"/>
-        <Label Grid.Row="7" Grid.Column="2" Content="A"/>
 
         
         <ContentControl Content="{Binding Path=EditCableViewModel}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="9" Grid.RowSpan="30" Width="745" Height="378" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <Label Grid.Row="9" Grid.Column="0" Content="Short circuit power (Sk):"/>
-        <Label Grid.Row="10" Grid.Column="0" Content="End of cable impedance (Ztotal):"/>
-        <Label Grid.Row="11" Grid.Column="0" Content="End of cable Ik3p:"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Short circuit power (Sk):"/>
+        <Label Grid.Row="5" Grid.Column="0" Content="End of cable impedance (Ztotal):"/>
+        <Label Grid.Row="6" Grid.Column="0" Content="End of cable Ik3p:"/>
 
-        <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Sk, StringFormat=N0}" IsEnabled="false"/>
-        <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding TotalImpedance, StringFormat=N4}" IsEnabled="false"/>
-        <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding Ik3p, StringFormat=N0}" IsEnabled="false"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Sk, StringFormat=N0}" IsEnabled="false"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding TotalImpedance, StringFormat=N4}" IsEnabled="false"/>
+        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Ik3p, StringFormat=N0}" IsEnabled="false"/>
 
-        <Label Grid.Row="9" Grid.Column="2" Content="VA"/>
-        <Label Grid.Row="10" Grid.Column="2" Content="Ω"/>
-        <Label Grid.Row="11" Grid.Column="2" Content="A"/>
+        <Label Grid.Row="4" Grid.Column="2" Content="VA"/>
+        <Label Grid.Row="5" Grid.Column="2" Content="Ω"/>
+        <Label Grid.Row="6" Grid.Column="2" Content="A"/>
 
     </Grid>
 

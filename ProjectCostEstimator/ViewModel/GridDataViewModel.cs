@@ -15,26 +15,30 @@ namespace EECT.ViewModel
 
         private List<CableProperties> CableList = new List<CableProperties>();
 
-        private GridAndTransformerData GTD = new GridAndTransformerData();
+        private List<string> _modeList = new List<string>();
 
+        private GridAndTransformerData GTD;
 
         private Complex Zq;
         private Complex Zt;
         private Complex _totalImpedance;
 
         private double _Ik3p;
-        private double _R0 = 1;
-        private double _X0 = 0.95;
-        private double _Tolerance = 1.05;
+   
+        private double _maxTolerance = 1.05;
+        private double _minTolerance = 0.95;
         private double _Cmax = 1.05;
-        private double _powerRating = 400000;
-        private double _TransformerPowerLoss = 4600;
+        private double _SkTransformer;
         private double _Ek = 0.04;
         private double _Vp = 20000;
         private double _Vs = 410;
         private double _Ik;
-        private double _IkGrid = 10000;
-        private double _SkTransformer;
+
+
+        private double _aCU = 0.00393;
+        private double _aAL = 0.0039;
+
+        private int _selectedModeIndex = 0;
 
         public GridDataViewModel()
         {
@@ -62,6 +66,14 @@ namespace EECT.ViewModel
             SkTransformer = Calc.Sk(_powerRating, _Ek);
             Ik = Calc.Ik(_SkTransformer, Vs);
             EndOfCableCalculation();
+
+            FillModeList();
+        }
+
+        private void FillModeList()
+        {
+            _modeList.Add("Transformer");
+            _modeList.Add("Switchboard");
         }
 
         private void EndOfCableCalculation()
@@ -69,7 +81,7 @@ namespace EECT.ViewModel
             var PC = new PowerCalc();
             var CDH = new CableDataHandler();
 
-            Zq = PC.GridImpedance(GTD, _Tolerance);
+            Zq = PC.GridImpedance(GTD, _maxTolerance);
             Zt = PC.TransformerImpedance(GTD, _Cmax, Zq.Magnitude);
 
             Complex Zcables = new Complex();
@@ -79,13 +91,15 @@ namespace EECT.ViewModel
                 {
                     Zcables = Zcables + CDH.GetCableImpedance(cable);
                     cable.ImpedanceBehind = Zcables;
-                    cable.Ik3p = PC.Ik3p(Vs, cable.ImpedanceBehind + Zq + Zt, _Tolerance);
+                    cable.Ik3pMax = PC.Ik3p(Vs, cable.ImpedanceBehind + Zq + Zt, _maxTolerance);
+
+                    cable.Ik3pMin = PC.Ik3p(Vs, PC.TemperatureCorrectedImpedance(cable.CableData.MaxTemp, cable.ImpedanceBehind, _aAL, _aCU, cable) + Zq + Zt, _minTolerance);
                 }
             }
 
             TotalImpedance = PC.SumImpedances(Zq, Zt, Zcables);
 
-            Ik3p = PC.Ik3p(Vs, TotalImpedance, _Tolerance);
+            Ik3p = PC.Ik3p(Vs, TotalImpedance, _maxTolerance);
         }
 
 
@@ -101,6 +115,15 @@ namespace EECT.ViewModel
 
         #region Properties
 
+        public double SkTransformer
+        {
+            get { return _SkTransformer; }
+            set
+            {
+                _SkTransformer = value;
+                OnPropertyChanged("Sk");
+            }
+        }
 
         public ViewModelBase EditCableViewModel
         {
@@ -125,27 +148,6 @@ namespace EECT.ViewModel
             }
         }
 
-        public double TransformerPowerLoss
-        {
-            get { return _TransformerPowerLoss; }
-            set
-            {
-                _TransformerPowerLoss = value;
-                OnPropertyChanged("TransformerPowerLoss");
-                TransformerCalculations();
-            }
-        }
-
-        public double IkGrid
-        {
-            get { return _IkGrid; }
-            set
-            {
-                _IkGrid = value;
-                OnPropertyChanged("IkGrid");
-                TransformerCalculations();
-            }
-        }
 
         public Complex TotalImpedance
         {
@@ -168,26 +170,7 @@ namespace EECT.ViewModel
             }
         }
 
-        public double SkTransformer
-        {
-            get { return _SkTransformer; }
-            set
-            {
-                _SkTransformer = value;
-                OnPropertyChanged("Sk");
-            }
-        }
 
-        public double PowerRating
-        {
-            get { return _powerRating; }
-            set
-            {
-                _powerRating = value;
-                OnPropertyChanged("PowerRating");
-                TransformerCalculations();
-            }
-        }
 
         public double Ek
         {
@@ -230,8 +213,25 @@ namespace EECT.ViewModel
             }
         }
 
+        public List<string> ModeList
+        {
+            get { return _modeList; }
+            set
+            {
+                _modeList = value;
+                OnPropertyChanged("ModeList");
+            }
+        }
 
-
+        public int SelectedMode
+        {
+            get { return _selectedModeIndex; }
+            set
+            {
+                _selectedModeIndex = value;
+                OnPropertyChanged("SelectedMode");
+            }
+        }
 
         #endregion
 

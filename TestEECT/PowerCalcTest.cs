@@ -94,6 +94,18 @@ namespace TestEECT
 
         }
 
+        //private CableProperties getCableList()
+        //{
+        //    var CablePr
+
+        //}
+
+        [TestMethod]
+
+        public void CableValues()
+        {
+
+        }
 
     }
 }

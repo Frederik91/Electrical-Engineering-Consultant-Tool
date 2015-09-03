@@ -11,6 +11,25 @@ namespace EECT.ElectricalCalculations
     public class PowerCalc : IPowerCalc
     {
 
+        public Complex TemperatureCorrectedImpedance(double MaxTemp, Complex Z, double aAL, double aCU, CableProperties cable)
+        {
+            double tempCoeff = 0;
+
+            switch (cable.CableData.Material)
+            {
+                case ("AL"):
+                    tempCoeff = aAL;
+                    break;
+                case ("CU"):
+                    tempCoeff = aCU;
+                    break;
+            }
+
+            var correctionFactor = (1 + tempCoeff * (MaxTemp - 20));
+
+            return new Complex(Z.Real * correctionFactor, Z.Imaginary);
+        }
+
         public Complex GridImpedance(GridAndTransformerData GTD, double Tolerance)
         {
             var GridImpedance = ((Tolerance * GTD.GridVoltage) / (Math.Sqrt(3) * GTD.GridIk)) * (Math.Pow(GTD.TransformerVoltageLow / GTD.GridVoltage, 2));

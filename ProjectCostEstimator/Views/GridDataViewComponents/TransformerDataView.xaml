@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="EECT.Views.GridDataViewComponents.TransformerDataView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EECT.Views.GridDataViewComponents"
+             mc:Ignorable="d" 
+             d:DesignHeight="156" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="20"/>
+
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Power Rating (S):"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="SC impedance (Ek):"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Primary Voltage (Vp):"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Secondary Voltage (Vs):"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Transformer full load power loss:"/>
+        <Label Grid.Row="5" Grid.Column="0" Content="Short circuit current grid"/>
+
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding PowerRating, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Ek, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Vp, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Vs, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding TransformerPowerLoss, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding IkGrid, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label Grid.Row="0" Grid.Column="2" Content="VA"/>
+        <Label Grid.Row="2" Grid.Column="2" Content="V"/>
+        <Label Grid.Row="3" Grid.Column="2" Content="V"/>
+        <Label Grid.Row="4" Grid.Column="2" Content="W"/>
+        <Label Grid.Row="5" Grid.Column="2" Content="A"/>
+    </Grid>
+</UserControl>

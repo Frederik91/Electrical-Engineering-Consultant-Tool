@@ -15,6 +15,14 @@
 
     <Window.Resources>
 
+        <DataTemplate DataType="{x:Type ViewModel:FirstSwitchboardViewModel}">
+            <GridDataView:FirstSwitchboardView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ViewModel:TransformerDataViewModel}">
+            <GridDataView:TransformerDataView/>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type ViewModel:SelectCableControllsViewModel}">
             <GridDataView:SelectCableControllsView/>
         </DataTemplate>

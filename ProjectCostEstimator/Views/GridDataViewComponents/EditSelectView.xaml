@@ -38,10 +38,11 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding NumberOfCables}" Header="cables" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding CableData.Cable}" Header="Cable Type" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Length}" Header="Length" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Ik3p, StringFormat=N0}" Header="Ik3p" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding NumberOfCables}" Header="Count" Width="50"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding CableData.Cable}" Header="Cable Type" Width="90"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Length}" Header="Length" Width="50"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Ik3pMax, StringFormat=N0}" Header="Ik3pMax" Width="60"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Ik3pMin, StringFormat=N0}" Header="Ik3pMin" Width="60"/>
                 </GridView>
             </ListView.View>
         </ListView>
