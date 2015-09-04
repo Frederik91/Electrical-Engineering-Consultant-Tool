@@ -26,8 +26,6 @@ namespace TestEECT
                 TransformerVoltageLow = 410,
                 Ek = 0.04,
                 TransformerFullLoadLoss = 4600,
-                TransfomerX0 = 0.95,
-                TransformerRo = 1
             };
 
             double Tolerance = 1.1;

@@ -76,7 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Assets\Cables.cs" />
+    <Compile Include="Assets\FirstSwitchboardEnums.cs" />
     <Compile Include="Assets\PowerUnits.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Design\DesignDataService.cs" />
@@ -87,6 +87,7 @@
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\DisciplineValues.cs" />
     <Compile Include="Model\FilePathList.cs" />
+    <Compile Include="Model\FirstSwitchboardData.cs" />
     <Compile Include="Model\GridAndTransformerData.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="ElectricalCalculations\IPowerCalc.cs" />

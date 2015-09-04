@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EECT.Views.GridDataViewComponents"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="286" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="26"/>
@@ -14,23 +14,40 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="180"/>
             <ColumnDefinition Width="80"/>
 
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Ik (A):"/>
-        <Label Grid.Row="1" Grid.Column="0" Content="Cos phi"/>
-        <Label Grid.Row="2" Grid.Column="0" Content="R+ (Ohm):"/>
-        <Label Grid.Row="3" Grid.Column="0" Content="X+ (Ohm):"/>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Ik3p max"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="Ik (A):" />
+        <Label Grid.Row="2" Grid.Column="1" Content="Cos phi"/>
+        <Label Grid.Row="3" Grid.Column="1" Content="R+ (Ohm):"/>
+        <Label Grid.Row="4" Grid.Column="1" Content="X+ (Ohm):"/>
 
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding PowerRating, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Ek, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Vp, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Vs, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding TransformerPowerLoss, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding IkGrid, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Ik3pmax, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding CosPhi3pmax, StringFormat=N3, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Rplus3pmax, StringFormat=N4, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Xplus3pmax, StringFormat=N4, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Ik2p min"/>
+        <Label Grid.Row="7" Grid.Column="1" Content="Ik (A):" />
+        <Label Grid.Row="8" Grid.Column="1" Content="Cos phi"/>
+        <Label Grid.Row="9" Grid.Column="1" Content="R+ (Ohm):"/>
+        <Label Grid.Row="10" Grid.Column="1" Content="X+ (Ohm):"/>
+
+        <TextBox Grid.Row="7" Grid.Column="2" Text="{Binding Ik2pmin, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding CosPhi2pmin, StringFormat=N3, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="9" Grid.Column="2" Text="{Binding Rplus2pmin, StringFormat=N4, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="10" Grid.Column="2" Text="{Binding Xplus2pmin, StringFormat=N4, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

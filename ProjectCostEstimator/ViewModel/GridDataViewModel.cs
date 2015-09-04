@@ -12,28 +12,23 @@ namespace EECT.ViewModel
     {
 
         private ViewModelBase _editCableViewModel { get; set; }
+        private ViewModelBase _currentDataVM { get; set; }
 
         private List<CableProperties> CableList = new List<CableProperties>();
 
         private List<string> _modeList = new List<string>();
 
-        private GridAndTransformerData GTD;
+        private GridAndTransformerData _GTD = new GridAndTransformerData();
+        private FirstSwitchboardData _FSD = new FirstSwitchboardData();
 
-        private Complex Zq;
-        private Complex Zt;
+        private Complex SystemImpedance3pmax;
+        private Complex SystemImpedance3pmin;
         private Complex _totalImpedance;
 
-        private double _Ik3p;
-   
+        private double _GridMaxTolerance = 1.1;
         private double _maxTolerance = 1.05;
         private double _minTolerance = 0.95;
         private double _Cmax = 1.05;
-        private double _SkTransformer;
-        private double _Ek = 0.04;
-        private double _Vp = 20000;
-        private double _Vs = 410;
-        private double _Ik;
-
 
         private double _aCU = 0.00393;
         private double _aAL = 0.0039;
@@ -44,30 +39,48 @@ namespace EECT.ViewModel
         {
             EditCableViewModel = new EditCableViewModel(this);
 
+            GTD.TransformerVoltageLow = 400;
 
+            FillModeList();
+            ActivateView();
             TransformerCalculations();
         }
 
         #region Methods
 
+        private void ActivateView()
+        {
+            switch (SelectedModeIndex)
+            {
+                case (0):
+                    CurrentDataVM = new TransformerDataViewModel(this, GTD);
+                    break;
+                case (1):
+                    CurrentDataVM = new FirstSwitchboardViewModel(this, FSD, _GridMaxTolerance, _minTolerance, GTD.TransformerVoltageLow);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
         private void TransformerCalculations()
         {
             var Calc = new TransformerCalc();
+            var PC = new PowerCalc();
 
-            GTD.Ek = _Ek;
-            GTD.GridVoltage = _Vp;
-            GTD.GridIk = _IkGrid;
-            GTD.TransfomerX0 = _X0;
-            GTD.TransformerRo = _R0;
-            GTD.TransformerFullLoadLoss = _TransformerPowerLoss;
-            GTD.TransformerPowerRating = _powerRating;
-            GTD.TransformerVoltageLow = _Vs;
+            var Zq = PC.GridImpedance(GTD, _maxTolerance);
+            var Zt = PC.TransformerImpedance(GTD, _Cmax, Zq.Magnitude);
+            SystemImpedance3pmax = Zq + Zt;
 
-            SkTransformer = Calc.Sk(_powerRating, _Ek);
-            Ik = Calc.Ik(_SkTransformer, Vs);
             EndOfCableCalculation();
+        }
 
-            FillModeList();
+        private void FirstSwitchboardCalculations()
+        {
+            SystemImpedance3pmax = new Complex(FSD.Rplus3pmax, FSD.Xplus3pmax);
+            SystemImpedance3pmin = FSD.Z3pmin;
+            EndOfCableCalculation();
         }
 
         private void FillModeList()
@@ -81,9 +94,6 @@ namespace EECT.ViewModel
             var PC = new PowerCalc();
             var CDH = new CableDataHandler();
 
-            Zq = PC.GridImpedance(GTD, _maxTolerance);
-            Zt = PC.TransformerImpedance(GTD, _Cmax, Zq.Magnitude);
-
             Complex Zcables = new Complex();
             foreach (var cable in CableList)
             {
@@ -91,17 +101,13 @@ namespace EECT.ViewModel
                 {
                     Zcables = Zcables + CDH.GetCableImpedance(cable);
                     cable.ImpedanceBehind = Zcables;
-                    cable.Ik3pMax = PC.Ik3p(Vs, cable.ImpedanceBehind + Zq + Zt, _maxTolerance);
+                    cable.Ik3pMax = PC.Ik3p(GTD.TransformerVoltageLow, cable.ImpedanceBehind + SystemImpedance3pmax, _maxTolerance);
 
-                    cable.Ik3pMin = PC.Ik3p(Vs, PC.TemperatureCorrectedImpedance(cable.CableData.MaxTemp, cable.ImpedanceBehind, _aAL, _aCU, cable) + Zq + Zt, _minTolerance);
+                    cable.Ik3pMin = PC.Ik3p(GTD.TransformerVoltageLow, 2*PC.TemperatureCorrectedImpedance(cable.CableData.MaxTemp, cable.ImpedanceBehind, _aAL, _aCU, cable) + SystemImpedance3pmax, _minTolerance);
                 }
             }
-
-            TotalImpedance = PC.SumImpedances(Zq, Zt, Zcables);
-
-            Ik3p = PC.Ik3p(Vs, TotalImpedance, _maxTolerance);
         }
-
+        
 
         public void CableSelected(List<CableProperties> UpdatedCableList)
         {
@@ -115,13 +121,36 @@ namespace EECT.ViewModel
 
         #region Properties
 
-        public double SkTransformer
+        public double Vs
         {
-            get { return _SkTransformer; }
+            get { return GTD.TransformerVoltageLow; }
             set
             {
-                _SkTransformer = value;
-                OnPropertyChanged("Sk");
+                GTD.TransformerVoltageLow = value;
+                OnPropertyChanged("Vs");
+                EndOfCableCalculation();
+            }
+        }
+
+        public GridAndTransformerData GTD
+        {
+            get { return _GTD; }
+            set
+            {
+                _GTD = value;
+                OnPropertyChanged("GTD");
+                TransformerCalculations();
+            }
+        }
+
+        public FirstSwitchboardData FSD
+        {
+            get { return _FSD; }
+            set
+            {
+                _FSD = value;
+                OnPropertyChanged("FSD");
+                FirstSwitchboardCalculations();
             }
         }
 
@@ -136,17 +165,17 @@ namespace EECT.ViewModel
         }
 
 
-        #region PowerUnits
-
-        public double Ik3p
+        public ViewModelBase CurrentDataVM
         {
-            get { return _Ik3p; }
+            get { return _currentDataVM; }
             set
             {
-                _Ik3p = value;
-                OnPropertyChanged("Ik3p");
+                _currentDataVM = value;
+                OnPropertyChanged("CurrentDataVM");
             }
         }
+
+        #region PowerUnits
 
 
         public Complex TotalImpedance
@@ -158,60 +187,7 @@ namespace EECT.ViewModel
                 OnPropertyChanged("TotalImpedance");
             }
         }
-
-
-        public double Ik
-        {
-            get { return _Ik; }
-            set
-            {
-                _Ik = value;
-                OnPropertyChanged("Ik");
-            }
-        }
-
-
-
-        public double Ek
-        {
-            get { return _Ek; }
-            set
-            {
-                if (value > 1)
-                {
-                    _Ek = value / 100;
-                }
-                else
-                {
-                    _Ek = value;
-                }
-                OnPropertyChanged("Ek");
-                TransformerCalculations();
-            }
-        }
-
-        public double Vp
-        {
-            get { return _Vp; }
-            set
-            {
-                _Vp = value;
-                OnPropertyChanged("Vp");
-                TransformerCalculations();
-            }
-        }
-
-
-        public double Vs
-        {
-            get { return _Vs; }
-            set
-            {
-                _Vs = value;
-                OnPropertyChanged("Vs");
-                TransformerCalculations();
-            }
-        }
+        
 
         public List<string> ModeList
         {
@@ -223,13 +199,14 @@ namespace EECT.ViewModel
             }
         }
 
-        public int SelectedMode
+        public int SelectedModeIndex
         {
             get { return _selectedModeIndex; }
             set
             {
                 _selectedModeIndex = value;
                 OnPropertyChanged("SelectedMode");
+                ActivateView();
             }
         }
 

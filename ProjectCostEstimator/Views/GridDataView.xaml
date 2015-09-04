@@ -13,6 +13,7 @@
             <RowDefinition Height="75"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="300"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
@@ -28,28 +29,18 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Label Content="Mode:"/>
-            <ComboBox HorizontalAlignment="Right" ItemsSource="{Binding ModeList}" SelectedIndex="{Binding SelectedMode}"/>
+            <ComboBox HorizontalAlignment="Right" Width="100"  ItemsSource="{Binding ModeList}" SelectedIndex="{Binding SelectedModeIndex}"/>
         </StackPanel>
 
-
-        <ContentControl Content="{Binding Path=CurentDataVM}" Grid.Row="3"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Secondary Voltage (Vs):"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Vs, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <ContentControl Content="{Binding Path=CurrentDataVM}" Grid.Row="4" Grid.ColumnSpan="2"/>
 
 
 
         
         <ContentControl Content="{Binding Path=EditCableViewModel}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="9" Grid.RowSpan="30" Width="745" Height="378" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-
-        <Label Grid.Row="4" Grid.Column="0" Content="Short circuit power (Sk):"/>
-        <Label Grid.Row="5" Grid.Column="0" Content="End of cable impedance (Ztotal):"/>
-        <Label Grid.Row="6" Grid.Column="0" Content="End of cable Ik3p:"/>
-
-        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Sk, StringFormat=N0}" IsEnabled="false"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding TotalImpedance, StringFormat=N4}" IsEnabled="false"/>
-        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Ik3p, StringFormat=N0}" IsEnabled="false"/>
-
-        <Label Grid.Row="4" Grid.Column="2" Content="VA"/>
-        <Label Grid.Row="5" Grid.Column="2" Content="Ω"/>
-        <Label Grid.Row="6" Grid.Column="2" Content="A"/>
 
     </Grid>
 

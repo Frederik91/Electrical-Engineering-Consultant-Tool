@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EECT.Assets
 {
-    public enum Cables
+    public enum FirstSwitchboardEnums
     {
-        Cable1, Cable2, Cable3, Cable4
+        Ik, CosPhi, Rplus, Xplus
     }
 }

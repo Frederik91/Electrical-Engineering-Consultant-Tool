@@ -13,8 +13,8 @@ namespace EECT.Model
         public double TransformerPowerRating { get; set; }
         public double TransformerVoltageLow { get; set; }
         public double Ek { get; set; }
-        public double TransformerRo { get; set; }
-        public double TransfomerX0 { get; set; }
+        public double TransformerR0 { get; set; }
+        public double TransformerX0 { get; set; }
         public double TransformerFullLoadLoss { get; set; }
     }
 }

@@ -10,6 +10,23 @@ namespace EECT.ElectricalCalculations
 {
     public class PowerCalc : IPowerCalc
     {
+        public Complex CurrentCosPhiToImpedance2p(double Ik, double CosPhi, double Voltage, double Tolerance)
+        {
+            var Zmagnetude = (Tolerance * Voltage) / Ik;
+            var R = Zmagnetude * CosPhi;
+            var X = Zmagnetude * Math.Sin(Math.Cosh(CosPhi));
+
+            return new Complex(R, X);
+        }
+
+        public Complex CurrentCosPhiToImpedance3p(double Ik, double CosPhi, double Voltage, double Tolerance)
+        {
+            var Zmagnetude = (Tolerance * Voltage) / (Math.Sqrt(3) * Ik);
+            var R = Zmagnetude * CosPhi;
+            var X = Zmagnetude * Math.Sin(Math.Cosh(CosPhi));
+
+            return new Complex(R, X);
+        }
 
         public Complex TemperatureCorrectedImpedance(double MaxTemp, Complex Z, double aAL, double aCU, CableProperties cable)
         {
@@ -92,6 +109,12 @@ namespace EECT.ElectricalCalculations
         {
             return (Tolerance * voltage) / (Math.Sqrt(3) * Z.Magnitude);
         }
+
+        public double Ik2p(double voltage, Complex Z, double Tolerance)
+        {
+            return (Tolerance * voltage) / (2*Z.Magnitude);
+        }
+
 
         public double Ik3pPeak(Complex Ztotal, double Ik3p)
         {
