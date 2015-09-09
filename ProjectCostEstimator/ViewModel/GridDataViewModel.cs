@@ -26,7 +26,7 @@ namespace EECT.ViewModel
         private Complex _totalImpedance;
 
         private double _GridMaxTolerance = 1.1;
-        private double _maxTolerance = 1.05;
+        private double _maxTolerance = 1.1;
         private double _minTolerance = 0.95;
         private double _Cmax = 1.05;
 
@@ -43,7 +43,7 @@ namespace EECT.ViewModel
 
             FillModeList();
             ActivateView();
-            TransformerCalculations();
+            FirstSwitchboardCalculations();
         }
 
         #region Methods
@@ -53,11 +53,12 @@ namespace EECT.ViewModel
             switch (SelectedModeIndex)
             {
                 case (0):
-                    CurrentDataVM = new TransformerDataViewModel(this, GTD);
-                    break;
-                case (1):
                     CurrentDataVM = new FirstSwitchboardViewModel(this, FSD, _GridMaxTolerance, _minTolerance, GTD.TransformerVoltageLow);
                     break;
+                case (1):
+                    CurrentDataVM = new TransformerDataViewModel(this, GTD);
+                    break;
+
                 default:
                     break;
             }
@@ -85,23 +86,34 @@ namespace EECT.ViewModel
 
         private void FillModeList()
         {
-            _modeList.Add("Transformer");
             _modeList.Add("Switchboard");
+            _modeList.Add("Transformer");
         }
 
         private void EndOfCableCalculation()
         {
             var PC = new PowerCalc();
             var CDH = new CableDataHandler();
+            var index = 0;
+            double tolerance;
 
             Complex Zcables = new Complex();
             foreach (var cable in CableList)
             {
                 if (cable.NumberOfCables > 0)
                 {
+                    if (index == 0 && cable.Length == 0)
+                    {
+                        tolerance = _GridMaxTolerance;
+                    }
+                    else
+                    {
+                        tolerance = _maxTolerance;
+                    }
+
                     Zcables = Zcables + CDH.GetCableImpedance(cable);
                     cable.ImpedanceBehind = Zcables;
-                    cable.Ik3pMax = PC.Ik3p(GTD.TransformerVoltageLow, cable.ImpedanceBehind + SystemImpedance3pmax, _maxTolerance);
+                    cable.Ik3pMax = PC.Ik3p(GTD.TransformerVoltageLow, cable.ImpedanceBehind + SystemImpedance3pmax, tolerance);
 
                     cable.Ik3pMin = PC.Ik3p(GTD.TransformerVoltageLow, 2*PC.TemperatureCorrectedImpedance(cable.CableData.MaxTemp, cable.ImpedanceBehind, _aAL, _aCU, cable) + SystemImpedance3pmax, _minTolerance);
                 }

@@ -12,7 +12,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="274"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
@@ -34,7 +34,7 @@
             <Button Width="80" Grid.Column="2" Content="Delete" Command="{Binding DeleteCableCommand}"/>
         </StackPanel>
 
-        <ListView Height="300" Grid.Row="4" Grid.ColumnSpan="10" ItemsSource="{Binding CableList}" SelectedIndex="{Binding SelectedCableIndex}">
+        <ListView Height="274" Grid.Row="4" Grid.ColumnSpan="10" ItemsSource="{Binding CableList}" SelectedIndex="{Binding SelectedCableIndex}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="100"/>

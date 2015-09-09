@@ -40,6 +40,11 @@ namespace EECT.ElectricalCalculations
 
         public Complex GetCableImpedance(CableProperties Cable)
         {
+            if (Cable.Length == 0)
+            {
+                return new Complex(0, 0);
+            }
+
             var Z = new Complex();
 
             try

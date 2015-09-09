@@ -12,11 +12,11 @@ namespace EECT.ElectricalCalculations
     {
         public Complex CurrentCosPhiToImpedance2p(double Ik, double CosPhi, double Voltage, double Tolerance)
         {
-            var Zmagnetude = (Tolerance * Voltage) / Ik;
+            var Zmagnetude = (Tolerance * Voltage) / (2*Ik);
             var R = Zmagnetude * CosPhi;
-            var X = Zmagnetude * Math.Sin(Math.Cosh(CosPhi));
+            var X = Zmagnetude * Math.Sin(Math.Acos(CosPhi));
 
-            return new Complex(R, X);
+             return new Complex(R, X);
         }
 
         public Complex CurrentCosPhiToImpedance3p(double Ik, double CosPhi, double Voltage, double Tolerance)

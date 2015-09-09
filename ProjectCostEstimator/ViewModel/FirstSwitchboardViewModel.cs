@@ -56,10 +56,10 @@ namespace EECT.ViewModel
             if ((Updated == FirstSwitchboardEnums.CosPhi || Updated == FirstSwitchboardEnums.Ik) && !CalculationsInProgress)
             {
                 CalculationsInProgress = true;
-                var Z = PC.CurrentCosPhiToImpedance3p(Ik2pmin, CosPhi2pmin, Voltage, MaxTolerance);
+                var Z = PC.CurrentCosPhiToImpedance2p(Ik2pmin, CosPhi2pmin, Voltage, MinTolerance);
 
-                Rplus3pmax = Z.Real;
-                Xplus3pmax = Z.Imaginary;
+                Rplus2pmin = Z.Real;
+                Xplus2pmin = Z.Imaginary;
                 CalculationsInProgress = false;
             }
 
